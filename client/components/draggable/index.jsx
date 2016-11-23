@@ -7,12 +7,15 @@ import omit from 'lodash/omit';
 
 export default class Draggable extends Component {
 	static propTypes = {
+		onStart: PropTypes.func,
 		onDrag: PropTypes.func,
 		onStop: PropTypes.func,
 		width: PropTypes.number,
 		height: PropTypes.number,
 		x: PropTypes.number,
 		y: PropTypes.number,
+		invertX: PropTypes.bool,
+		invertY: PropTypes.bool,
 		controlled: PropTypes.bool,
 		bounds: PropTypes.shape( {
 			top: PropTypes.number,
@@ -23,12 +26,15 @@ export default class Draggable extends Component {
 	};
 
 	static defaultProps = {
+		onStart: noop,
 		onDrag: noop,
 		onStop: noop,
 		width: 0,
 		height: 0,
 		x: 0,
 		y: 0,
+		invertX: false,
+		invertY: false,
 		controlled: false,
 		bounds: null
 	};
@@ -64,6 +70,7 @@ export default class Draggable extends Component {
 	}
 
 	draggingStartedHandler( event ) {
+		this.props.onStart();
 		this.dragging = true;
 
 		let coords = event;
@@ -72,9 +79,14 @@ export default class Draggable extends Component {
 			coords = event.touches[ 0 ];
 		}
 
-		this.relativePos = {
-			x: coords.pageX - this.state.x,
-			y: coords.pageY - this.state.y
+		this.lastPos = {
+			x: coords.pageX,
+			y: coords.pageY
+		};
+
+		this.initialPos = {
+			x: this.state.x,
+			y: this.state.y
 		};
 
 		cancelAnimationFrame( this.frameRequestId );
@@ -95,15 +107,18 @@ export default class Draggable extends Component {
 			coords = event.touches[ 0 ];
 		}
 
-		const x = coords.pageX - this.relativePos.x,
-			y = coords.pageY - this.relativePos.y;
+		const dx = coords.pageX - this.lastPos.x,
+			dy = coords.pageY - this.lastPos.y;
 
-		this.mousePos = { x, y };
+		this.delta = {
+			dx: this.props.invertX ? -dx : dx,
+			dy: this.props.invertY ? -dy : dy
+		};
 	}
 
 	draggingEndedHandler( ) {
 		this.dragging = false;
-		this.mousePos = null;
+		this.delta = null;
 
 		cancelAnimationFrame( this.frameRequestId );
 
@@ -131,13 +146,16 @@ export default class Draggable extends Component {
 	}
 
 	update() {
-		if ( ! this.mousePos ) {
+		if ( ! this.delta ) {
 			this.frameRequestId = requestAnimationFrame( this.update );
 			return;
 		}
 
 		const bounds = this.props.bounds;
-		let { x, y } = this.mousePos;
+		const { dx, dy } = this.delta;
+		let { x, y } = this.initialPos;
+		x += dx;
+		y += dy;
 		if ( bounds ) {
 			x = Math.max( bounds.left, Math.min( bounds.right - this.props.width, x ) );
 			y = Math.max( bounds.top, Math.min( bounds.bottom - this.props.height, y ) );
@@ -147,7 +165,7 @@ export default class Draggable extends Component {
 			this.frameRequestId = requestAnimationFrame( this.update );
 		}
 
-		this.props.onDrag( x, y );
+		this.props.onDrag( x, y, dx, dy );
 
 		if ( this.props.controlled ) {
 			return;

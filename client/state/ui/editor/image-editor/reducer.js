@@ -11,7 +11,6 @@ import {
 	IMAGE_EDITOR_ROTATE_COUNTERCLOCKWISE,
 	IMAGE_EDITOR_FLIP,
 	IMAGE_EDITOR_SET_ASPECT_RATIO,
-	IMAGE_EDITOR_SET_CROP_BOUNDS,
 	IMAGE_EDITOR_SET_FILE_INFO,
 	IMAGE_EDITOR_STATE_RESET,
 	IMAGE_EDITOR_STATE_RESET_ALL,
@@ -104,20 +103,6 @@ export function transform( state = defaultTransform, action ) {
 	return state;
 }
 
-export function cropBounds( state = defaultCropBounds, action ) {
-	switch ( action.type ) {
-		case IMAGE_EDITOR_SET_CROP_BOUNDS:
-			return Object.assign( {}, state, {
-				topBound: action.topBound,
-				leftBound: action.leftBound,
-				bottomBound: action.bottomBound,
-				rightBound: action.rightBound
-			} );
-	}
-
-	return state;
-}
-
 export function crop( state = defaultCrop, action ) {
 	switch ( action.type ) {
 		case IMAGE_EDITOR_CROP:
@@ -169,7 +154,6 @@ export default combineReducers( {
 	hasChanges,
 	fileInfo,
 	transform,
-	cropBounds,
 	crop,
 	aspectRatio,
 	imageIsLoading

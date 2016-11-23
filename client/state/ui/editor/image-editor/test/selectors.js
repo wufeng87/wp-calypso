@@ -10,7 +10,6 @@ import {
 	getImageEditorTransform,
 	getImageEditorFileInfo,
 	imageEditorHasChanges,
-	getImageEditorCropBounds,
 	getImageEditorCrop,
 	getImageEditorAspectRatio,
 	isImageEditorImageLoaded
@@ -77,32 +76,6 @@ describe( 'selectors', () => {
 			} );
 
 			expect( hasChanges ).to.be.true;
-		} );
-	} );
-
-	describe( '#getImageEditorCropBounds()', () => {
-		it( 'should return the crop bounds', () => {
-			const bounds = getImageEditorCropBounds( {
-				ui: {
-					editor: {
-						imageEditor: {
-							cropBounds: {
-								topBound: 100,
-								leftBound: 200,
-								bottomBound: 300,
-								rightBound: 400
-							}
-						}
-					}
-				}
-			} );
-
-			expect( bounds ).to.eql( {
-				topBound: 100,
-				leftBound: 200,
-				bottomBound: 300,
-				rightBound: 400
-			} );
 		} );
 	} );
 

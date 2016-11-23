@@ -4,24 +4,26 @@
 import React, { Component, PropTypes } from 'react';
 import ReactDom from 'react-dom';
 import { connect } from 'react-redux';
-import { noop, throttle, startsWith } from 'lodash';
+import { clone, noop, throttle, startsWith } from 'lodash';
 import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
-import ImageEditorCrop from './image-editor-crop';
+import Draggable from 'components/draggable';
 import MediaUtils from 'lib/media/utils';
 import {
 	getImageEditorTransform,
 	getImageEditorFileInfo,
 	getImageEditorCrop,
+	getImageEditorAspectRatio,
 	isImageEditorImageLoaded
 } from 'state/ui/editor/image-editor/selectors';
 import {
-	setImageEditorCropBounds,
+	imageEditorCrop,
 	setImageEditorImageHasLoaded
 } from 'state/ui/editor/image-editor/actions';
+import { AspectRatios } from 'state/ui/editor/image-editor/constants';
 
 class ImageEditorCanvas extends Component {
 	static propTypes = {
@@ -38,7 +40,6 @@ class ImageEditorCanvas extends Component {
 			widthRatio: PropTypes.number,
 			heightRatio: PropTypes.number
 		} ),
-		setImageEditorCropBounds: PropTypes.func,
 		setImageEditorImageHasLoaded: PropTypes.func,
 		onLoadError: PropTypes.func,
 		isImageLoaded: PropTypes.bool
@@ -56,7 +57,6 @@ class ImageEditorCanvas extends Component {
 			cropWidthRatio: 1,
 			cropHeightRatio: 1
 		},
-		setImageEditorCropBounds: noop,
 		setImageEditorImageHasLoaded: noop,
 		onLoadError: noop,
 		isImageLoaded: false
@@ -69,8 +69,31 @@ class ImageEditorCanvas extends Component {
 
 		this.onLoadComplete = this.onLoadComplete.bind( this );
 		this.updateCanvasPosition = this.updateCanvasPosition.bind( this );
+		this.onBackgroundLoaded = this.onBackgroundLoaded.bind( this );
+		this.onDragStart = this.onDragStart.bind( this );
+		this.onBorderDrag = this.onBorderDrag.bind( this );
+		this.onTopLeftDrag = this.onTopLeftDrag.bind( this );
+		this.onTopRightDrag = this.onTopRightDrag.bind( this );
+		this.onBottomRightDrag = this.onBottomRightDrag.bind( this );
+		this.onBottomLeftDrag = this.onBottomLeftDrag.bind( this );
+		this.applyCrop = this.applyCrop.bind( this );
 
 		this.isVisible = false;
+
+		this.state = {
+			top: 0,
+			left: 0,
+			bottom: 0,
+			right: 0,
+			widthRatio: 1,
+			heightRatio: 1,
+			bounds: {
+				top: 0,
+				left: 0,
+				bottom: 0,
+				right: 0
+			}
+		};
 	}
 
 	componentDidMount() {
@@ -189,96 +212,399 @@ class ImageEditorCanvas extends Component {
 		MediaUtils.canvasToBlob( newCanvas, callback, mimeType, 1 );
 	}
 
+	updateCanvasPosition() {
+//		const {
+//			leftRatio,
+//			topRatio,
+//			widthRatio,
+//			heightRatio
+//		} = this.props.crop;
+//
+//		const canvas = ReactDom.findDOMNode( this.refs.canvas ),
+//			canvasX = -50 * widthRatio - 100 * leftRatio,
+//			canvasY = -50 * heightRatio - 100 * topRatio;
+//
+//		this.props.setImageEditorCropBounds(
+//			canvas.offsetTop - canvas.offsetHeight * -canvasY / 100,
+//			canvas.offsetLeft - canvas.offsetWidth * -canvasX / 100,
+//			canvas.offsetTop + canvas.offsetHeight * ( 1 + canvasY / 100 ),
+//			canvas.offsetLeft + canvas.offsetWidth * ( 1 + canvasX / 100 )
+//		);
+	}
+
 	drawImage() {
 		if ( ! this.image ) {
 			return;
 		}
 
-		const canvas = ReactDom.findDOMNode( this.refs.canvas ),
-			imageWidth = this.image.width,
-			imageHeight = this.image.height,
-			transform = this.props.transform,
-			rotated = transform.degrees % 180 !== 0;
-
-		//make sure the canvas draw area is the same size as the image
-		canvas.width = rotated ? imageHeight : imageWidth;
-		canvas.height = rotated ? imageWidth : imageHeight;
-
+		const canvas = ReactDom.findDOMNode( this.refs.canvas );
+		const imageWidth = this.image.width;
+		const imageHeight = this.image.height;
+		const transform = this.props.transform;
 		const context = canvas.getContext( '2d' );
+
+		const container = this.refs.container;
+		canvas.width = container.offsetWidth;
+		canvas.height = container.offsetHeight;
 
 		context.clearRect( 0, 0, canvas.width, canvas.height );
 		context.save();
 
-		// setTransform() could be replaced with translate(), but it leads to
-		// a false positive warning from eslint rule wpcalypso/i18n-no-variables
-		context.setTransform( 1, 0, 0, 1, canvas.width / 2, canvas.height / 2 );
-
-		context.scale( transform.scaleX, transform.scaleY );
 		context.rotate( transform.degrees * Math.PI / 180 );
 
-		context.drawImage( this.image, -imageWidth / 2, -imageHeight / 2 );
+		const boxWidth = this.state.right - this.state.left;
+		const boxHeight = this.state.bottom - this.state.top;
+
+		const boundsWidth = this.state.bounds.right - this.state.bounds.left;
+		const boundsHeight = this.state.bounds.bottom - this.state.bounds.top;
+
+		context.drawImage( this.image,
+			imageWidth * ( ( this.state.left - this.state.bounds.left ) / boundsWidth ),
+			imageHeight * ( ( this.state.top - this.state.bounds.top ) / boundsHeight ),
+			imageWidth * ( boxWidth / boundsWidth ),
+			imageHeight * ( boxHeight / boundsHeight ),
+			this.state.left, this.state.top, boxWidth, boxHeight );
 
 		context.restore();
 	}
 
-	updateCanvasPosition() {
-		const {
-			leftRatio,
-			topRatio,
-			widthRatio,
-			heightRatio
-		} = this.props.crop;
+	updateCrop( newValues, props ) {
+		props = props || this.props;
 
-		const canvas = ReactDom.findDOMNode( this.refs.canvas ),
-			canvasX = -50 * widthRatio - 100 * leftRatio,
-			canvasY = -50 * heightRatio - 100 * topRatio;
+		const aspectRatio = props.aspectRatio;
 
-		this.props.setImageEditorCropBounds(
-			canvas.offsetTop - canvas.offsetHeight * -canvasY / 100,
-			canvas.offsetLeft - canvas.offsetWidth * -canvasX / 100,
-			canvas.offsetTop + canvas.offsetHeight * ( 1 + canvasY / 100 ),
-			canvas.offsetLeft + canvas.offsetWidth * ( 1 + canvasX / 100 )
+		const rotated = props.transform.degrees % 180 !== 0;
+		const bounds = this.state.bounds;
+		const boundsWidth = bounds.right - bounds.left;
+		const boundsHeight = bounds.bottom - bounds.top;
+		const newState = Object.assign( {}, this.state, newValues );
+
+		//limits the min crop to one hundredth of the original image or at least one px
+		const onePx = boundsWidth / this.state.imageWidth;
+		const oneHundredth = Math.min( this.state.imageWidth / 100, this.state.imageHeight / 100 ) * onePx;
+		const newWidth = Math.max( 1, onePx, oneHundredth, newState.right - newState.left );
+		const newHeight = Math.max( 1, onePx, oneHundredth, newState.bottom - newState.top );
+
+		let aspectWidth, aspectHeight;
+
+		switch ( aspectRatio ) {
+			case AspectRatios.FREE:
+				aspectWidth = newWidth;
+				aspectHeight = newHeight;
+				break;
+			case AspectRatios.ORIGINAL:
+				aspectWidth = boundsWidth;
+				aspectHeight = boundsHeight;
+				break;
+			case AspectRatios.ASPECT_1X1:
+				aspectWidth = 1;
+				aspectHeight = 1;
+				break;
+			case AspectRatios.ASPECT_16X9:
+				aspectWidth = rotated ? 9 : 16;
+				aspectHeight = rotated ? 16 : 9;
+				break;
+			case AspectRatios.ASPECT_4X3:
+				aspectWidth = rotated ? 3 : 4;
+				aspectHeight = rotated ? 4 : 3;
+				break;
+			case AspectRatios.ASPECT_3X2:
+				aspectWidth = rotated ? 2 : 3;
+				aspectHeight = rotated ? 3 : 2;
+				break;
+		}
+
+		const ratio = Math.min( newWidth / aspectWidth, newHeight / aspectHeight );
+		const finalWidth = aspectWidth * ratio;
+		const finalHeight = aspectHeight * ratio;
+
+		if ( newValues.hasOwnProperty( 'top' ) ) {
+			newValues.top = newState.bottom - finalHeight;
+		} else if ( newValues.hasOwnProperty( 'bottom' ) ) {
+			newValues.bottom = newState.top + finalHeight;
+		}
+
+		if ( newValues.hasOwnProperty( 'left' ) ) {
+			newValues.left = newState.right - finalWidth;
+		} else if ( newValues.hasOwnProperty( 'right' ) ) {
+			newValues.right = newState.left + finalWidth;
+		}
+
+		newValues.bounds = {
+			top: this.initialBoundsTop,
+			left: this.initialBoundsLeft,
+			right: this.initialBoundsRight,
+			bottom: this.initialBoundsBottom
+		};
+
+		return newValues;
+	}
+
+	onDragStart() {
+		this.initialBounds = clone( this.state.bounds );
+		this.initialTop = this.state.top;
+		this.initialLeft = this.state.left;
+		this.initialBottom = this.state.bottom;
+		this.initialRight = this.state.right;
+		this.initialBoundsTop = this.state.bounds.top;
+		this.initialBoundsLeft = this.state.bounds.left;
+		this.initialBoundsBottom = this.state.bounds.bottom;
+		this.initialBoundsRight = this.state.bounds.right;
+	}
+
+	onTopLeftDrag( x, y ) {
+		const newState = this.updateCrop( {
+			top: y,
+			left: x
+		} );
+
+		this.setState( newState, this.drawImage );
+	}
+
+	onTopRightDrag( x, y ) {
+		const newState = this.updateCrop( {
+			top: y,
+			right: x
+		} );
+
+		this.setState( newState, this.drawImage );
+	}
+
+	onBottomRightDrag( x, y ) {
+		const newState = this.updateCrop( {
+			bottom: y,
+			right: x
+		} );
+
+		this.setState( newState, this.drawImage );
+	}
+
+	onBottomLeftDrag( x, y ) {
+		const newState = this.updateCrop( {
+			bottom: y,
+			left: x
+		} );
+
+		this.setState( newState, this.drawImage );
+	}
+
+	onBorderDrag( x, y, dx, dy ) {
+		const boundsHeight = this.initialBounds.bottom - this.initialBounds.top;
+		const boundsWidth = this.initialBounds.right - this.initialBounds.left;
+
+		let top = Math.min( this.state.top, this.initialBounds.top + dy );
+		if ( top + boundsHeight <= this.state.bottom ) {
+			top = this.state.bottom - boundsHeight;
+		}
+
+		let left = Math.min( this.state.left, this.initialBounds.left + dx );
+		if ( left + boundsWidth <= this.state.right ) {
+			left = this.state.right - boundsWidth;
+		}
+
+		const bottom = top + boundsHeight;
+		const right = left + boundsWidth;
+
+		this.setState( {
+			bounds: { top, left, bottom, right }
+		}, this.drawImage );
+	}
+
+	applyCrop() {
+		const container = this.refs.container;
+		const containerWidth = container.offsetWidth;
+		const containerHeight = container.offsetHeight;
+
+		const boxWidth = this.state.right - this.state.left;
+		const boxHeight = this.state.bottom - this.state.top;
+
+		const ratio = Math.min( 0.85 * containerWidth / boxWidth, 0.85 * containerHeight / boxHeight );
+
+		//1. scale
+		let boundsTop = this.state.bounds.top;
+		let boundsLeft = this.state.bounds.left;
+		let boundsRight = boundsLeft + ( this.state.bounds.right - this.state.bounds.left ) * ratio;
+		let boundsBottom = boundsTop + ( this.state.bounds.bottom - this.state.bounds.top ) * ratio;
+
+		let boxTop = this.state.bounds.top + ( this.state.top - this.state.bounds.top ) * ratio;
+		let boxLeft = this.state.bounds.left + ( this.state.left - this.state.bounds.left ) * ratio;
+		let boxRight = boxLeft + boxWidth * ratio;
+		let boxBottom = boxTop + boxHeight * ratio;
+
+		//2. translate
+		const deltaX = ( containerWidth / 2 - ( ratio * boxWidth ) / 2 ) - boxLeft;
+		boundsLeft += deltaX;
+		boundsRight += deltaX;
+		boxLeft += deltaX;
+		boxRight += deltaX;
+
+		const deltaY = ( containerHeight / 2 - ( ratio * boxHeight ) / 2 ) - boxTop;
+		boundsTop += deltaY;
+		boundsBottom += deltaY;
+		boxTop += deltaY;
+		boxBottom += deltaY;
+
+		this.animateCrop(
+			( boxTop - this.state.top ) / 30,
+			( boxLeft - this.state.left ) / 30,
+			( boxRight - this.state.right ) / 30,
+			( boxBottom - this.state.bottom ) / 30,
+			( boundsTop - this.state.bounds.top ) / 30,
+			( boundsLeft - this.state.bounds.left ) / 30,
+			( boundsRight - this.state.bounds.right ) / 30,
+			( boundsBottom - this.state.bounds.bottom ) / 30,
+			30
 		);
 	}
 
-	preventDrag( event ) {
-		event.preventDefault();
+	animateCrop( boxTopDelta, boxLeftDelta, boxRightDelta, boxBottomDelta,
+		boundsTopDelta, boundsLeftDelta, boundsRightDelta, boundsBottomDelta, frames ) {
+		if ( frames === 0 ) {
+			const imageWidth = this.state.right - this.state.left,
+				imageHeight = this.state.bottom - this.state.top,
+				boundsWidth = this.state.bounds.right - this.state.bounds.left,
+				boundsHeight = this.state.bounds.bottom - this.state.bounds.top;
 
-		return false;
+			this.props.imageEditorCrop(
+				this.state.top / boundsHeight,
+				this.state.left / boundsWidth,
+				imageWidth / boundsWidth,
+				imageHeight / boundsHeight
+			);
+			return;
+		}
+
+		this.setState( {
+			top: this.state.top + boxTopDelta,
+			left: this.state.left + boxLeftDelta,
+			right: this.state.right + boxRightDelta,
+			bottom: this.state.bottom + boxBottomDelta,
+			bounds: {
+				top: this.state.bounds.top + boundsTopDelta,
+				left: this.state.bounds.left + boundsLeftDelta,
+				right: this.state.bounds.right + boundsRightDelta,
+				bottom: this.state.bounds.bottom + boundsBottomDelta
+			}
+		}, this.drawImage );
+
+		setTimeout( () => this.animateCrop( boxTopDelta, boxLeftDelta, boxRightDelta, boxBottomDelta,
+			boundsTopDelta, boundsLeftDelta, boundsRightDelta, boundsBottomDelta, frames - 1 ), 3 );
+	}
+
+	onBackgroundLoaded( event ) {
+		const img = event.target;
+		const imageWidth = img.naturalWidth;
+		const imageHeight = img.naturalHeight;
+
+		const container = this.refs.container;
+		const containerWidth = container.offsetWidth;
+		const containerHeight = container.offsetHeight;
+
+		const width = Math.min( 0.85 * containerWidth, imageWidth );
+		const height = Math.min( 0.85 * containerHeight, imageHeight );
+		const ratio = Math.min( width / imageWidth, height / imageHeight );
+
+		const top = containerHeight / 2 - ( ratio * imageHeight ) / 2;
+		const left = containerWidth / 2 - ( ratio * imageWidth ) / 2;
+		const bottom = top + ratio * imageHeight;
+		const right = left + ratio * imageWidth;
+
+		this.setState( {
+			loaded: true,
+			top,
+			left,
+			bottom,
+			right,
+			imageWidth,
+			imageHeight,
+			bounds: {
+				top,
+				left,
+				bottom,
+				right
+			}
+		} );
+	}
+
+	renderBackground() {
+		if ( ! this.props.isImageLoaded ) {
+			return;
+		}
+
+		const imageStyle = {};
+		const boundsRatio = ( this.state.bounds.right - this.state.bounds.left ) / this.state.imageWidth;
+		imageStyle.transform = 'translate(' +
+			this.state.bounds.left + 'px, ' +
+			this.state.bounds.top + 'px) scale(' + boundsRatio + ')';
+
+		return ( <img
+			onLoad={ this.onBackgroundLoaded }
+			src={ this.props.src }
+			style={ imageStyle }
+			className="image-editor__image" /> );
 	}
 
 	render() {
-		const {
-			leftRatio,
-			topRatio,
-			widthRatio,
-			heightRatio
-		} = this.props.crop;
-
-		const canvasX = -50 * widthRatio - 100 * leftRatio;
-		const canvasY = -50 * heightRatio - 100 * topRatio;
-
-		const canvasStyle = {
-			transform: 'translate(' + canvasX + '%, ' + canvasY + '%)',
-			maxWidth: ( 85 / widthRatio ) + '%',
-			maxHeight: ( 85 / heightRatio ) + '%'
-		};
-
-		const { isImageLoaded } = this.props;
-
-		const canvasClasses = classNames( 'image-editor__canvas', {
-			'is-placeholder': ! isImageLoaded
-		} );
+		const { top, left, right, bottom } = this.state;
+		const width = right - left;
+		const height = bottom - top;
+		const handleClassName = 'image-editor__crop-handle';
 
 		return (
-			<div className="image-editor__canvas-container">
-				<canvas
-					ref="canvas"
-					style={ canvasStyle }
-					onMouseDown={ this.preventDrag }
-					className={ canvasClasses }
-				/>
-				{ isImageLoaded && <ImageEditorCrop /> }
+			<div className="image-editor__canvas-container" ref="container">
+				{ this.renderBackground() }
+				<canvas ref="canvas" className="image-editor__canvas" />
+				<Draggable
+					ref="border"
+					onStart={ this.onDragStart }
+					onDrag={ this.onBorderDrag }
+					onStop={ this.applyCrop }
+					x={ left }
+					y={ top }
+					width={ width }
+					height={ height }
+					controlled
+					className="image-editor__crop" />
+				<Draggable
+					onStart={ this.onDragStart }
+					onDrag={ this.onTopLeftDrag }
+					onStop={ this.applyCrop }
+					x={ left }
+					y={ top }
+					controlled
+					bounds={ { top: this.state.bounds.top - 1, left: this.state.bounds.left - 1, bottom, right } }
+					ref="topLeft"
+					className={ classNames( handleClassName, handleClassName + '-nwse' ) } />
+				<Draggable
+					onStart={ this.onDragStart }
+					onDrag={ this.onTopRightDrag }
+					onStop={ this.applyCrop }
+					y={ top }
+					x={ right }
+					controlled
+					bounds={ { top: this.state.bounds.top - 1, right: this.state.bounds.right - 1, bottom, left } }
+					ref="topRight"
+					className={ classNames( handleClassName, handleClassName + '-nesw' ) } />
+				<Draggable
+					onStart={ this.onDragStart }
+					onDrag={ this.onBottomRightDrag }
+					onStop={ this.applyCrop }
+					y={ bottom }
+					x={ right }
+					controlled
+					bounds={ { bottom: this.state.bounds.bottom - 1, right: this.state.bounds.right - 1, top, left } }
+					ref="bottomRight"
+					className={ classNames( handleClassName, handleClassName + '-nwse' ) } />
+				<Draggable
+					onStart={ this.onDragStart }
+					onDrag={ this.onBottomLeftDrag }
+					onStop={ this.applyCrop }
+					y={ bottom }
+					x={ left }
+					controlled
+					bounds={ { bottom: this.state.bounds.bottom - 1, left: this.state.bounds.left - 1, top, right } }
+					ref="bottomLeft"
+					className={ classNames( handleClassName, handleClassName + '-nesw' ) } />
 			</div>
 		);
 	}
@@ -287,6 +613,7 @@ class ImageEditorCanvas extends Component {
 export default connect(
 	( state ) => {
 		const transform = getImageEditorTransform( state );
+		const aspectRatio = getImageEditorAspectRatio( state );
 		const { src, mimeType } = getImageEditorFileInfo( state );
 		const crop = getImageEditorCrop( state );
 		const isImageLoaded = isImageEditorImageLoaded( state );
@@ -296,11 +623,12 @@ export default connect(
 			mimeType,
 			transform,
 			crop,
+			aspectRatio,
 			isImageLoaded
 		};
 	},
 	{
-		setImageEditorCropBounds,
+		imageEditorCrop,
 		setImageEditorImageHasLoaded
 	},
 	null,

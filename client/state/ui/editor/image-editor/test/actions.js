@@ -12,7 +12,6 @@ import {
 	IMAGE_EDITOR_FLIP,
 	IMAGE_EDITOR_SET_ASPECT_RATIO,
 	IMAGE_EDITOR_SET_FILE_INFO,
-	IMAGE_EDITOR_SET_CROP_BOUNDS,
 	IMAGE_EDITOR_STATE_RESET,
 	IMAGE_EDITOR_STATE_RESET_ALL,
 	IMAGE_EDITOR_IMAGE_HAS_LOADED
@@ -25,7 +24,6 @@ import {
 	imageEditorFlip,
 	setImageEditorAspectRatio,
 	setImageEditorFileInfo,
-	setImageEditorCropBounds,
 	imageEditorCrop,
 	setImageEditorImageHasLoaded
 } from '../actions';
@@ -106,20 +104,6 @@ describe( 'actions', () => {
 				fileName: 'testFileName',
 				mimeType: 'image/jpg',
 				title: 'My Title'
-			} );
-		} );
-	} );
-
-	describe( '#setImageEditorCropBounds()', () => {
-		it( 'should return an action object', () => {
-			const action = setImageEditorCropBounds( 100, 200, 300, 400 );
-
-			expect( action ).to.eql( {
-				type: IMAGE_EDITOR_SET_CROP_BOUNDS,
-				topBound: 100,
-				leftBound: 200,
-				bottomBound: 300,
-				rightBound: 400
 			} );
 		} );
 	} );

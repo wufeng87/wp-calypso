@@ -12,7 +12,6 @@ import {
 	IMAGE_EDITOR_FLIP,
 	IMAGE_EDITOR_SET_ASPECT_RATIO,
 	IMAGE_EDITOR_SET_FILE_INFO,
-	IMAGE_EDITOR_SET_CROP_BOUNDS,
 	IMAGE_EDITOR_STATE_RESET,
 	IMAGE_EDITOR_STATE_RESET_ALL,
 	IMAGE_EDITOR_IMAGE_HAS_LOADED
@@ -23,7 +22,6 @@ import reducer, {
 	hasChanges,
 	fileInfo,
 	transform,
-	cropBounds,
 	crop,
 	aspectRatio,
 	imageIsLoading
@@ -35,7 +33,6 @@ describe( 'reducer', () => {
 			'hasChanges',
 			'fileInfo',
 			'transform',
-			'cropBounds',
 			'crop',
 			'aspectRatio',
 			'imageIsLoading'
@@ -128,36 +125,6 @@ describe( 'reducer', () => {
 			} );
 
 			expect( state ).to.eql( AspectRatios.FREE );
-		} );
-	} );
-
-	describe( '#cropBounds()', () => {
-		it( 'should return defaults initially', () => {
-			const state = cropBounds( undefined, {} );
-
-			expect( state ).to.eql( {
-				topBound: 0,
-				leftBound: 0,
-				bottomBound: 100,
-				rightBound: 100
-			} );
-		} );
-
-		it( 'should update the bounds', () => {
-			const state = cropBounds( undefined, {
-				type: IMAGE_EDITOR_SET_CROP_BOUNDS,
-				topBound: 100,
-				leftBound: 200,
-				bottomBound: 300,
-				rightBound: 400
-			} );
-
-			expect( state ).to.eql( {
-				topBound: 100,
-				leftBound: 200,
-				bottomBound: 300,
-				rightBound: 400
-			} );
 		} );
 	} );
 
