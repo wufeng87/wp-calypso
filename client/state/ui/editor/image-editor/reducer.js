@@ -31,13 +31,6 @@ export const defaultFileInfo = {
 	title: 'default'
 };
 
-export const defaultCropBounds = {
-	topBound: 0,
-	leftBound: 0,
-	bottomBound: 100,
-	rightBound: 100
-};
-
 export const defaultCrop = {
 	topRatio: 0,
 	leftRatio: 0,

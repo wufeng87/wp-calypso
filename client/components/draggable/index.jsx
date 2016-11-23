@@ -199,8 +199,7 @@ export default class Draggable extends Component {
 				style={ style }
 				onMouseDown={ this.onMouseDownHandler }
 				onTouchStart={ this.onTouchStartHandler }
-			>
-			</div>
+			/>
 		);
 	}
 }

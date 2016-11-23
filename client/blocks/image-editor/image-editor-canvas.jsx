@@ -25,6 +25,10 @@ import {
 } from 'state/ui/editor/image-editor/actions';
 import { AspectRatios } from 'state/ui/editor/image-editor/constants';
 
+const renderSpaceSize = 0.85;
+const animationSteps = 25;
+const animationStepDuration = 3;
+
 class ImageEditorCanvas extends Component {
 	static propTypes = {
 		src: PropTypes.string,
@@ -67,9 +71,8 @@ class ImageEditorCanvas extends Component {
 
 		this.onWindowResize = null;
 
-		this.onLoadComplete = this.onLoadComplete.bind( this );
-		this.updateCanvasPosition = this.updateCanvasPosition.bind( this );
-		this.onBackgroundLoaded = this.onBackgroundLoaded.bind( this );
+		this.updateCoordinates = this.updateCoordinates.bind( this );
+		this.onImageLoaded = this.onImageLoaded.bind( this );
 		this.onDragStart = this.onDragStart.bind( this );
 		this.onBorderDrag = this.onBorderDrag.bind( this );
 		this.onTopLeftDrag = this.onTopLeftDrag.bind( this );
@@ -128,33 +131,11 @@ class ImageEditorCanvas extends Component {
 			}
 
 			const objectURL = window.URL.createObjectURL( new Blob( [ req.response ], { type: mimeType } ) );
-			this.initImage( objectURL );
+			this.setState( { imageSrc: objectURL } );
 		};
 
 		req.onerror = error => onLoadError( error );
 		req.send();
-	}
-
-	initImage( src ) {
-		this.image = new Image();
-		this.image.src = src;
-		this.image.onload = this.onLoadComplete;
-		this.image.onerror = this.onLoadComplete;
-	}
-
-	onLoadComplete( event ) {
-		if ( event.type !== 'load' || ! this.isVisible ) {
-			return;
-		}
-
-		this.drawImage();
-		this.updateCanvasPosition();
-		this.onWindowResize = throttle( this.updateCanvasPosition, 200 );
-		if ( typeof window !== 'undefined' ) {
-			window.addEventListener( 'resize', this.onWindowResize );
-		}
-
-		this.props.setImageEditorImageHasLoaded();
 	}
 
 	componentWillUnmount() {
@@ -168,7 +149,6 @@ class ImageEditorCanvas extends Component {
 
 	componentDidUpdate() {
 		this.drawImage();
-		this.updateCanvasPosition();
 	}
 
 	toBlob( callback ) {
@@ -184,11 +164,12 @@ class ImageEditorCanvas extends Component {
 			transform
 		} = this.props;
 
-		const canvas = ReactDom.findDOMNode( this.refs.canvas ),
+		const image = ReactDom.findDOMNode( this.refs.image ),
+			canvas = ReactDom.findDOMNode( this.refs.canvas ),
 			context = canvas.getContext( '2d' ),
 			rotated = transform.degrees % 180 !== 0,
-			imageWidth = rotated ? this.image.height : this.image.width,
-			imageHeight = rotated ? this.image.width : this.image.height,
+			imageWidth = rotated ? image.height : image.width,
+			imageHeight = rotated ? image.width : image.height,
 			croppedLeft = leftRatio * imageWidth,
 			croppedTop = topRatio * imageHeight,
 			croppedWidth = widthRatio * imageWidth,
@@ -212,34 +193,21 @@ class ImageEditorCanvas extends Component {
 		MediaUtils.canvasToBlob( newCanvas, callback, mimeType, 1 );
 	}
 
-	updateCanvasPosition() {
-//		const {
-//			leftRatio,
-//			topRatio,
-//			widthRatio,
-//			heightRatio
-//		} = this.props.crop;
-//
-//		const canvas = ReactDom.findDOMNode( this.refs.canvas ),
-//			canvasX = -50 * widthRatio - 100 * leftRatio,
-//			canvasY = -50 * heightRatio - 100 * topRatio;
-//
-//		this.props.setImageEditorCropBounds(
-//			canvas.offsetTop - canvas.offsetHeight * -canvasY / 100,
-//			canvas.offsetLeft - canvas.offsetWidth * -canvasX / 100,
-//			canvas.offsetTop + canvas.offsetHeight * ( 1 + canvasY / 100 ),
-//			canvas.offsetLeft + canvas.offsetWidth * ( 1 + canvasX / 100 )
-//		);
+	updateCoordinates() {
+		if ( ! this.props.isImageLoaded ) {
+			return;
+		}
 	}
 
 	drawImage() {
-		if ( ! this.image ) {
+		if ( ! this.props.isImageLoaded ) {
 			return;
 		}
 
+		const image = ReactDom.findDOMNode( this.refs.image );
 		const canvas = ReactDom.findDOMNode( this.refs.canvas );
-		const imageWidth = this.image.width;
-		const imageHeight = this.image.height;
+		const imageWidth = image.width;
+		const imageHeight = image.height;
 		const transform = this.props.transform;
 		const context = canvas.getContext( '2d' );
 
@@ -258,7 +226,7 @@ class ImageEditorCanvas extends Component {
 		const boundsWidth = this.state.bounds.right - this.state.bounds.left;
 		const boundsHeight = this.state.bounds.bottom - this.state.bounds.top;
 
-		context.drawImage( this.image,
+		context.drawImage( image,
 			imageWidth * ( ( this.state.left - this.state.bounds.left ) / boundsWidth ),
 			imageHeight * ( ( this.state.top - this.state.bounds.top ) / boundsHeight ),
 			imageWidth * ( boxWidth / boundsWidth ),
@@ -342,10 +310,6 @@ class ImageEditorCanvas extends Component {
 
 	onDragStart() {
 		this.initialBounds = clone( this.state.bounds );
-		this.initialTop = this.state.top;
-		this.initialLeft = this.state.left;
-		this.initialBottom = this.state.bottom;
-		this.initialRight = this.state.right;
 		this.initialBoundsTop = this.state.bounds.top;
 		this.initialBoundsLeft = this.state.bounds.left;
 		this.initialBoundsBottom = this.state.bounds.bottom;
@@ -418,7 +382,7 @@ class ImageEditorCanvas extends Component {
 		const boxWidth = this.state.right - this.state.left;
 		const boxHeight = this.state.bottom - this.state.top;
 
-		const ratio = Math.min( 0.85 * containerWidth / boxWidth, 0.85 * containerHeight / boxHeight );
+		const ratio = Math.min( renderSpaceSize * containerWidth / boxWidth, renderSpaceSize * containerHeight / boxHeight );
 
 		//1. scale
 		let boundsTop = this.state.bounds.top;
@@ -445,15 +409,15 @@ class ImageEditorCanvas extends Component {
 		boxBottom += deltaY;
 
 		this.animateCrop(
-			( boxTop - this.state.top ) / 30,
-			( boxLeft - this.state.left ) / 30,
-			( boxRight - this.state.right ) / 30,
-			( boxBottom - this.state.bottom ) / 30,
-			( boundsTop - this.state.bounds.top ) / 30,
-			( boundsLeft - this.state.bounds.left ) / 30,
-			( boundsRight - this.state.bounds.right ) / 30,
-			( boundsBottom - this.state.bounds.bottom ) / 30,
-			30
+			( boxTop - this.state.top ) / animationSteps,
+			( boxLeft - this.state.left ) / animationSteps,
+			( boxRight - this.state.right ) / animationSteps,
+			( boxBottom - this.state.bottom ) / animationSteps,
+			( boundsTop - this.state.bounds.top ) / animationSteps,
+			( boundsLeft - this.state.bounds.left ) / animationSteps,
+			( boundsRight - this.state.bounds.right ) / animationSteps,
+			( boundsBottom - this.state.bounds.bottom ) / animationSteps,
+			animationSteps
 		);
 	}
 
@@ -488,11 +452,17 @@ class ImageEditorCanvas extends Component {
 		}, this.drawImage );
 
 		setTimeout( () => this.animateCrop( boxTopDelta, boxLeftDelta, boxRightDelta, boxBottomDelta,
-			boundsTopDelta, boundsLeftDelta, boundsRightDelta, boundsBottomDelta, frames - 1 ), 3 );
+			boundsTopDelta, boundsLeftDelta, boundsRightDelta, boundsBottomDelta, frames - 1 ), animationStepDuration );
 	}
 
-	onBackgroundLoaded( event ) {
-		const img = event.target;
+	onImageLoaded( event ) {
+		if ( event.type !== 'load' || ! this.isVisible ) {
+			return;
+		}
+
+		this.props.setImageEditorImageHasLoaded();
+
+		const img = this.refs.image;
 		const imageWidth = img.naturalWidth;
 		const imageHeight = img.naturalHeight;
 
@@ -500,8 +470,8 @@ class ImageEditorCanvas extends Component {
 		const containerWidth = container.offsetWidth;
 		const containerHeight = container.offsetHeight;
 
-		const width = Math.min( 0.85 * containerWidth, imageWidth );
-		const height = Math.min( 0.85 * containerHeight, imageHeight );
+		const width = Math.min( renderSpaceSize * containerWidth, imageWidth );
+		const height = Math.min( renderSpaceSize * containerHeight, imageHeight );
 		const ratio = Math.min( width / imageWidth, height / imageHeight );
 
 		const top = containerHeight / 2 - ( ratio * imageHeight ) / 2;
@@ -510,7 +480,6 @@ class ImageEditorCanvas extends Component {
 		const right = left + ratio * imageWidth;
 
 		this.setState( {
-			loaded: true,
 			top,
 			left,
 			bottom,
@@ -523,23 +492,31 @@ class ImageEditorCanvas extends Component {
 				bottom,
 				right
 			}
+		}, () => {
+			this.drawImage();
+			this.updateCoordinates();
+			this.onWindowResize = throttle( this.updateCoordinates, 200 );
+			if ( typeof window !== 'undefined' ) {
+				window.addEventListener( 'resize', this.onWindowResize );
+			}
 		} );
 	}
 
 	renderBackground() {
-		if ( ! this.props.isImageLoaded ) {
+		if ( ! this.state.imageSrc ) {
 			return;
 		}
 
 		const imageStyle = {};
 		const boundsRatio = ( this.state.bounds.right - this.state.bounds.left ) / this.state.imageWidth;
-		imageStyle.transform = 'translate(' +
-			this.state.bounds.left + 'px, ' +
-			this.state.bounds.top + 'px) scale(' + boundsRatio + ')';
+		imageStyle.transform = 'translate(' + this.state.bounds.left + 'px, ' +
+											this.state.bounds.top + 'px) scale(' + boundsRatio + ')';
 
 		return ( <img
-			onLoad={ this.onBackgroundLoaded }
-			src={ this.props.src }
+			ref="image"
+			onLoad={ this.onImageLoaded }
+			onError={ this.props.onLoadError }
+			src={ this.state.imageSrc }
 			style={ imageStyle }
 			className="image-editor__image" /> );
 	}
@@ -549,13 +526,20 @@ class ImageEditorCanvas extends Component {
 		const width = right - left;
 		const height = bottom - top;
 		const handleClassName = 'image-editor__crop-handle';
+		const containerClasses = classNames( 'image-editor__canvas-container', { 'is-placeholder': ! this.props.isImageLoaded } );
 
 		return (
-			<div className="image-editor__canvas-container" ref="container">
+			<div className={ containerClasses } ref="container">
 				{ this.renderBackground() }
-				<canvas ref="canvas" className="image-editor__canvas" />
 				<Draggable
-					ref="border"
+					onStart={ this.onDragStart }
+					onDrag={ this.onBorderDrag }
+					onStop={ this.applyCrop }
+					controlled
+					className="image-editor__canvas-draggable" >
+					<canvas ref="canvas" className="image-editor__canvas" />
+				</Draggable>
+				<Draggable
 					onStart={ this.onDragStart }
 					onDrag={ this.onBorderDrag }
 					onStop={ this.applyCrop }
