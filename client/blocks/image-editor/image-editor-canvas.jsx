@@ -374,7 +374,7 @@ class ImageEditorCanvas extends Component {
 		}, this.drawImage );
 	}
 
-	applyCrop() {
+	calculateCoordinates() {
 		const container = this.refs.container;
 		const containerWidth = container.offsetWidth;
 		const containerHeight = container.offsetHeight;
@@ -408,15 +408,32 @@ class ImageEditorCanvas extends Component {
 		boxTop += deltaY;
 		boxBottom += deltaY;
 
+		return {
+			top: boxTop - this.state.top,
+			left: boxLeft - this.state.left,
+			right: boxRight - this.state.right,
+			bottom: boxBottom - this.state.bottom,
+			bounds: {
+				top: boundsTop - this.state.bounds.top,
+				left: boundsLeft - this.state.bounds.left,
+				right: boundsRight - this.state.bounds.right,
+				bottom: boundsBottom - this.state.bounds.bottom,
+			}
+		};
+	}
+
+	applyCrop() {
+		const newState = this.calculateCoordinates();
+
 		this.animateCrop(
-			( boxTop - this.state.top ) / animationSteps,
-			( boxLeft - this.state.left ) / animationSteps,
-			( boxRight - this.state.right ) / animationSteps,
-			( boxBottom - this.state.bottom ) / animationSteps,
-			( boundsTop - this.state.bounds.top ) / animationSteps,
-			( boundsLeft - this.state.bounds.left ) / animationSteps,
-			( boundsRight - this.state.bounds.right ) / animationSteps,
-			( boundsBottom - this.state.bounds.bottom ) / animationSteps,
+			newState.top / animationSteps,
+			newState.left / animationSteps,
+			newState.right / animationSteps,
+			newState.bottom / animationSteps,
+			newState.bounds.top / animationSteps,
+			newState.bounds.left / animationSteps,
+			newState.bounds.right / animationSteps,
+			newState.bounds.bottom / animationSteps,
 			animationSteps
 		);
 	}
