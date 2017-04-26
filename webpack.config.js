@@ -113,11 +113,19 @@ const webpackConfig = {
 			{
 				test: /node_modules[\/\\]tinymce/,
 				use: 'imports-loader?this=>window',
+			},
+			{
+				test: /\.scss$/,
+				loaders: [
+					'isomorphic-style-loader',
+					'css-loader?camelCase=dashes&importLoaders=1',
+					'sass-loader'
+				]
 			}
 		]
 	},
 	resolve: {
-		extensions: [ '.json', '.js', '.jsx' ],
+		extensions: [ '', '.json', '.js', '.jsx', '.scss' ],
 		modules: [
 			path.join( __dirname, 'client' ),
 			'node_modules',

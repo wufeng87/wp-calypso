@@ -98,6 +98,14 @@ const webpackConfig = {
 				exclude: /(node_modules|devdocs[\/\\]search-index)/,
 				loader: [ jsLoader ]
 			},
+			{
+				test: /\.scss$/,
+				loaders: [
+					'isomorphic-style-loader',
+					'css-loader?camelCase=dashes&importLoaders=1',
+					'sass-loader'
+				]
+			},
 		]
 	},
 	resolve: {
@@ -108,7 +116,7 @@ const webpackConfig = {
 			path.join( __dirname, 'client', 'extensions' ),
 			'node_modules',
 		],
-		extensions: [ '.json', '.js', '.jsx' ],
+		extensions: [ '', '.json', '.js', '.jsx', '.scss' ],
 	},
 	node: {
 		// Tell webpack we want to supply absolute paths for server code,
