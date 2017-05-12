@@ -41,7 +41,8 @@ function createDomainObjects( dataTransferObject ) {
 			hasZone: domain.has_zone,
 			pointsToWpcom: domain.points_to_wpcom,
 			type: getDomainType( domain ),
-			nameServerHost: 'NameCheap' //domain.name_server_host
+			supportsDomainConnect: true,
+			nameServerHost: 'godaddy.com' //domain.name_server_host
 		};
 	} );
 

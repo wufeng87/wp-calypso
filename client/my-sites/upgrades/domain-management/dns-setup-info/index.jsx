@@ -11,19 +11,26 @@ import { nameServerHosts } from 'lib/domains/constants';
 class DnsSetupInfo extends Component {
 
 	getDetailsForNameServerHost( domain ) {
-		if ( true === domain.pointsToWpcom ) {
-			return this.renderAllSetUp;
+		if ( domain.supportsDomainConnect ) {
+			return this.renderDomainConnect();
 		}
 
 		switch ( domain.nameServerHost ) {
-			case nameServerHosts.NAMECHEAP:
-				return this.renderHostInstructions;
-
 			case nameServerHosts.GODADDY:
-				return this.renderDomainConnect;
+			case nameServerHosts.GOOGLEDOMAINS:
+			case nameServerHosts.NAMECHEAP:
+			case nameServerHosts.WIXDNS:
+			case nameServerHosts.BLUEHOST:
+			case nameServerHosts.REGISTERCOM:
+			case nameServerHosts.HOVER:
+			case nameServerHosts.NETWORKSOLUTIONS:
+			case nameServerHosts.NETREGISTRYCOMAU:
+			case nameServerHosts.NSONE:
+			case nameServerHosts.OVH:
+				return this.renderHostInstructions( domain );
 
 			default:
-				return this.renderDnsSetupInstructions;
+				return this.renderDnsSetupInstructions();
 		}
 	}
 
@@ -39,6 +46,18 @@ class DnsSetupInfo extends Component {
 					To get your domain set up, follow these steps...
 				</p>
 			</div>
+		);
+	}
+
+	renderDomainConnect() {
+		return (
+			<div>Domain Connect Button here</div>
+		);
+	}
+
+	renderDnsSetupInstructions() {
+		return (
+			<div>Generic DNS Setup instructions</div>
 		);
 	}
 

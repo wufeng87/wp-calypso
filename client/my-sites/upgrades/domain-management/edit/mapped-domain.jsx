@@ -54,7 +54,7 @@ const MappedDomain = React.createClass( {
 	},
 
 	dnsSetupInfo() {
-		return (
+		return ( ! this.props.domain.pointsToWpcom &&
 			<div className="edit__dns-setup-info-card">
 				<Card>
 					<DnsSetupInfo domain={ this.props.domain } />
