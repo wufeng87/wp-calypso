@@ -11,7 +11,9 @@ import { nameServerHosts } from 'lib/domains/constants';
 class DnsSetupInfo extends Component {
 
 	getDetailsForNameServerHost( domain ) {
-<<<<<<< HEAD
+		if ( true === domain.pointsToWpcom ) {
+			return this.renderAllSetUp();
+
 		if ( domain.supportsDomainConnect ) {
 			return this.renderDomainConnect();
 		}
@@ -32,21 +34,6 @@ class DnsSetupInfo extends Component {
 
 			default:
 				return this.renderDnsSetupInstructions();
-=======
-		if ( true === domain.pointsToWpcom ) {
-			return this.renderAllSetUp;
-		}
-
-		switch ( domain.nameServerHost ) {
-			case nameServerHosts.NAMECHEAP:
-				return this.renderHostInstructions;
-
-			case nameServerHosts.GODADDY:
-				return this.renderDomainConnect;
-
-			default:
-				return this.renderDnsSetupInstructions;
->>>>>>> WiP - Improving the Domain Mapping Experience
 		}
 	}
 
@@ -65,7 +52,6 @@ class DnsSetupInfo extends Component {
 		);
 	}
 
-<<<<<<< HEAD
 	renderDomainConnect() {
 		return (
 			<div>Domain Connect Button here</div>
@@ -78,8 +64,6 @@ class DnsSetupInfo extends Component {
 		);
 	}
 
-=======
->>>>>>> WiP - Improving the Domain Mapping Experience
 	render() {
 		return (
 			<div>
