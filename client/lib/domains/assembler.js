@@ -40,7 +40,8 @@ function createDomainObjects( dataTransferObject ) {
 			registrationMoment: domain.registration_date && i18n.moment( domain.registration_date ),
 			hasZone: domain.has_zone,
 			pointsToWpcom: domain.points_to_wpcom,
-			type: getDomainType( domain )
+			type: getDomainType( domain ),
+			nameServerHost: 'NameCheap' //domain.name_server_host
 		};
 	} );
 

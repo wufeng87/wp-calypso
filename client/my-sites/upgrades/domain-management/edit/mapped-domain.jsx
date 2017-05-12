@@ -14,6 +14,7 @@ import Property from './card/property';
 import SubscriptionSettings from './card/subscription-settings';
 import VerticalNav from 'components/vertical-nav';
 import VerticalNavItem from 'components/vertical-nav/item';
+import DnsSetupInfo from 'my-sites/upgrades/domain-management/dns-setup-info';
 import DomainWarnings from 'my-sites/upgrades/components/domain-warnings';
 import paths from 'my-sites/upgrades/paths';
 
@@ -52,11 +53,22 @@ const MappedDomain = React.createClass( {
 			ruleWhiteList={ [ 'wrongNSMappedDomains' ] } />;
 	},
 
+	dnsSetupInfo() {
+		return (
+			<div className="edit__dns-setup-info-card">
+				<Card>
+					<DnsSetupInfo domain={ this.props.domain } />
+				</Card>
+			</div>
+		);
+	},
+
 	render() {
 		return (
 			<div>
 				{ this.domainWarnings() }
 				{ this.getDomainDetailsCard() }
+				{ this.dnsSetupInfo() }
 				{ this.getVerticalNav() }
 			</div>
 		);
@@ -64,7 +76,7 @@ const MappedDomain = React.createClass( {
 
 	getDomainDetailsCard() {
 		return (
-			<div className="domain-details-card">
+			<div className="edit__domain-details-card">
 				<Header { ...this.props } />
 
 				<Card>

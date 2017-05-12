@@ -82,9 +82,15 @@ const dnsTemplates = {
 	}
 };
 
+const nameServerHosts = {
+	NAMECHEAP: 'NameCheap',
+	GODADDY: 'GoDaddy'
+};
+
 export default {
 	dnsTemplates,
 	domainAvailability,
+	nameServerHosts,
 	registrar,
 	tlds,
 	type,
