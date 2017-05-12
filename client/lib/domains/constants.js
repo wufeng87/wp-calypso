@@ -96,6 +96,11 @@ const nameServerHosts = {
 	OVH: 'ovh.com'
 };
 
+const nameServerHosts = {
+	NAMECHEAP: 'NameCheap',
+	GODADDY: 'GoDaddy'
+};
+
 export default {
 	dnsTemplates,
 	domainAvailability,
