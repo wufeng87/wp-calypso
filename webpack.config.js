@@ -119,7 +119,7 @@ const webpackConfig = {
 				loaders: [
 					'isomorphic-style-loader',
 					'css-loader?camelCase=dashes&importLoaders=1',
-					'sass-loader'
+					'sass-loader',
 				]
 			},
 			{
@@ -129,11 +129,10 @@ const webpackConfig = {
 					'exports?default=withStyles.default( style )( exports.default )'
 				]
 			},
-
 		]
 	},
 	resolve: {
-		extensions: [ '', '.json', '.js', '.jsx', '.scss' ],
+		extensions: [ '', '.json', '.js', '.jsx' ],
 		modules: [
 			path.join( __dirname, 'client' ),
 			'node_modules',

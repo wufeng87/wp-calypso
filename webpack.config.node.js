@@ -103,7 +103,7 @@ const webpackConfig = {
 				loaders: [
 					'isomorphic-style-loader',
 					'css-loader?camelCase=dashes&importLoaders=1',
-					'sass-loader'
+					'sass-loader',
 				]
 			},
 		]
@@ -116,7 +116,7 @@ const webpackConfig = {
 			path.join( __dirname, 'client', 'extensions' ),
 			'node_modules',
 		],
-		extensions: [ '', '.json', '.js', '.jsx', '.scss' ],
+		extensions: [ '', '.json', '.js', '.jsx' ],
 	},
 	node: {
 		// Tell webpack we want to supply absolute paths for server code,
