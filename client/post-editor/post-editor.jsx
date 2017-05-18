@@ -58,6 +58,7 @@ import { editedPostHasContent } from 'state/selectors';
 import EditorGroundControl from 'post-editor/editor-ground-control';
 import { isMobile } from 'lib/viewport';
 import { isSitePreviewable } from 'state/sites/selectors';
+import { NESTED_SIDEBAR_NONE } from 'post-editor/editor-sidebar/util';
 
 export const PostEditor = React.createClass( {
 	propTypes: {
@@ -92,6 +93,7 @@ export const PostEditor = React.createClass( {
 			isTitleFocused: false,
 			showPreview: false,
 			isPostPublishPreview: false,
+			nestedSidebar: NESTED_SIDEBAR_NONE,
 		};
 	},
 
@@ -219,6 +221,10 @@ export const PostEditor = React.createClass( {
 		}
 	},
 
+	toggleNestedSidebar: function( nestedSidebar ) {
+		this.setState( { nestedSidebar } );
+	},
+
 	render: function() {
 		const site = this.props.selectedSite || undefined;
 		const mode = this.getEditorMode();
@@ -253,25 +259,26 @@ export const PostEditor = React.createClass( {
 				<EditorForbidden />
 				<div className="post-editor__inner">
 					<EditorGroundControl
-						setPostDate={ this.setPostDate }
+						allPostsUrl={ this.getAllPostsUrl() }
 						hasContent={ this.state.hasContent }
 						isDirty={ this.state.isDirty || this.props.dirty }
-						isSaveBlocked={ this.isSaveBlocked() }
 						isPublishing={ this.state.isPublishing }
+						isSaveBlocked={ this.isSaveBlocked() }
 						isSaving={ this.state.isSaving }
+						nestedSidebar={ this.state.nestedSidebar }
+						onMoreInfoAboutEmailVerify={ this.onMoreInfoAboutEmailVerify }
 						onPreview={ this.onPreview }
 						onPublish={ this.onPublish }
 						onSave={ this.onSave }
 						onSaveDraft={ this.props.onSaveDraft }
 						post={ this.state.post }
 						savedPost={ this.state.savedPost }
+						setPostDate={ this.setPostDate }
 						site={ site }
-						user={ this.props.user }
-						userUtils={ this.props.userUtils }
 						toggleSidebar={ this.toggleSidebar }
 						type={ this.props.type }
-						onMoreInfoAboutEmailVerify={ this.onMoreInfoAboutEmailVerify }
-						allPostsUrl={ this.getAllPostsUrl() }
+						user={ this.props.user }
+						userUtils={ this.props.userUtils }
 					/>
 					<div className="post-editor__content">
 						<div className="post-editor__content-editor">
@@ -351,17 +358,19 @@ export const PostEditor = React.createClass( {
 						<EditorWordCount />
 					</div>
 					<EditorSidebar
-						toggleSidebar={ this.toggleSidebar }
-						savedPost={ this.state.savedPost }
-						post={ this.state.post }
 						isNew={ this.state.isNew }
-						onPublish={ this.onPublish }
-						onTrashingPost={ this.onTrashingPost }
-						site={ site }
-						type={ this.props.type }
-						setPostDate={ this.setPostDate }
-						onSave={ this.onSave }
 						isPostPrivate={ utils.isPrivate( this.state.post ) }
+						nestedSidebar={ this.state.nestedSidebar }
+						onPublish={ this.onPublish }
+						onSave={ this.onSave }
+						onTrashingPost={ this.onTrashingPost }
+						post={ this.state.post }
+						savedPost={ this.state.savedPost }
+						setPostDate={ this.setPostDate }
+						site={ site }
+						toggleNestedSidebar={ this.toggleNestedSidebar }
+						toggleSidebar={ this.toggleSidebar }
+						type={ this.props.type }
 						/>
 					{ this.props.isSitePreviewable
 						? <EditorPreview
