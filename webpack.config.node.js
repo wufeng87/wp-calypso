@@ -18,6 +18,8 @@ const cacheIdentifier = require( './server/bundler/babel/babel-loader-cache-iden
 const config = require( 'config' );
 const isWindows = os.type() === 'Windows_NT';
 
+const bundleEnv = config( 'env' );
+
 /**
  * This lists modules that must use commonJS `require()`s
  * All modules listed here need to be ES5.
@@ -103,7 +105,7 @@ const webpackConfig = {
 				loaders: [
 					'isomorphic-style-loader',
 					'css-loader?camelCase=dashes&importLoaders=1',
-					'sass-loader',
+					'sass-loader?outputStyle=' + ( bundleEnv === 'production' ? 'compressed' : 'nested' ),
 				]
 			},
 		]
