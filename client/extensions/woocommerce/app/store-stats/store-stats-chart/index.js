@@ -5,6 +5,7 @@ import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classnames from 'classnames';
 import page from 'page';
+import { findIndex } from 'lodash';
 
 /**
  * Internal dependencies
@@ -14,24 +15,21 @@ import QuerySiteStats from 'components/data/query-site-stats';
 import { getSiteStatsNormalizedData, isRequestingSiteStatsForQuery } from 'state/stats/lists/selectors';
 import ElementChart from 'components/chart';
 import Legend from 'components/chart/legend';
+import Tabs from 'my-sites/stats/stats-tabs';
+import Tab from 'my-sites/stats/stats-tabs/tab';
 
 class StoreStatsChart extends Component {
-	static propTypes = {
-		data: PropTypes.array.isRequired,
-		isRequesting: PropTypes.bool.isRequired,
-		path: PropTypes.string.isRequired,
-		query: PropTypes.object.isRequired,
-		selectedDate: PropTypes.string.isRequired,
-		siteId: PropTypes.number,
-	};
-
 	state = {
 		selectedTabIndex: 0
-	};
+	}
 
 	barClick = bar => {
 		page.redirect( `${ this.props.path }?startDate=${ bar.data.period }` );
-	};
+	}
+
+	getSelectedIndex = data => {
+		return findIndex( data, d => d.period === this.props.selectedDate )
+	}
 
 	buildChartData = ( item, selectedTab ) => {
 		const { selectedDate } = this.props;
@@ -50,7 +48,7 @@ class StoreStatsChart extends Component {
 				value = item.orders;
 				break;
 			case 'order_average':
-				value = item.orders === '0' ? 0 : Number( item.total_sales ) / Number( item.orders );
+				value = item.orders === '0' ? 0 : Number( item.products ) / Number( item.orders );
 				break;
 			default:
 				value = 0;
@@ -72,26 +70,53 @@ class StoreStatsChart extends Component {
 			{ label: 'Gross Sales', attr: 'total_sales' },
 			{ label: 'Net Sales', attr: 'net_sales' },
 			{ label: 'Orders', attr: 'orders' },
-			{ label: 'Average Order Value', attr: 'order_average' },
+			{ label: 'Order Average', attr: 'order_average' },
 		];
 		const selectedTab = tabs[ selectedTabIndex ];
-		const isLoading = ! ! data.length;
+		const isLoading = ! data.length;
 		const chartData = data.map( item => this.buildChartData( item, selectedTab ) );
+		const selectedIndex = this.getSelectedIndex( data );
 		return (
 			<Card className="store-stats-chart stats-module">
 				{ siteId && <QuerySiteStats
-					query={ query }
 					siteId={ siteId }
 					statType="statsOrders"
+					query={ query }
 				/> }
 				<Legend
 					activeTab={ selectedTab }
 				/>
 				<ElementChart loading={ isLoading } data={ chartData } barClick={ this.barClick } />
+				<Tabs data={ chartData }>
+					{ tabs.map( ( tab, index ) => {
+						if ( ! isLoading ) {
+							const itemChartData = this.buildChartData( data[ selectedIndex ], tabs[ index ] );
+							return (
+								<Tab
+									key={ tab.attr }
+									selected={ index === selectedTabIndex }
+									tabClick={ () => {
+									} }
+								>
+									<div>{ itemChartData.value }</div>
+								</Tab>
+							);
+						}
+					} ) }
+				</Tabs>
 			</Card>
 		);
 	}
 }
+
+StoreStatsChart.propTypes = {
+	data: PropTypes.array.isRequired,
+	isRequesting: PropTypes.bool.isRequired,
+	siteId: PropTypes.number,
+	query: PropTypes.object.isRequired,
+	selectedDate: PropTypes.string.isRequired,
+	path: PropTypes.string.isRequired,
+};
 
 export default connect(
 	( state, { query, siteId } ) => {

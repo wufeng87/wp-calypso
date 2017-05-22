@@ -14,13 +14,6 @@ import { getSelectedSiteId } from 'state/ui/selectors';
 import Chart from './store-stats-chart';
 
 class StoreStats extends Component {
-	static propTypes = {
-		siteId: PropTypes.number,
-		unit: PropTypes.string.isRequired,
-		startDate: PropTypes.string,
-		path: PropTypes.string.isRequired,
-	};
-
 	render() {
 		const { siteId, unit, startDate, path } = this.props;
 		const today = this.props.moment().format( 'YYYY-MM-DD' );
@@ -31,18 +24,25 @@ class StoreStats extends Component {
 			quantity: '30'
 		};
 		return (
-			<Main className="store-stats woocommerce" wideLayout={ true }>
+			<Main className="woocommerce stats" wideLayout={ true }>
 				<Navigation unit={ unit } type="orders" />
 				<Chart
-					path={ path }
+					siteId={ siteId }
 					query={ ordersQuery }
 					selectedDate={ selectedDate }
-					siteId={ siteId }
+					path={ path }
 				/>
 			</Main>
 		);
 	}
 }
+
+StoreStats.propTypes = {
+	siteId: PropTypes.number,
+	unit: PropTypes.string.isRequired,
+	startDate: PropTypes.string,
+	path: PropTypes.string.isRequired,
+};
 
 const localizedStats = localize( StoreStats );
 

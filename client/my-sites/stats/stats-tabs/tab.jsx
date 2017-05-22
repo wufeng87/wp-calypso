@@ -31,7 +31,13 @@ export default React.createClass( {
 	},
 
 	ensureValue( value ) {
-		if ( ( ! this.props.loading ) && ( value || value === 0 ) ) {
+		const { loading, children } = this.props;
+		const hasChildren = children;
+		if ( hasChildren ) {
+			return null;
+		}
+
+		if ( ( ! loading ) && ( value || value === 0 ) ) {
 			return this.numberFormat( value );
 		}
 
