@@ -12,7 +12,6 @@ import {
 	min,
 	noop,
 } from 'lodash';
-import moment from 'moment';
 
 // The following polyfills exist for the draft-js editor, since
 // we are unable to change its codebase and yet we are waiting
@@ -113,7 +112,7 @@ const {
 import Token from './token';
 import { buildSeoTitle } from 'state/sites/selectors';
 import { getSelectedSite } from 'state/ui/selectors';
-import { localize } from 'i18n-calypso';
+import { localize, moment } from 'i18n-calypso';
 
 const Chip = onClick => props => <Token { ...props } onClick={ onClick } />;
 
@@ -149,6 +148,18 @@ export class TitleFormatEditor extends Component {
 				this.editorStateFrom( props )
 			)
 		};
+	}
+
+	componentWillMount() {
+		const { titleData: { site } } = this.props;
+
+		const localeSlug = get( site, 'lang', '' );
+
+		if ( localeSlug !== 'en' ) {
+			require( 'bundle?name=moment-locale-[name]!moment/locale/' + localeSlug )( function() {
+				this.forceUpdate();
+			}.bind( this ) );
+		}
 	}
 
 	componentWillReceiveProps( nextProps ) {
