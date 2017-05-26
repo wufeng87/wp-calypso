@@ -13,6 +13,7 @@ class DnsSetupInfo extends Component {
 	getDetailsForNameServerHost( domain ) {
 		if ( true === domain.pointsToWpcom ) {
 			return this.renderAllSetUp();
+		}
 
 		if ( domain.supportsDomainConnect ) {
 			return this.renderDomainConnect();

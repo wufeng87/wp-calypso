@@ -53,7 +53,7 @@ const MappedDomain = React.createClass( {
 			ruleWhiteList={ [ 'wrongNSMappedDomains' ] } />;
 	},
 
-	dnsSetupInfo() {=======
+	dnsSetupInfo() {
 		return ( ! this.props.domain.pointsToWpcom &&
 			<div className="edit__dns-setup-info-card">
 				<Card>

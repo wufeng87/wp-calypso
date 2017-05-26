@@ -96,20 +96,6 @@ const nameServerHosts = {
 	OVH: 'ovh.com'
 };
 
-const nameServerHosts = {
-	GODADDY: 'godaddy.com',
-	GOOGLEDOMAINS: 'domains.google',
-	NAMECHEAP: 'namecheap.com',
-	WIXDNS: 'wix.com',
-	BLUEHOST: 'bluehost.com',
-	REGISTERCOM: 'register.com',
-	HOVER: 'hover.com',
-	NETWORKSOLUTIONS: 'networksolutions.com',
-	NETREGISTRYCOMAU: 'netregistry.com.au',
-	NSONE: 'ns1.com',
-	OVH: 'ovh.com'
-};
-
 export default {
 	dnsTemplates,
 	domainAvailability,
