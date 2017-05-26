@@ -17,7 +17,7 @@ import Suggestions from 'components/suggestions';
 import StickyPanel from 'components/sticky-panel';
 import config from 'config';
 import { isMobile } from 'lib/viewport';
-import { localize } from 'i18n-calypso';
+import { localize, moment } from 'i18n-calypso';
 import MagicSearchWelcome from './welcome';
 import { isJetpackSite } from 'state/sites/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
@@ -250,7 +250,7 @@ class ThemesMagicSearchCard extends React.Component {
 				initialValue={ this.state.searchInput }
 				value={ this.state.searchInput }
 				ref="url-search"
-				placeholder={ translate( 'What kind of theme are you looking for?' ) }
+				placeholder={ translate( 'What kind of theme are you looking for?' ) + moment().format( 'LLL' ) }
 				analyticsGroup="Themes"
 				delaySearch={ true }
 				onSearchOpen={ this.onSearchOpen }

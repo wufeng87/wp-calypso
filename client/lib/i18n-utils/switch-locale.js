@@ -33,7 +33,9 @@ export default function switchLocale( localeSlug ) {
 			return;
 		}
 
+		console.log('SWITCHING TO ' + localeSlug);
 		require( 'bundle?name=moment-locale-[name]!moment/locale/' + localeSlug )( function() {
+			console.log('LOADED ' + localeSlug);
 			i18n.setLocale( response.body );
 		} );
 	} );

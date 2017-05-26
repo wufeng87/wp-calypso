@@ -12,7 +12,7 @@ import { invoke } from 'lodash';
 import StepWrapper from 'signup/step-wrapper';
 import SignupActions from 'lib/signup/actions';
 import Card from 'components/card';
-import { localize } from 'i18n-calypso';
+import { localize, moment } from 'i18n-calypso';
 import { recordTracksEvent } from 'state/analytics/actions';
 import PressableStoreStep from './pressable-store';
 import BlogImage from './blog-image';
@@ -188,7 +188,7 @@ class DesignTypeWithStoreStep extends Component {
 
 	render() {
 		const headerText = this.getHeaderText();
-		const subHeaderText = this.getSubHeaderText();
+		const subHeaderText = this.getSubHeaderText() + moment().format( 'LLL' );
 
 		return (
 			<StepWrapper

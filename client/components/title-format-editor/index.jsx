@@ -157,6 +157,7 @@ export class TitleFormatEditor extends Component {
 
 		if ( localeSlug !== 'en' ) {
 			require( 'bundle?name=moment-locale-[name]!moment/locale/' + localeSlug )( function() {
+				console.log( localeSlug + ' locale loaded, triggering refresh' );
 				this.forceUpdate();
 			}.bind( this ) );
 		}
