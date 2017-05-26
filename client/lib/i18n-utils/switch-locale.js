@@ -32,6 +32,9 @@ export default function switchLocale( localeSlug ) {
 			debug( 'Encountered an error loading locale file for ' + localeSlug + '. Falling back to English.' );
 			return;
 		}
-		i18n.setLocale( response.body );
+
+		require( 'bundle?name=moment-locale-[name]!moment/locale/' + localeSlug )( function() {
+			i18n.setLocale( response.body );
+		} );
 	} );
 }
