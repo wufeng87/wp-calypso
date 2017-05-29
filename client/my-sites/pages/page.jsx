@@ -40,7 +40,7 @@ import {
 } from 'state/pages/selectors';
 import { setPreviewUrl } from 'state/ui/preview/actions';
 import { setLayoutFocus } from 'state/ui/layout-focus/actions';
-import { getPreviewURL } from 'lib/posts/utils';
+import { getPostPreviewUrl } from 'state/posts/selectors';
 
 function recordEvent( eventAction ) {
 	analytics.ga.recordEvent( 'Pages', eventAction );
@@ -484,7 +484,7 @@ export default connect(
 			isFrontPage: isFrontPage( state, props.page.site_ID, props.page.ID ),
 			isPostsPage: isPostsPage( state, props.page.site_ID, props.page.ID ),
 			isPreviewable: false !== isSitePreviewable( state, props.page.site_ID ),
-			previewURL: getPreviewURL( props.page ),
+			previewURL: getPostPreviewUrl( state, props.page.site_ID, props.page.ID ),
 			site,
 			siteSlugOrId,
 		};
