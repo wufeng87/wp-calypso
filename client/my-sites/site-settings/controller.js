@@ -21,7 +21,7 @@ import StartOver from './start-over';
 import ThemeSetup from './theme-setup';
 import { setDocumentHeadTitle as setTitle } from 'state/document-head/actions';
 import titlecase from 'to-title-case';
-import { getSelectedSite, getSelectedSiteId } from 'state/ui/selectors';
+import { getSelectedSite, getSelectedSiteId, getSelectedSiteSlug } from 'state/ui/selectors';
 import { isJetpackSite } from 'state/sites/selectors';
 import { canCurrentUser } from 'state/selectors';
 import { SITES_ONCE_CHANGED } from 'state/action-types';
@@ -68,6 +68,7 @@ module.exports = {
 		const { getState, dispatch } = context.store;
 		const basePath = route.sectionify( context.path );
 		const siteId = getSelectedSiteId( getState() );
+		const siteSlug = getSelectedSiteSlug( getState() );
 		const section = sectionify( context.path ).split( '/' )[ 2 ];
 		const state = getState();
 
@@ -82,19 +83,21 @@ module.exports = {
 
 		// if user went directly to jetpack settings page, redirect
 		if ( siteId && isJetpackSite( state, siteId ) && ! config.isEnabled( 'manage/jetpack' ) ) {
-			window.location.href = '//wordpress.com/manage/' + siteId;
+			window.location.href = '//wordpress.com/manage/' + siteSlug;
 			return;
 		}
 
 		const maybeRedirect = () => {
 			// if site loaded, but user cannot manage site, redirect
 			const selectedSiteId = getSelectedSiteId( getState() );
+			const selectedSiteSlug = getSelectedSiteSlug( getState() );
 			if ( ! canCurrentUser( getState(), selectedSiteId, 'manage_options' ) ) {
 				return page.redirect( '/stats' );
 			}
 
+			// if user went directly to jetpack settings page, redirect
 			if ( isJetpackSite( getState(), selectedSiteId ) && ! config.isEnabled( 'manage/jetpack' ) ) {
-				window.location.href = '//wordpress.com/manage/' + siteId;
+				window.location.href = '//wordpress.com/manage/' + selectedSiteSlug;
 				return;
 			}
 		};
