@@ -24,6 +24,7 @@ import titlecase from 'to-title-case';
 import { getSelectedSite, getSelectedSiteId } from 'state/ui/selectors';
 import { isJetpackSite } from 'state/sites/selectors';
 import { canCurrentUser } from 'state/selectors';
+import { SITES_ONCE_CHANGED } from 'state/action-types';
 
 /**
  * Module vars
@@ -64,13 +65,14 @@ module.exports = {
 
 	siteSettings( context ) {
 		let analyticsPageTitle = 'Site Settings';
+		const { getState, dispatch } = context.store;
 		const basePath = route.sectionify( context.path );
-		const siteId = getSelectedSiteId( context.store.getState() );
+		const siteId = getSelectedSiteId( getState() );
 		const section = sectionify( context.path ).split( '/' )[ 2 ];
-		const state = context.store.getState();
+		const state = getState();
 
 		// FIXME: Auto-converted from the Flux setTitle action. Please use <DocumentHead> instead.
-		context.store.dispatch( setTitle( i18n.translate( 'Site Settings', { textOnly: true } ) ) );
+		dispatch( setTitle( i18n.translate( 'Site Settings', { textOnly: true } ) ) );
 
 		// if site loaded, but user cannot manage site, redirect
 		if ( siteId && ! canCurrentUser( state, siteId, 'manage_options' ) ) {
@@ -79,9 +81,29 @@ module.exports = {
 		}
 
 		// if user went directly to jetpack settings page, redirect
-		if ( isJetpackSite( state, siteId ) && ! config.isEnabled( 'manage/jetpack' ) ) {
+		if ( siteId && isJetpackSite( state, siteId ) && ! config.isEnabled( 'manage/jetpack' ) ) {
 			window.location.href = '//wordpress.com/manage/' + siteId;
 			return;
+		}
+
+		const maybeRedirect = () => {
+			// if site loaded, but user cannot manage site, redirect
+			const selectedSiteId = getSelectedSiteId( getState() );
+			if ( ! canCurrentUser( getState(), selectedSiteId, 'manage_options' ) ) {
+				return page.redirect( '/stats' );
+			}
+
+			if ( isJetpackSite( getState(), selectedSiteId ) && ! config.isEnabled( 'manage/jetpack' ) ) {
+				window.location.href = '//wordpress.com/manage/' + siteId;
+				return;
+			}
+		};
+
+		if ( ! siteId ) {
+			dispatch( {
+				type: SITES_ONCE_CHANGED,
+				listener: maybeRedirect
+			} );
 		}
 
 		renderPage(
