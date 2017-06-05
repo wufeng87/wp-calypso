@@ -162,6 +162,23 @@ export function getMonthlyPlanByYearly( plan ) {
 	}
 }
 
+/**
+ * Returns true if plans match regardeless of their interval.
+ * For example (fake plans):
+ *     isPlanMatch( 'proYearly', 'proYearly' ) => true
+ *     isPlanMatch( 'proYearly', 'proMonthly' ) => true
+ *     isPlanMatch( 'proYearly', 'personalYearly' ) => false
+ *
+ * @param  {String}  planSlugA One of the plan slugs to compare
+ * @param  {String}  planSlugB One of the plan slugs to compare
+ * @return {Boolean}           Whether the plans match
+ */
+export function isPlanMatch( planSlugA, planSlugB ) {
+	return planSlugA === planSlugB ||
+		getMonthlyPlanByYearly( planSlugA ) === planSlugB ||
+		planSlugA === getMonthlyPlanByYearly( planSlugB );
+}
+
 export const isPlanFeaturesEnabled = () => {
 	return isEnabled( 'manage/plan-features' );
 };
