@@ -163,7 +163,7 @@ export function getMonthlyPlanByYearly( plan ) {
 }
 
 /**
- * Returns true if plans match regardeless of their interval.
+ * Returns true if plans match regardless of their interval.
  * For example (fake plans):
  *     isPlanMatch( 'proYearly', 'proYearly' ) => true
  *     isPlanMatch( 'proYearly', 'proMonthly' ) => true
