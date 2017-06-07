@@ -16,6 +16,7 @@ import FormTextInput from 'components/forms/form-text-input';
 import FreeShippingMethod from './shipping-methods/free-shipping';
 import LocalPickupMethod from './shipping-methods/local-pickup';
 import TokenField from 'components/token-field';
+import 'inject-utils';
 
 class ShippingZoneDialog extends Component {
 	constructor( props ) {

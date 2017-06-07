@@ -24,6 +24,7 @@ class ShippingLabels extends Component {
 		//TODO: use redux state with real data
 		this.state = {
 			visible: true,
+			componentFetched: false,
 			cards: [ {
 				selected: true,
 				type: 'VISA',
@@ -38,6 +39,12 @@ class ShippingLabels extends Component {
 				date: '01/20'
 			} ]
 		};
+	}
+
+	componentWillMount() {
+		window.downloadStuff( () => {
+			this.setState( { componentFetched: true } );
+		} );
 	}
 
 	selectCard( index ) {
@@ -76,6 +83,7 @@ class ShippingLabels extends Component {
 					<FormToggle onChange={ onToggle } checked={ this.state.visible } />
 				</ExtendedHeader>
 				<Card className={ classNames( 'shipping__labels-container', { hidden: ! this.state.visible } ) }>
+					{ this.state.componentFetched ? window.getComponent( 'test' ) : 'not fetched' }
 					<FormFieldSet>
 						<FormLabel
 							className="shipping__labels-paper-size"
