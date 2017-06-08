@@ -9,34 +9,56 @@ import React, { PropTypes } from 'react';
 /**
  * Internal dependencies
  */
+import { isEnabled } from 'config';
 import { NESTED_SIDEBAR_REVISIONS } from 'post-editor/editor-sidebar/util';
 
-function EditorRevisions( { revisions = [], translate, toggleNestedSidebar } ) {
+function EditorRevisions( { adminUrl, revisions = [], translate, toggleNestedSidebar } ) {
 	if ( ! revisions || ! revisions.length ) {
 		return null;
 	}
 
+	if ( isEnabled( 'post-editor/revisions' ) ) {
+		return (
+			<button
+				className="editor-revisions"
+				title={ translate( 'Open list of revisions' ) }
+				onClick={ partial( toggleNestedSidebar, NESTED_SIDEBAR_REVISIONS ) }
+			>
+				<Gridicon icon="history" size={ 18 } />
+				{ translate(
+					'%(revisions)d revision',
+					'%(revisions)d revisions', {
+						count: revisions.length,
+						args: { revisions: revisions.length },
+					}
+				) }
+			</button>
+		);
+	}
+
+	const revisionsLink = `${ adminUrl }revision.php?revision=${ revisions[ 0 ] }`;
 	return (
-		<button
+		<a
 			className="editor-revisions"
-			title={ translate( 'Open list of revisions' ) }
-			onClick={ partial( toggleNestedSidebar, NESTED_SIDEBAR_REVISIONS ) }
+			href={ revisionsLink }
+			target="_blank"
+			rel="noopener noreferrer"
+			aria-label={ translate( 'Open list of revisions' ) }
 		>
 			<Gridicon icon="history" size={ 18 } />
 			{ translate(
 				'%(revisions)d revision',
 				'%(revisions)d revisions', {
 					count: revisions.length,
-					args: {
-						revisions: revisions.length,
-					},
+					args: { revisions: revisions.length },
 				}
 			) }
-		</button>
+		</a>
 	);
 }
 
 EditorRevisions.propTypes = {
+	adminUrl: PropTypes.string,
 	revisions: PropTypes.array,
 	translate: PropTypes.func,
 	toggleNestedSidebar: PropTypes.func,
