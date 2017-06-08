@@ -121,9 +121,9 @@ const Checkout = React.createClass( {
 	},
 
 	addProductToCart: function() {
-		const { product, productsList, purchaseId, selectedSiteSlug } = this.props;
+		const { product, productsList, purchaseId, selectedSite, selectedSiteSlug } = this.props;
 		const meta = product.split( ':' )[ 1 ];
-		const productSlug = getUpgradePlanSlugFromPath( product ) || product.split( ':' )[ 0 ];
+		const productSlug = getUpgradePlanSlugFromPath( product, selectedSite.jetpack ) || product.split( ':' )[ 0 ];
 
 		let cartItem = getCartItemForPlan( productSlug );
 
