@@ -1,4 +1,15 @@
+/**
+ * External dependencies
+ */
+import * as react from 'react';
+import * as redux from 'redux';
+import * as reactRedux from 'react-redux';
+
 const components = {};
+
+window.react = react;
+window.redux = redux;
+window.reactRedux = reactRedux;
 
 window.downloadStuff = ( callback ) => {
 	const scriptTag = document.createElement( 'script' ),
