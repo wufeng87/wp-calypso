@@ -14,7 +14,7 @@ import PagedStream from './paged-stream';
 import FeedStreamCache from './feed-stream-cache';
 import analytics from 'lib/analytics';
 import wpcom from 'lib/wp';
-import getDefaultSearchAlgorithm from 'reader/search-helper';
+import { getDefaultSearchAlgorithm } from 'reader/search-helper';
 
 const wpcomUndoc = wpcom.undocumented();
 
@@ -261,6 +261,10 @@ function getStoreForRecommendedPosts( storeId ) {
 				break;
 			default:
 				query.algorithm = 'read:recommendations:posts/es/1';
+				break;
+		}
+		if ( getDefaultSearchAlgorithm() ) {
+			query.algorithm = getDefaultSearchAlgorithm();
 		}
 		wpcomUndoc.readRecommendedPosts( query, trainTracksProxyForStream( stream, callback ) );
 	}
