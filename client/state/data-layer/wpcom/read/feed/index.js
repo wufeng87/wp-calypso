@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { map, truncate } from 'lodash';
+import { map, truncate, pickBy } from 'lodash';
 
 /**
  * Internal dependencies
@@ -13,6 +13,7 @@ import { dispatchRequest } from 'state/data-layer/wpcom-http/utils';
 import { errorNotice } from 'state/notices/actions';
 import { translate } from 'i18n-calypso';
 import queryKey from 'state/reader/feed-searches/query-key';
+import getDefaultSearchAlgorithm from 'reader/search-helper';
 
 export function initiateFeedSearch( store, action ) {
 	if ( ! ( action.payload && action.payload.query ) ) {
@@ -25,11 +26,15 @@ export function initiateFeedSearch( store, action ) {
 			path,
 			method: 'GET',
 			apiVersion: '1.1',
-			query: {
-				q: action.payload.query,
-				offset: action.payload.offset,
-				exclude_followed: action.payload.excludeFollowed,
-			},
+			query: pickBy(
+				{
+					q: action.payload.query,
+					offset: action.payload.offset,
+					exclude_followed: action.payload.excludeFollowed,
+					algorithm: getDefaultSearchAlgorithm(),
+				},
+				Boolean,
+			),
 			onSuccess: action,
 			onFailure: action,
 		} ),
