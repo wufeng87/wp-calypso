@@ -16,6 +16,7 @@ import {
 import { receivePosts } from 'state/reader/posts/actions';
 import wpcom from 'lib/wp';
 import { SCOPE_ALL, SCOPE_SAME, SCOPE_OTHER } from './utils';
+import { getDefaultSearchAlgorithm } from 'reader/search-helper';
 
 export function requestRelatedPosts( siteId, postId, scope = SCOPE_ALL ) {
 	return function( dispatch ) {
@@ -40,6 +41,10 @@ export function requestRelatedPosts( siteId, postId, scope = SCOPE_ALL ) {
 		} else if ( scope === SCOPE_OTHER ) {
 			query.size_local = 0;
 			query.size_global = 2;
+		}
+
+		if ( getDefaultSearchAlgorithm() ) {
+			query.algorithm = getDefaultSearchAlgorithm();
 		}
 
 		return wpcom.undocumented().readSitePostRelated( query ).then(
@@ -84,7 +89,7 @@ export function requestRelatedPosts( siteId, postId, scope = SCOPE_ALL ) {
 						posts: [],
 					},
 				} );
-			}
+			},
 		);
 	};
 }
