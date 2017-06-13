@@ -91,11 +91,15 @@ const webpackConfig = {
 				test: /\.json$/,
 				exclude: /(devdocs[\/\\]components-usage-stats.json)/,
 				loader: 'json-loader'
+			},
+			{
+				test: /\.(ml|re)$/,
+				loader: 'bs-loader',
 			}
 		]
 	},
 	resolve: {
-		extensions: [ '', '.json', '.js', '.jsx' ],
+		extensions: [ '', '.json', '.js', '.jsx', '.ml', '.re' ],
 		root: [ __dirname, path.join( __dirname, 'server' ), path.join( __dirname, 'client' ), path.join( __dirname, 'client', 'extensions' ) ],
 		modulesDirectories: [ 'node_modules' ]
 	},
