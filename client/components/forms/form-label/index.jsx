@@ -1,19 +1,22 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	classnames = require( 'classnames' ),
-	omit = require( 'lodash/omit' );
+import React from 'react';
 
-module.exports = React.createClass( {
+import classnames from 'classnames';
+import omit from 'lodash/omit';
 
+export default React.createClass( {
 	displayName: 'FormLabel',
 
 	render: function() {
 		return (
-			<label { ...omit( this.props, 'className' ) } className={ classnames( this.props.className, 'form-label' ) } >
+			<label
+				{ ...omit( this.props, 'className' ) }
+				className={ classnames( this.props.className, 'form-label' ) }
+			>
 				{ this.props.children }
 			</label>
 		);
-	}
+	},
 } );

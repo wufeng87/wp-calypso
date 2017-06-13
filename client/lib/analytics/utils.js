@@ -49,7 +49,10 @@ function isPiiUrl() {
 	return false;
 }
 
-module.exports = {
+const exported = {
 	doNotTrack: doNotTrack,
-	isPiiUrl: isPiiUrl
+	isPiiUrl: isPiiUrl,
 };
+
+export default exported;
+export { doNotTrack, isPiiUrl };

@@ -10,25 +10,26 @@ import {
 } from 'state/account-recovery/reset/actions';
 
 export const handleRequestReset = ( { dispatch }, action ) => {
-	const {
-		userData,
-		method,
-	} = action;
+	const { userData, method } = action;
 
-	wpcom.req.post( {
-		body: {
-			...userData,
-			method,
-		},
-		apiNamespace: 'wpcom/v2',
-		path: '/account-recovery/request-reset',
-	} ).then( () => {
-		dispatch( requestResetSuccess() );
-		dispatch( setResetMethod( method ) );
-	} )
-	.catch( ( error ) => dispatch( requestResetError( error ) ) );
+	wpcom.req
+		.post( {
+			body: {
+				...userData,
+				method,
+			},
+			apiNamespace: 'wpcom/v2',
+			path: '/account-recovery/request-reset',
+		} )
+		.then( () => {
+			dispatch( requestResetSuccess() );
+			dispatch( setResetMethod( method ) );
+		} )
+		.catch( error => dispatch( requestResetError( error ) ) );
 };
 
-export default {
+const exported = {
 	[ ACCOUNT_RECOVERY_RESET_REQUEST ]: [ handleRequestReset ],
 };
+
+export default exported;

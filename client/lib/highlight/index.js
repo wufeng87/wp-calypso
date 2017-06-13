@@ -1,8 +1,10 @@
-var debug = require( 'debug' )( 'calypso:highlight' );
+import debugFactory from 'debug';
+const debug = debugFactory( 'calypso:highlight' );
 
 /** External Dependencies **/
-var compact = require( 'lodash/compact' ),
-	toArray = require( 'lodash/toArray' );
+import compact from 'lodash/compact';
+
+import toArray from 'lodash/toArray';
 
 /**
  * @private
@@ -14,8 +16,7 @@ function wrap( innerHtml, wrapperNode ) {
 }
 
 function replaceChildNodesWithGroup( node, newChildren, oldChild ) {
-	var child = newChildren.pop(),
-		last;
+	var child = newChildren.pop(), last;
 	if ( child ) {
 		node.replaceChild( child, oldChild );
 		last = child;
@@ -30,19 +31,14 @@ function replaceChildNodesWithGroup( node, newChildren, oldChild ) {
  * @private
  */
 function highlightNode( node, term, wrapperNode ) {
-	var nodes = [],
-		found = false,
-		pos,
-		leftText,
-		midText,
-		remainingText;
+	var nodes = [], found = false, pos, leftText, midText, remainingText;
 	if ( node.nodeName === '#text' ) {
 		remainingText = node.nodeValue;
 	}
 
 	while ( true ) {
 		pos = remainingText.toLowerCase().indexOf( term.toLowerCase() );
-		if ( !remainingText || pos === -1 ) {
+		if ( ! remainingText || pos === -1 ) {
 			break;
 		}
 		found = true;
@@ -75,7 +71,6 @@ function walk( node, term, wrapperNode ) {
 		for ( var i = 0; i < children.length; i++ ) {
 			walk( children[ i ], term, wrapperNode );
 		}
-
 	} else if ( node.nodeName === '#text' ) {
 		debug( 'Parsing node with value:', node.nodeValue );
 		highlightNode( node, term, wrapperNode );
@@ -103,4 +98,4 @@ function highlight( term, html, wrapperNode ) {
 	return root.innerHTML;
 }
 
-module.exports = highlight;
+export default highlight;

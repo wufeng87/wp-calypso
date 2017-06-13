@@ -34,26 +34,20 @@ const getDomainTypeTextFromSearch = function( suggestion ) {
 const EVENTS = {
 	popupCart: {
 		checkoutButtonClick() {
-			analytics.ga.recordEvent(
-				'Domain Search',
-				'Click "Checkout" Button on Popup Cart'
-			);
+			analytics.ga.recordEvent( 'Domain Search', 'Click "Checkout" Button on Popup Cart' );
 		},
 		keepSearchButtonClick() {
-			analytics.ga.recordEvent(
-				'Domain Search',
-				'Click "Keep Searching" Button on Popup Cart'
-			);
-		}
+			analytics.ga.recordEvent( 'Domain Search', 'Click "Keep Searching" Button on Popup Cart' );
+		},
 	},
 	registerDomain: {
 		mapDomainButtonClick( section ) {
-			analytics.ga.recordEvent(
-				'Domain Search',
-				'Clicked "Map it" Button'
-			);
+			analytics.ga.recordEvent( 'Domain Search', 'Clicked "Map it" Button' );
 
-			analytics.tracks.recordEvent( 'calypso_domain_search_results_mapping_button_click', { section } );
+			analytics.tracks.recordEvent(
+				'calypso_domain_search_results_mapping_button_click',
+				{ section },
+			);
 		},
 
 		searchFormSubmit( searchBoxValue, section, timeDiffFromLastSearch, searchCount, searchVendor ) {
@@ -61,26 +55,20 @@ const EVENTS = {
 				'Domain Search',
 				'Submitted Search Form',
 				'Search Box Value',
-				searchBoxValue
+				searchBoxValue,
 			);
 
-			analytics.tracks.recordEvent(
-				'calypso_domain_search',
-				{
-					search_box_value: searchBoxValue,
-					seconds_from_last_search: timeDiffFromLastSearch,
-					search_count: searchCount,
-					search_vendor: searchVendor,
-					section
-				}
-			);
+			analytics.tracks.recordEvent( 'calypso_domain_search', {
+				search_box_value: searchBoxValue,
+				seconds_from_last_search: timeDiffFromLastSearch,
+				search_count: searchCount,
+				search_vendor: searchVendor,
+				section,
+			} );
 		},
 
 		searchFormView( section ) {
-			analytics.ga.recordEvent(
-				'Domain Search',
-				'Landed on Search'
-			);
+			analytics.ga.recordEvent( 'Domain Search', 'Landed on Search' );
 
 			analytics.tracks.recordEvent( 'calypso_domain_search_pageview', { section } );
 		},
@@ -90,19 +78,16 @@ const EVENTS = {
 				'Domain Search',
 				'Receive Results',
 				'Response Time',
-				responseTimeInMs
+				responseTimeInMs,
 			);
 
-			analytics.tracks.recordEvent(
-				'calypso_domain_search_results_suggestions_receive',
-				{
-					search_query: searchQuery,
-					results: searchResults.join( ';' ),
-					response_time_ms: responseTimeInMs,
-					result_count: resultCount,
-					section
-				}
-			);
+			analytics.tracks.recordEvent( 'calypso_domain_search_results_suggestions_receive', {
+				search_query: searchQuery,
+				results: searchResults.join( ';' ),
+				response_time_ms: responseTimeInMs,
+				result_count: resultCount,
+				section,
+			} );
 		},
 
 		domainAvailabilityReceive( searchQuery, availableStatus, responseTimeInMs, section ) {
@@ -110,18 +95,15 @@ const EVENTS = {
 				'Domain Search',
 				'Domain Availability Result',
 				'Domain Available Status',
-				availableStatus
+				availableStatus,
 			);
 
-			analytics.tracks.recordEvent(
-				'calypso_domain_search_results_availability_receive',
-				{
-					search_query: searchQuery,
-					available_status: availableStatus,
-					response_time: responseTimeInMs,
-					section
-				}
-			);
+			analytics.tracks.recordEvent( 'calypso_domain_search_results_availability_receive', {
+				search_query: searchQuery,
+				available_status: availableStatus,
+				response_time: responseTimeInMs,
+				section,
+			} );
 		},
 
 		submitDomainStepSelection( suggestion, section ) {
@@ -130,13 +112,13 @@ const EVENTS = {
 				'Domain Search',
 				`Submitted Domain Selection for a ${ domainType } on a Domain Registration`,
 				'Domain Name',
-				suggestion.domain_name
+				suggestion.domain_name,
 			);
 
 			const tracksObjects = {
 				domain_name: suggestion.domain_name,
 				section,
-				type: domainType
+				type: domainType,
 			};
 			if ( suggestion.isRecommended ) {
 				tracksObjects.label = 'recommended';
@@ -146,7 +128,7 @@ const EVENTS = {
 			}
 
 			analytics.tracks.recordEvent( 'calypso_domain_search_submit_step', tracksObjects );
-		}
+		},
 	},
 
 	mapDomain: {
@@ -155,7 +137,7 @@ const EVENTS = {
 				'Domain Search',
 				'Submitted Form in Map Domain Step',
 				'Search Box Value',
-				searchBoxValue
+				searchBoxValue,
 			);
 		},
 
@@ -164,7 +146,7 @@ const EVENTS = {
 				'Domain Search',
 				'Focused On Search Box Input in Map Domain Step',
 				'Search Box Value',
-				searchBoxValue
+				searchBoxValue,
 			);
 		},
 
@@ -173,12 +155,12 @@ const EVENTS = {
 				'Domain Search',
 				'Clicked "Go" Button in Map Domain Step',
 				'Search Box Value',
-				searchBoxValue
+				searchBoxValue,
 			);
 
 			analytics.tracks.recordEvent( 'calypso_map_domain_step_go_click', {
 				search_box_value: searchBoxValue,
-				section
+				section,
 			} );
 		},
 	},
@@ -189,7 +171,7 @@ const EVENTS = {
 				'Domain Search',
 				'Submitted Form in Site Redirect',
 				'Search Box Value',
-				searchBoxValue
+				searchBoxValue,
 			);
 		},
 
@@ -198,7 +180,7 @@ const EVENTS = {
 				'Domain Search',
 				'Focused On Search Box Input in Site Redirect',
 				'Search Box Value',
-				searchBoxValue
+				searchBoxValue,
 			);
 		},
 
@@ -207,9 +189,9 @@ const EVENTS = {
 				'Domain Search',
 				'Clicked "Go" Button in Site Redirect',
 				'Search Box Value',
-				searchBoxValue
+				searchBoxValue,
 			);
-		}
+		},
 	},
 
 	domainManagement: {
@@ -219,12 +201,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Add another email address" link in Add Google Apps',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_add_google_apps_add_another_email_address_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -233,12 +215,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Cancel" Button in Add Google Apps',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_add_google_apps_cancel_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -247,33 +229,27 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Continue" Button in Add Google Apps',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
-				analytics.tracks.recordEvent(
-					'calypso_domain_management_add_google_apps_continue_click',
-					{
-						domain_name: domainName,
-						number_of_licenses: numberOfLicenses,
-						success
-					}
-				);
+				analytics.tracks.recordEvent( 'calypso_domain_management_add_google_apps_continue_click', {
+					domain_name: domainName,
+					number_of_licenses: numberOfLicenses,
+					success,
+				} );
 			},
 
 			domainChange( value, userIndex ) {
 				analytics.ga.recordEvent(
 					'Domain Management',
 					`Changed "Domain" Input for User #${ userIndex } in Add Google Apps`,
-					'Domain Name'
+					'Domain Name',
 				);
 
-				analytics.tracks.recordEvent(
-					'calypso_domain_management_add_google_apps_domain_change',
-					{
-						user_index: userIndex,
-						value
-					}
-				);
+				analytics.tracks.recordEvent( 'calypso_domain_management_add_google_apps_domain_change', {
+					user_index: userIndex,
+					value,
+				} );
 			},
 
 			inputFocus( domainName, fieldName, userIndex ) {
@@ -281,17 +257,17 @@ const EVENTS = {
 					'Domain Management',
 					`Focused On "${ fieldName }" Input for User #${ userIndex } in Add Google Apps`,
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					`calypso_domain_management_add_google_apps_${ snakeCase( fieldName ) }_focus`,
 					{
 						domain_name: domainName,
-						user_index: userIndex
-					}
+						user_index: userIndex,
+					},
 				);
-			}
+			},
 		},
 
 		edit: {
@@ -300,14 +276,14 @@ const EVENTS = {
 
 				analytics.ga.recordEvent(
 					'Domain Management',
-					`Clicked "Make Primary" link on a ${domainType} in Edit`,
+					`Clicked "Make Primary" link on a ${ domainType } in Edit`,
 					'Domain Name',
-					domain.name
+					domain.name,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_edit_make_primary_click',
-					{ section: snakeCase( domainType ) }
+					{ section: snakeCase( domainType ) },
 				);
 			},
 
@@ -316,18 +292,15 @@ const EVENTS = {
 
 				analytics.ga.recordEvent(
 					'Domain Management',
-					`Clicked "${action}" navigation link on a ${domainType} in Edit`,
+					`Clicked "${ action }" navigation link on a ${ domainType } in Edit`,
 					'Domain Name',
-					domain.name
+					domain.name,
 				);
 
-				analytics.tracks.recordEvent(
-					'calypso_domain_management_edit_navigation_click',
-					{
-						action: snakeCase( action ),
-						section: snakeCase( domainType )
-					}
-				);
+				analytics.tracks.recordEvent( 'calypso_domain_management_edit_navigation_click', {
+					action: snakeCase( action ),
+					section: snakeCase( domainType ),
+				} );
 			},
 
 			noneClick( domain ) {
@@ -335,7 +308,7 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "None" privacy protection link on a Domain Registration in Edit',
 					'Domain Name',
-					domain.name
+					domain.name,
 				);
 
 				analytics.tracks.recordEvent( 'calypso_domain_management_edit_none_click' );
@@ -346,16 +319,16 @@ const EVENTS = {
 
 				analytics.ga.recordEvent(
 					'Domain Management',
-					`Clicked "Payment Settings" Button on a ${domainType} in Edit`,
+					`Clicked "Payment Settings" Button on a ${ domainType } in Edit`,
 					'Domain Name',
-					domain.name
+					domain.name,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_edit_payment_settings_click',
-					{ section: snakeCase( domainType ) }
+					{ section: snakeCase( domainType ) },
 				);
-			}
+			},
 		},
 
 		email: {
@@ -364,12 +337,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "and More!" Google Apps link in Email',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_email_and_more_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -378,14 +351,14 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Learn more" Google Apps link in Email',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_email_learn_more_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
-			}
+			},
 		},
 
 		emailForwarding: {
@@ -394,7 +367,7 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Add New Email Forward" Button in Email Forwarding',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
@@ -403,8 +376,8 @@ const EVENTS = {
 						destination,
 						domain_name: domainName,
 						mailbox,
-						success
-					}
+						success,
+					},
 				);
 			},
 
@@ -413,12 +386,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Cancel" Button in Email Forwarding',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_email_forwarding_cancel_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -427,18 +400,15 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked delete Button in Email Forwarding',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
-				analytics.tracks.recordEvent(
-					'calypso_domain_management_email_forwarding_delete_click',
-					{
-						destination,
-						domain_name: domainName,
-						mailbox,
-						success
-					}
-				);
+				analytics.tracks.recordEvent( 'calypso_domain_management_email_forwarding_delete_click', {
+					destination,
+					domain_name: domainName,
+					mailbox,
+					success,
+				} );
 			},
 
 			resendVerificationClick( domainName, mailbox, destination, success ) {
@@ -446,7 +416,7 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked resend verification email Button in Email Forwarding',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
@@ -455,8 +425,8 @@ const EVENTS = {
 						destination,
 						domain_name: domainName,
 						mailbox,
-						success
-					}
+						success,
+					},
 				);
 			},
 
@@ -465,12 +435,12 @@ const EVENTS = {
 					'Domain Management',
 					`Focused On "${ fieldName }" Input in Email Forwarding`,
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					`calypso_domain_management_email_forwarding_${ snakeCase( fieldName ) }_focus`,
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -479,14 +449,14 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Learn more" link in Email Forwarding',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_email_forwarding_learn_more_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
-			}
+			},
 		},
 
 		googleApps: {
@@ -495,12 +465,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Add Google Apps User" Button in Google Apps',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_google_apps_add_google_apps_user_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -509,24 +479,28 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Manage" link in Google Apps',
 					'User Email',
-					email
+					email,
 				);
 
-				analytics.tracks.recordEvent(
-					'calypso_domain_management_google_apps_manage_click',
-					{
-						domain_name: domainName,
-						email
-					}
-				);
+				analytics.tracks.recordEvent( 'calypso_domain_management_google_apps_manage_click', {
+					domain_name: domainName,
+					email,
+				} );
 			},
 
-			pendingAccountLogInClick( { siteSlug, domainName, user, severity, isMultipleDomains, section } ) {
+			pendingAccountLogInClick( {
+				siteSlug,
+				domainName,
+				user,
+				severity,
+				isMultipleDomains,
+				section,
+			} ) {
 				analytics.ga.recordEvent(
 					'Domain Management',
 					`Clicked "Log in" link in Google Apps pending ToS notice in ${ section }`,
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
@@ -537,8 +511,8 @@ const EVENTS = {
 						user,
 						severity,
 						is_multiple_domains: isMultipleDomains,
-						section
-					}
+						section,
+					},
 				);
 			},
 
@@ -547,7 +521,7 @@ const EVENTS = {
 					'Domain Management',
 					'Showed pending account notice',
 					'Site',
-					siteSlug
+					siteSlug,
 				);
 
 				analytics.tracks.recordEvent(
@@ -556,8 +530,8 @@ const EVENTS = {
 						site_slug: siteSlug,
 						severity,
 						is_multiple_domains: isMultipleDomains,
-						section
-					}
+						section,
+					},
 				);
 			},
 
@@ -566,39 +540,32 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Fix" link in site notice for email requiring action',
 					'Site',
-					siteSlug
+					siteSlug,
 				);
 
-				analytics.tracks.recordEvent(
-					'calypso_domain_management_google_apps_site_fix_click',
-					{
-						site_slug: siteSlug
-					}
-				);
-			}
+				analytics.tracks.recordEvent( 'calypso_domain_management_google_apps_site_fix_click', {
+					site_slug: siteSlug,
+				} );
+			},
 		},
 
 		list: {
 			addDomainClick() {
-				analytics.ga.recordEvent(
-					'Domain Management',
-					'Clicked "Add Domain" Button in List'
-				);
+				analytics.ga.recordEvent( 'Domain Management', 'Clicked "Add Domain" Button in List' );
 
 				analytics.tracks.recordEvent( 'calypso_domain_management_list_add_domain_click' );
 			},
 			enablePrimaryDomainMode() {
-				analytics.ga.recordEvent(
-					'Domain Management',
-					'Clicked "Change Primary" button in List'
-				);
+				analytics.ga.recordEvent( 'Domain Management', 'Clicked "Change Primary" button in List' );
 
-				analytics.tracks.recordEvent( 'calypso_domain_management_list_enable_primary_domain_mode_click' );
+				analytics.tracks.recordEvent(
+					'calypso_domain_management_list_enable_primary_domain_mode_click',
+				);
 			},
 			disablePrimaryDomainMode() {
 				analytics.ga.recordEvent(
 					'Domain Management',
-					'Clicked "X" button to disable change primary mode in List'
+					'Clicked "X" button to disable change primary mode in List',
 				);
 
 				analytics.tracks.recordEvent( 'calypso_domain_management_list_disable_primary_mode_click' );
@@ -609,10 +576,13 @@ const EVENTS = {
 					'Domain Management',
 					'Changed Primary Domain to in List',
 					'Domain Name',
-					domain.name
+					domain.name,
 				);
 
-				analytics.tracks.recordEvent( 'calypso_domain_management_list_change_primary_domain_click', { section } );
+				analytics.tracks.recordEvent(
+					'calypso_domain_management_list_change_primary_domain_click',
+					{ section },
+				);
 			},
 			undoChangePrimary( domain ) {
 				const section = snakeCase( getDomainTypeText( domain ) );
@@ -621,11 +591,14 @@ const EVENTS = {
 					'Domain Management',
 					'Undo change Primary Domain in List',
 					'Domain Name (Reverted to)',
-					domain.name
+					domain.name,
 				);
 
-				analytics.tracks.recordEvent( 'calypso_domain_management_list_undo_change_primary_domain_click', { section } );
-			}
+				analytics.tracks.recordEvent(
+					'calypso_domain_management_list_undo_change_primary_domain_click',
+					{ section },
+				);
+			},
 		},
 
 		primaryDomain: {
@@ -634,14 +607,14 @@ const EVENTS = {
 
 				analytics.ga.recordEvent(
 					'Domain Management',
-					`Clicked "Cancel" Button on a ${domainType} in Primary Domain`,
+					`Clicked "Cancel" Button on a ${ domainType } in Primary Domain`,
 					'Domain Name',
-					domain.name
+					domain.name,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_primary_domain_cancel_click',
-					{ section: snakeCase( domainType ) }
+					{ section: snakeCase( domainType ) },
 				);
 			},
 
@@ -650,19 +623,19 @@ const EVENTS = {
 
 				analytics.ga.recordEvent(
 					'Domain Management',
-					`Clicked "Update Primary Domain" Button on a ${domainType} in Primary Domain`,
+					`Clicked "Update Primary Domain" Button on a ${ domainType } in Primary Domain`,
 					'Domain Name',
-					domain.name
+					domain.name,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_primary_domain_update_primary_domain_click',
 					{
 						section: snakeCase( domainType ),
-						success
-					}
+						success,
+					},
 				);
-			}
+			},
 		},
 
 		siteRedirect: {
@@ -671,12 +644,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Cancel" Button in Site Redirect',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_site_redirect_cancel_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -685,12 +658,12 @@ const EVENTS = {
 					'Domain Management',
 					'Focused On "Location" Input in Site Redirect',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_site_redirect_location_focus',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -699,7 +672,7 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Update Site Redirect" Button in Site Redirect',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
@@ -707,10 +680,10 @@ const EVENTS = {
 					{
 						domain_name: domainName,
 						location,
-						success
-					}
+						success,
+					},
 				);
-			}
+			},
 		},
 
 		nameServers: {
@@ -721,15 +694,15 @@ const EVENTS = {
 					'Domain Management',
 					`Click Toggle Button in "Use WordPress.com Name Servers" Section to "${ state }" in Name Servers and DNS`,
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_name_servers_wpcom_name_servers_toggle_button_click',
 					{
 						domain_name: domainName,
-						enabled
-					}
+						enabled,
+					},
 				);
 			},
 
@@ -738,12 +711,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Save Custom Name Servers" in "Use Custom Name Servers" Form in Name Servers and DNS',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_name_servers_save_custom_name_servers_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -752,12 +725,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Reset to Defaults" Button in "Use Custom Name Servers" Form in Name Servers and DNS',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_name_servers_reset_to_defaults_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -766,12 +739,12 @@ const EVENTS = {
 					'Domain Management',
 					'Focused Input in "Use Custom Name Servers" Form in Name Servers and DNS',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_name_servers_custom_name_server_input_focus',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -780,12 +753,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Remove" in "Use Custom Name Servers" Form in Name Servers and DNS',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_name_servers_remove_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -794,12 +767,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Learn More" link in "Use WordPress.com Name Servers" Section in Name Servers and DNS',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_name_servers_wpcom_name_servers_learn_more_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -808,12 +781,12 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Learn More" link in "Custom Name Servers" Form in Name Servers and DNS',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_name_servers_custom_name_servers_learn_more_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
 			},
 
@@ -822,19 +795,19 @@ const EVENTS = {
 					'Domain Management',
 					'Clicked "Look up..." link in "Custom Name Servers" Form in Name Servers and DNS',
 					'Domain Name',
-					domainName
+					domainName,
 				);
 
 				analytics.tracks.recordEvent(
 					'calypso_domain_management_name_servers_wpcom_name_servers_look_up_click',
-					{ domain_name: domainName }
+					{ domain_name: domainName },
 				);
-			}
-		}
-	}
+			},
+		},
+	},
 };
 
-module.exports = function( categoryName, subCategoryName ) {
+export default function( categoryName, subCategoryName ) {
 	return {
 		recordEvent( eventName, ...eventArguments ) {
 			let category = EVENTS[ categoryName ];
@@ -854,10 +827,12 @@ module.exports = function( categoryName, subCategoryName ) {
 			}
 
 			if ( ! category[ eventName ] ) {
-				throw new Error( `Unable to find '${ eventName }' event for '${ categoryPath }' category in analytics mixin` );
+				throw new Error(
+					`Unable to find '${ eventName }' event for '${ categoryPath }' category in analytics mixin`,
+				);
 			}
 
 			category[ eventName ].apply( null, eventArguments );
-		}
+		},
 	};
-};
+}

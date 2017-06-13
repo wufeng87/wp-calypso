@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-var throttle = require( 'lodash/throttle' );
+import throttle from 'lodash/throttle';
 
 /**
  * A mixin that listens for window::resize events and informs a component
@@ -17,7 +17,7 @@ var ObserveWindowSizeMixin = {
 
 	componentWillUnmount: function() {
 		window.removeEventListener( 'resize', this._handleWindowResize );
-	}
+	},
 
 	/* DO NOT DO THIS. It shares the debounce across all instances of the mixin.
 	_handleWindowResize: throttle( function() {
@@ -26,4 +26,6 @@ var ObserveWindowSizeMixin = {
 	*/
 };
 
-module.exports = ObserveWindowSizeMixin;
+export default ObserveWindowSizeMixin;
+
+export const { componentDidMount, componentWillUnmount } = ObserveWindowSizeMixin;

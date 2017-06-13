@@ -1,14 +1,15 @@
 /**
  * External dependencies
  */
-var values = require( 'lodash/values' );
+import values from 'lodash/values';
 
 /**
  * Internal dependencies
  */
-var Dispatcher = require( 'dispatcher' ),
-	emitter = require( 'lib/mixins/emitter' ),
-	MediaValidationStore = require( './validation-store' );
+import Dispatcher from 'dispatcher';
+
+import emitter from 'lib/mixins/emitter';
+import MediaValidationStore from './validation-store';
 
 import { isItemBeingUploaded } from 'lib/media/utils';
 
@@ -17,7 +18,7 @@ import { isItemBeingUploaded } from 'lib/media/utils';
  */
 const MediaStore = {
 	_media: {},
-	_pointers: {}
+	_pointers: {},
 };
 
 emitter( MediaStore );
@@ -133,7 +134,7 @@ MediaStore.dispatchToken = Dispatcher.register( function( payload ) {
 			}
 
 			receiveSingle( action.siteId, {
-				ID: action.id
+				ID: action.id,
 			} );
 
 			MediaStore.emit( 'change' );
@@ -147,4 +148,6 @@ MediaStore.dispatchToken = Dispatcher.register( function( payload ) {
 	}
 } );
 
-module.exports = MediaStore;
+export default MediaStore;
+
+export const { get, getAll, dispatchToken } = MediaStore;

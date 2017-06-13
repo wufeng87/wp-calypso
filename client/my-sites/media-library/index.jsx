@@ -1,25 +1,27 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	classNames = require( 'classnames' ),
-	isEqual = require( 'lodash/isEqual' );
+import React from 'react';
+
+import classNames from 'classnames';
+import isEqual from 'lodash/isEqual';
 
 /**
  * Internal dependencies
  */
-var Content = require( './content' ),
-	MediaActions = require( 'lib/media/actions' ),
-	MediaLibraryDropZone = require( './drop-zone' ),
-	MediaLibrarySelectedStore = require( 'lib/media/library-selected-store' ),
-	MediaUtils = require( 'lib/media/utils' ),
-	filterToMimePrefix = require( './filter-to-mime-prefix' ),
-	FilterBar = require( './filter-bar' ).default,
-	MediaValidationData = require( 'components/data/media-validation-data' ),
-	urlSearch = require( 'lib/mixins/url-search' );
+import Content from './content';
+
+import MediaActions from 'lib/media/actions';
+import MediaLibraryDropZone from './drop-zone';
+import MediaLibrarySelectedStore from 'lib/media/library-selected-store';
+import MediaUtils from 'lib/media/utils';
+import filterToMimePrefix from './filter-to-mime-prefix';
+import FilterBar from './filter-bar';
+import MediaValidationData from 'components/data/media-validation-data';
+import urlSearch from 'lib/mixins/url-search';
 import QueryPreferences from 'components/data/query-preferences';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'MediaLibrary',
 
 	mixins: [ urlSearch ],
@@ -38,7 +40,7 @@ module.exports = React.createClass( {
 		fullScreenDropZone: React.PropTypes.bool,
 		containerWidth: React.PropTypes.number,
 		single: React.PropTypes.bool,
-		scrollable: React.PropTypes.bool
+		scrollable: React.PropTypes.bool,
 	},
 
 	getDefaultProps: function() {
@@ -75,7 +77,7 @@ module.exports = React.createClass( {
 			// the current filter
 			filteredItems = MediaUtils.filterItemsByMimePrefix(
 				filteredItems,
-				filterToMimePrefix( this.props.filter )
+				filterToMimePrefix( this.props.filter ),
 			);
 		}
 
@@ -96,10 +98,10 @@ module.exports = React.createClass( {
 		const { filter, site } = this.props;
 		switch ( filter ) {
 			case 'audio':
-				return ! ( site && site.options.upgraded_filetypes_enabled || site.jetpack );
+				return ! ( ( site && site.options.upgraded_filetypes_enabled ) || site.jetpack );
 
 			case 'videos':
-				return ! ( site && site.options.videopress_enabled || site.jetpack );
+				return ! ( ( site && site.options.videopress_enabled ) || site.jetpack );
 		}
 
 		return false;
@@ -111,7 +113,8 @@ module.exports = React.createClass( {
 				site={ this.props.site }
 				filter={ this.props.filter }
 				fullScreen={ this.props.fullScreenDropZone }
-				onAddMedia={ this.onAddMedia } />
+				onAddMedia={ this.onAddMedia }
+			/>
 		);
 	},
 
@@ -133,7 +136,8 @@ module.exports = React.createClass( {
 				selectedItems={ this.props.mediaLibrarySelectedItems }
 				onDeleteItem={ this.props.onDeleteItem }
 				onEditItem={ this.props.onEditItem }
-				onViewDetails={ this.props.onViewDetails } />
+				onViewDetails={ this.props.onViewDetails }
+			/>
 		);
 
 		if ( this.props.site ) {
@@ -161,9 +165,10 @@ module.exports = React.createClass( {
 					enabledFilters={ this.props.enabledFilters }
 					search={ this.props.search }
 					onFilterChange={ this.props.onFilterChange }
-					onSearch={ this.doSearch } />
+					onSearch={ this.doSearch }
+				/>
 				{ content }
 			</div>
 		);
-	}
+	},
 } );

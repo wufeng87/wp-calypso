@@ -21,7 +21,7 @@ export function requestUnfollow( store, action ) {
 			apiVersion: '1.1',
 			onSuccess: action,
 			onFailure: action,
-		} )
+		} ),
 	);
 }
 
@@ -42,7 +42,7 @@ export function receiveUnfollowTag( store, action, next, apiResponse ) {
 	store.dispatch(
 		receiveUnfollowTagAction( {
 			payload: fromApi( apiResponse ),
-		} )
+		} ),
 	);
 }
 
@@ -57,8 +57,10 @@ export function receiveError( store, action, next, error ) {
 	}
 }
 
-export default {
+const exported = {
 	[ READER_UNFOLLOW_TAG_REQUEST ]: [
 		dispatchRequest( requestUnfollow, receiveUnfollowTag, receiveError ),
 	],
 };
+
+export default exported;

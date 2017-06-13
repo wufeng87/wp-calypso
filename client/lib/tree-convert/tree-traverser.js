@@ -2,17 +2,20 @@
  * External dependencies
  */
 
-var findIndex = require( 'lodash/findIndex' ),
-	some = require( 'lodash/some' );
+import findIndex from 'lodash/findIndex';
+
+import some from 'lodash/some';
 
 /**
  * Given a node within a tree, return the node's parent or the tree
  * itself if the node is not found within the tree.
  */
 function parent( node, tree ) {
-	return find( tree, function( it ) {
-		return some( it.items, { id: node.id } );
-	} ) || tree;
+	return (
+		find( tree, function( it ) {
+			return some( it.items, { id: node.id } );
+		} ) || tree
+	);
 }
 
 function traverse( node, filters, root ) {
@@ -59,7 +62,7 @@ function replaceItem( node, newNode, predicate ) {
 			node.items[ i ] = newNode;
 			return;
 		}
-		replaceItem( node.items[ i ], newNode, predicate);
+		replaceItem( node.items[ i ], newNode, predicate );
 	}
 }
 
@@ -70,7 +73,8 @@ function replaceItem( node, newNode, predicate ) {
 function mapFindAny( array, fn ) {
 	var i, result, length = array.length;
 	for ( i = 0; i < length; i++ ) {
-		if ( result = fn( array[ i ] ) ) { // eslint-disable-line no-cond-assign
+		if ( ( result = fn( array[ i ] ) ) ) {
+			// eslint-disable-line no-cond-assign
 			return result;
 		}
 	}
@@ -88,8 +92,7 @@ function childInserter( srcNode, dstId ) {
 
 function siblingInserter( srcNode, dstId, position ) {
 	return function( node ) {
-		var index,
-			offset = position === 'before' ? 0 : 1;
+		var index, offset = position === 'before' ? 0 : 1;
 
 		if ( ~ ( index = findIndex( node.items, { id: dstId } ) ) ) {
 			node.items.splice( index + offset, 0, srcNode );
@@ -98,8 +101,7 @@ function siblingInserter( srcNode, dstId, position ) {
 	};
 }
 
-module.exports = {
-
+const exported = {
 	/**
 	 * Traverses a tree of menu items and calls a set of filters on each item
 	 * node it enters. Warning: no data is ever cloned internally.
@@ -171,6 +173,10 @@ module.exports = {
 	inserter: function( srcItem, dstId, position ) {
 		var func = 'child' === position ? childInserter : siblingInserter;
 		return func( srcItem, dstId, position );
-	}
-
+	},
 };
+
+export default exported;
+export { parent, find, replaceItem };
+
+export const { traverse, remover, inserter } = exported;

@@ -8,7 +8,7 @@
  *
  * After every update the content will be scrolled to the bottom of the content.
  */
-export default {
+const exported = {
 	componentWillMount() {
 		this._autoscroll_enabled = true;
 		window.addEventListener( 'resize', this.scrollToBottom );
@@ -66,5 +66,18 @@ export default {
 		if ( this._autoscroll_enabled !== enable ) {
 			this._autoscroll_enabled = enable;
 		}
-	}
+	},
 };
+
+export default exported;
+
+export const {
+	componentWillMount,
+	componentDidMount,
+	componentWillUnmount,
+	componentDidUpdate,
+	setupAutoscroll,
+	_autoscroll_stop_listening,
+	scrollToBottom,
+	_autoscroll_detectScroll,
+} = exported;

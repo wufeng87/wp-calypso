@@ -3,18 +3,18 @@
  */
 import defer from 'lodash/defer';
 
-module.exports = {
+const exported = {
 	stepA: {
-		stepName: 'stepA'
+		stepName: 'stepA',
 	},
 
 	stepB: {
-		stepName: 'stepB'
+		stepName: 'stepB',
 	},
 
 	stepRequiringSiteSlug: {
 		stepName: 'stepRequiringSiteSlug',
-		dependencies: [ 'siteSlug' ]
+		dependencies: [ 'siteSlug' ],
 	},
 
 	asyncStep: {
@@ -22,7 +22,7 @@ module.exports = {
 		apiRequestFunction: function( callback, dependencies, stepData ) {
 			defer( callback );
 			stepData.done();
-		}
+		},
 	},
 
 	siteCreation: {
@@ -34,7 +34,7 @@ module.exports = {
 				callback( [], { siteSlug: 'testsite.wordpress.com' } );
 				stepData.stepCallback( dependencies );
 			} );
-		}
+		},
 	},
 
 	userCreation: {
@@ -45,7 +45,7 @@ module.exports = {
 			defer( function() {
 				callback( [], { bearer_token: 'TOKEN' } );
 			} );
-		}
+		},
 	},
 
 	userCreationWithoutToken: {
@@ -54,7 +54,7 @@ module.exports = {
 		providesDependencies: [ 'bearer_token' ],
 		apiRequestFunction: function( callback ) {
 			callback();
-		}
+		},
 	},
 
 	delayedStep: {
@@ -64,6 +64,19 @@ module.exports = {
 		apiRequestFunction: function( callback, dependencies, stepData ) {
 			stepData.stepCallback();
 			defer( callback );
-		}
-	}
+		},
+	},
 };
+
+export default exported;
+
+export const {
+	stepA,
+	stepB,
+	stepRequiringSiteSlug,
+	asyncStep,
+	siteCreation,
+	userCreation,
+	userCreationWithoutToken,
+	delayedStep,
+} = exported;

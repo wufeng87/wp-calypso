@@ -1,15 +1,20 @@
 /**
  * External dependencies
  */
-var assert = require( 'chai' ).assert;
+import { assert } from 'chai';
 
 /**
  * Internal dependencies
  */
-var actions = require( './lib/mock-actions' ),
-	site = require( './lib/mock-site' ),
-	options = { siteId: site.ID },
-	useFakeDom = require( 'test/helpers/use-fake-dom' );
+import actions from './lib/mock-actions';
+
+import site from './lib/mock-site';
+import useFakeDom from 'test/helpers/use-fake-dom';
+
+/**
+ * Internal dependencies
+ */
+var options = { siteId: site.ID };
 
 describe( 'Email Followers Store', function() {
 	var Dispatcher, EmailFollowersStore;
@@ -42,8 +47,7 @@ describe( 'Email Followers Store', function() {
 		} );
 
 		it( 'Fetching more email followers should update the array in the store', function() {
-			var followers = EmailFollowersStore.getFollowers( options ),
-				followersAgain;
+			var followers = EmailFollowersStore.getFollowers( options ), followersAgain;
 			assert.equal( followers.length, 2 );
 			Dispatcher.handleServerAction( actions.fetchedMoreFollowers );
 			followersAgain = EmailFollowersStore.getFollowers( options );
@@ -67,8 +71,7 @@ describe( 'Email Followers Store', function() {
 			Dispatcher.handleServerAction( actions.fetchedFollowers );
 		} );
 		it( 'Should remove a single follower.', function() {
-			var followers = EmailFollowersStore.getFollowers( options ),
-				followersAgain;
+			var followers = EmailFollowersStore.getFollowers( options ), followersAgain;
 
 			assert.equal( followers.length, 2 );
 			Dispatcher.handleServerAction( actions.removeFollower );

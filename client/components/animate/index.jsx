@@ -10,9 +10,9 @@ const Animate = ( { type, children } ) => (
 );
 
 Animate.propTypes = {
-	type: PropTypes.oneOf( [
-		'appear', 'fade-in'
-	] )
+	type: PropTypes.oneOf( [ 'appear', 'fade-in' ] ),
 };
 
 export default Animate;
+
+export const { propTypes } = Animate;

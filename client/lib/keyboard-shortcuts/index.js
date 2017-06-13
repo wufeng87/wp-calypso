@@ -2,14 +2,18 @@
  * External dependencies
  */
 // only require keymaster if this is a browser environment
-var keymaster = ( typeof window === 'undefined' ) ? undefined : require( 'keymaster' ),
+var keymaster = typeof window === 'undefined' ? undefined : require( 'keymaster' ),
 	defaultFilter = keymaster ? keymaster.filter : undefined;
 
 /**
  * Internal dependencies
  */
-var Emitter = require( 'lib/mixins/emitter' ),
-	keyBindings = require( 'lib/keyboard-shortcuts/key-bindings' ).get();
+import Emitter from 'lib/mixins/emitter';
+
+/**
+ * Internal dependencies
+ */
+var keyBindings = require( 'lib/keyboard-shortcuts/key-bindings' ).get();
 
 /**
  * Module variables
@@ -70,7 +74,7 @@ KeyboardShortcuts.prototype.bindShortcuts = function( keyBindings ) {
 			keyBinding.eventName,
 			keyBinding.keys,
 			keyBinding.type,
-			keyBinding.checkKeys
+			keyBinding.checkKeys,
 		);
 	} );
 
@@ -79,9 +83,7 @@ KeyboardShortcuts.prototype.bindShortcuts = function( keyBindings ) {
 };
 
 KeyboardShortcuts.prototype.bindShortcut = function( eventName, keys, type, checkKeys ) {
-	var self = this,
-		keyCombinations = [],
-		matches;
+	var self = this, keyCombinations = [], matches;
 
 	if ( typeof keys[ 0 ] === 'string' ) {
 		// this is a single key combination
@@ -113,7 +115,9 @@ KeyboardShortcuts.prototype.bindShortcut = function( eventName, keys, type, chec
 			keys = keys.join( '+' );
 			keymaster( keys, function( event, handler ) {
 				// if the notifications panel is open, do not handle any presses besides `n` to toggle the panel
-				if ( self.isNotificationsOpen && ( self._getKey( event ) !== 'n' && event.keyCode !== 27 ) ) {
+				if (
+					self.isNotificationsOpen && ( self._getKey( event ) !== 'n' && event.keyCode !== 27 )
+				) {
 					return;
 				}
 
@@ -181,4 +185,4 @@ KeyboardShortcuts.prototype.setNotificationsOpen = function( isOpen ) {
 Emitter( KeyboardShortcuts.prototype );
 
 // Return a single instance of KeyboardShortcuts, which will be cached by webpack
-module.exports = new KeyboardShortcuts( flatKeyBindings );
+export default new KeyboardShortcuts( flatKeyBindings );

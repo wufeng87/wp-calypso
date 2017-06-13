@@ -18,10 +18,12 @@ export function handleTeamsRequest( store ) {
 				payload: error,
 				error: true,
 			} );
-		}
+		},
 	);
 }
 
-export default {
+const exported = {
 	[ READER_TEAMS_REQUEST ]: [ handleTeamsRequest ],
 };
+
+export default exported;

@@ -52,14 +52,10 @@ function canDeleteSite( site ) {
 }
 
 function renderPage( context, component ) {
-	renderWithReduxStore(
-		component,
-		document.getElementById( 'primary' ),
-		context.store
-	);
+	renderWithReduxStore( component, document.getElementById( 'primary' ), context.store );
 }
 
-module.exports = {
+const exported = {
 	redirectToGeneral() {
 		page.redirect( '/settings/general' );
 	},
@@ -86,10 +82,7 @@ module.exports = {
 			return;
 		}
 
-		renderPage(
-			context,
-			<SiteSettingsComponent section={ section } />
-		);
+		renderPage( context, <SiteSettingsComponent section={ section } /> );
 
 		// analytics tracking
 		if ( 'undefined' !== typeof section ) {
@@ -109,7 +102,7 @@ module.exports = {
 	guidedTransfer( context ) {
 		renderPage(
 			context,
-			<SiteSettingsComponent section="guidedTransfer" hostSlug={ context.params.host_slug } />
+			<SiteSettingsComponent section="guidedTransfer" hostSlug={ context.params.host_slug } />,
 		);
 	},
 
@@ -129,10 +122,7 @@ module.exports = {
 			} );
 		}
 
-		renderPage(
-			context,
-			<DeleteSite sites={ sites } path={ context.path } />
-		);
+		renderPage( context, <DeleteSite sites={ sites } path={ context.path } /> );
 	},
 
 	startOver( context ) {
@@ -141,10 +131,7 @@ module.exports = {
 			return page( '/settings/general/' + site.slug );
 		}
 
-		renderPage(
-			context,
-			<StartOver path={ context.path } />
-		);
+		renderPage( context, <StartOver path={ context.path } /> );
 	},
 
 	themeSetup( context ) {
@@ -157,10 +144,7 @@ module.exports = {
 			return page( '/settings/general/' + site.slug );
 		}
 
-		renderPage(
-			context,
-			<ThemeSetup activeSiteDomain={ context.params.site_id } />
-		);
+		renderPage( context, <ThemeSetup activeSiteDomain={ context.params.site_id } /> );
 	},
 
 	legacyRedirects( context, next ) {
@@ -174,7 +158,7 @@ module.exports = {
 				earnings: '/me/public-profile',
 				'billing-history': purchasesPaths.billingHistory(),
 				'billing-history-v2': purchasesPaths.billingHistory(),
-				'connected-apps': '/me/security/connected-applications'
+				'connected-apps': '/me/security/connected-applications',
 			};
 		if ( ! context ) {
 			return page( '/me/public-profile' );
@@ -188,6 +172,20 @@ module.exports = {
 	setScroll( context, next ) {
 		window.scroll( 0, 0 );
 		next();
-	}
-
+	},
 };
+
+export default exported;
+
+export const {
+	redirectToGeneral,
+	siteSettings,
+	importSite,
+	exportSite,
+	guidedTransfer,
+	deleteSite,
+	startOver,
+	themeSetup,
+	legacyRedirects,
+	setScroll,
+} = exported;

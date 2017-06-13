@@ -15,10 +15,13 @@ import steps from 'signup/config/steps';
 import flows from 'signup/config/flows';
 import { defaultFlowName } from 'signup/config/flows';
 import formState from 'lib/form-state';
-const user = require( 'lib/user' )();
+import userFactory from 'lib/user';
+const user = userFactory();
 
 function getFlowName( parameters ) {
-	const flow = ( parameters.flowName && isFlowName( parameters.flowName ) ) ? parameters.flowName : defaultFlowName;
+	const flow = parameters.flowName && isFlowName( parameters.flowName )
+		? parameters.flowName
+		: defaultFlowName;
 	return maybeFilterFlowName( flow, flows.filterFlowName );
 }
 
@@ -53,7 +56,10 @@ function isStepSectionName( pathFragment ) {
 }
 
 function getLocale( parameters ) {
-	return find( pick( parameters, [ 'flowName', 'stepName', 'stepSectionName', 'lang' ] ), isLocale );
+	return find(
+		pick( parameters, [ 'flowName', 'stepName', 'stepSectionName', 'lang' ] ),
+		isLocale,
+	);
 }
 
 function isLocale( pathFragment ) {
@@ -107,17 +113,14 @@ function getFlowSteps( flowName ) {
 }
 
 function getValueFromProgressStore( { signupProgress, stepName, fieldName } ) {
-	const siteStepProgress = find(
-		signupProgress,
-		step => step.stepName === stepName
-	);
+	const siteStepProgress = find( signupProgress, step => step.stepName === stepName );
 	return siteStepProgress ? siteStepProgress[ fieldName ] : null;
 }
 
-function mergeFormWithValue( { form, fieldName, fieldValue} ) {
+function mergeFormWithValue( { form, fieldName, fieldValue } ) {
 	if ( ! formState.getFieldValue( form, fieldName ) ) {
 		return merge( form, {
-			[ fieldName ]: { value: fieldValue }
+			[ fieldName ]: { value: fieldValue },
 		} );
 	}
 	return form;
@@ -127,7 +130,7 @@ function getDestination( destination, dependencies, flowName ) {
 	return flows.filterDestination( destination, dependencies, flowName );
 }
 
-export default {
+const exported = {
 	getFlowName: getFlowName,
 	getFlowSteps: getFlowSteps,
 	getStepName: getStepName,
@@ -139,5 +142,21 @@ export default {
 	getNextStepName: getNextStepName,
 	getValueFromProgressStore: getValueFromProgressStore,
 	getDestination: getDestination,
-	mergeFormWithValue: mergeFormWithValue
+	mergeFormWithValue: mergeFormWithValue,
+};
+
+export default exported;
+export {
+	getFlowName,
+	getFlowSteps,
+	getStepName,
+	getLocale,
+	getStepSectionName,
+	getStepUrl,
+	getValidPath,
+	getPreviousStepName,
+	getNextStepName,
+	getValueFromProgressStore,
+	getDestination,
+	mergeFormWithValue,
 };

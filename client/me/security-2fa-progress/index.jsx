@@ -1,12 +1,13 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	debug = require( 'debug' )( 'calypso:me:security:2fa-progress' ),
-	ProgressItem = require( './progress-item' );
+import React from 'react';
 
-module.exports = React.createClass( {
+import debugFactory from 'debug';
+const debug = debugFactory( 'calypso:me:security:2fa-progress' );
+import ProgressItem from './progress-item';
 
+export default React.createClass( {
 	displayName: 'Security2faProgress',
 
 	componentDidMount: function() {
@@ -20,15 +21,14 @@ module.exports = React.createClass( {
 	stepClass: function( step ) {
 		var currentStep = parseInt( this.props.step, 10 );
 
-		return ( {
+		return {
 			isHighlighted: step === currentStep,
-			isCompleted: step < currentStep
-		} );
+			isCompleted: step < currentStep,
+		};
 	},
 
 	render: function() {
 		return (
-
 			<div className="security-2fa-progress__container">
 
 				<div className="security-2fa-progress__inner-container">
@@ -54,7 +54,6 @@ module.exports = React.createClass( {
 				</div>
 
 			</div>
-
 		);
-	}
+	},
 } );

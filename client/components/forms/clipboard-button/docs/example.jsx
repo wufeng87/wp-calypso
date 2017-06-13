@@ -1,28 +1,29 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	PureRenderMixin = require( 'react-pure-render/mixin' );
+import React from 'react';
+
+import PureRenderMixin from 'react-pure-render/mixin';
 
 /**
  * Internal dependencies
  */
-var ClipboardButton = require( '../' );
+import ClipboardButton from '../';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'ClipboardButtons',
 
 	mixins: [ PureRenderMixin ],
 
 	getInitialState: function() {
 		return {
-			isCopied: false
+			isCopied: false,
 		};
 	},
 
 	onCopy: function() {
 		this.setState( {
-			isCopied: true
+			isCopied: true,
 		} );
 	},
 
@@ -32,10 +33,11 @@ module.exports = React.createClass( {
 				<ClipboardButton
 					onCopy={ this.onCopy }
 					text="This text was copied via ClipboardButton"
-					style={ { float: 'none' } }>
+					style={ { float: 'none' } }
+				>
 					{ this.state.isCopied ? 'Copied!' : 'Copy to clipboard' }
 				</ClipboardButton>
 			</div>
 		);
-	}
+	},
 } );

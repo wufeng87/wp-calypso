@@ -20,3 +20,5 @@ LikeIcons.defaultProps = {
 };
 
 export default LikeIcons;
+
+export const { propTypes, defaultProps } = LikeIcons;

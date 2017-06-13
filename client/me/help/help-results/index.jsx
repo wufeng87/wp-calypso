@@ -11,7 +11,7 @@ import CompactCard from 'components/card/compact';
 import HelpResult from './item';
 import SectionHeader from 'components/section-header';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'HelpResults',
 
 	mixins: [ PureRenderMixin ],
@@ -23,8 +23,16 @@ module.exports = React.createClass( {
 
 		return (
 			<div className="help-results">
-				<SectionHeader label={ this.props.header }/>
-				{ this.props.helpLinks.map( helpLink => <HelpResult key={ helpLink.link } helpLink={ helpLink } iconTypeDescription={ this.props.iconTypeDescription } /> ) }
+				<SectionHeader label={ this.props.header } />
+				{ this.props.helpLinks.map(
+					helpLink => (
+						<HelpResult
+							key={ helpLink.link }
+							helpLink={ helpLink }
+							iconTypeDescription={ this.props.iconTypeDescription }
+						/>
+					),
+				) }
 				<a href={ this.props.searchLink } target="__blank">
 					<CompactCard className="help-results__footer">
 						<span className="help-results__footer-text">
@@ -34,5 +42,5 @@ module.exports = React.createClass( {
 				</a>
 			</div>
 		);
-	}
+	},
 } );

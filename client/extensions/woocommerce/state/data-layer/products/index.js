@@ -16,14 +16,17 @@ function createProduct( { dispatch }, action, next ) {
 	const { id, ...productData } = product;
 
 	if ( typeof id === 'number' ) {
-		dispatch( setError( siteId, action, {
-			message: 'Attempting to create a product which already has a valid id.',
-			product,
-		} ) );
+		dispatch(
+			setError( siteId, action, {
+				message: 'Attempting to create a product which already has a valid id.',
+				product,
+			} ),
+		);
 		return;
 	}
 
-	request( siteId ).post( 'products', productData )
+	request( siteId )
+		.post( 'products', productData )
 		.then( data => {
 			dispatch( {
 				type: WOOCOMMERCE_PRODUCT_CREATE_SUCCESS,
@@ -54,10 +57,12 @@ function createProductSuccess( { dispatch }, action ) {
 			dispatch( successAction );
 		}
 	} else {
-		dispatch( setError( siteId, action, {
-			message: 'Invalid Product Object',
-			data
-		} ) );
+		dispatch(
+			setError( siteId, action, {
+				message: 'Invalid Product Object',
+				data,
+			} ),
+		);
 
 		if ( errorAction ) {
 			dispatch( errorAction );
@@ -68,13 +73,18 @@ function createProductSuccess( { dispatch }, action ) {
 function isValidProduct( product ) {
 	return (
 		product &&
-		product.id && ( 'number' === typeof product.id ) &&
-		product.type && ( 'string' === typeof product.type )
+		product.id &&
+		'number' === typeof product.id &&
+		product.type &&
+		'string' === typeof product.type
 	);
 }
 
-export default {
+const exported = {
 	[ WOOCOMMERCE_PRODUCT_CREATE ]: [ createProduct ],
 	[ WOOCOMMERCE_PRODUCT_CREATE_SUCCESS ]: [ createProductSuccess ],
 };
 
+export default exported;
+
+export const { WOOCOMMERCE_PRODUCT_CREATE, WOOCOMMERCE_PRODUCT_CREATE_SUCCESS } = exported;

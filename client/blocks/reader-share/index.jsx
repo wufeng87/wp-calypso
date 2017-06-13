@@ -26,7 +26,9 @@ import User from 'lib/user';
  * Local variables
  */
 // Remove me
-const sitesList = require( 'lib/sites-list' )(); // eslint-disable-line no-restricted-modules
+import sitesListFactory from 'lib/sites-list';
+
+const sitesList = sitesListFactory(); // eslint-disable-line no-restricted-modules
 
 const user = User();
 const actionMap = {
@@ -226,7 +228,7 @@ class ReaderShare extends React.Component {
 									<SocialLogo icon="facebook" /><span>Facebook</span>
 								</PopoverMenuItem>
 							</PopoverMenu> ),
-			]
+			],
 		);
 	}
 }

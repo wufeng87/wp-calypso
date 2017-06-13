@@ -1,6 +1,10 @@
 /**
  * Stub wp module to avoid its dependency on the browser
  **/
-module.exports = {
-	undocumented: function() {}
+const exported = {
+	undocumented: function() {},
 };
+
+export default exported;
+
+export const { undocumented } = exported;

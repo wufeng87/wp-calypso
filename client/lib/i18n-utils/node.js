@@ -1,10 +1,10 @@
 /**
  * Internal dependencies
  */
-var config = require( 'config' );
+import config from 'config';
 
-module.exports = require( './utils.js' );
+export default require( './utils.js' );
 
-module.exports.getLocaleSlug = function() {
+export const getLocaleSlug = function() {
 	return config( 'i18n_default_locale_slug' );
 };

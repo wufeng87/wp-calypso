@@ -1,23 +1,25 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	isEmpty = require( 'lodash/isEmpty' ),
-	classNames = require( 'classnames' );
+import React from 'react';
+
+import isEmpty from 'lodash/isEmpty';
+import classNames from 'classnames';
 
 /**
  * Internal dependencies
  */
-var CreditCardFormFields = require( 'components/credit-card-form-fields' ),
-	upgradesActions = require( 'lib/upgrades/actions' );
+import CreditCardFormFields from 'components/credit-card-form-fields';
 
-module.exports = React.createClass( {
+import upgradesActions from 'lib/upgrades/actions';
+
+export default React.createClass( {
 	displayName: 'NewCardForm',
 
 	propTypes: {
 		countriesList: React.PropTypes.object.isRequired,
 		hasStoredCards: React.PropTypes.bool.isRequired,
-		transaction: React.PropTypes.object.isRequired
+		transaction: React.PropTypes.object.isRequired,
 	},
 
 	isFieldInvalid: function( fieldName ) {
@@ -25,7 +27,10 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
-		let classes = classNames( 'all-fields-required', { 'has-saved-cards': this.props.hasStoredCards } );
+		let classes = classNames(
+			'all-fields-required',
+			{ 'has-saved-cards': this.props.hasStoredCards },
+		);
 
 		return (
 			<div className="new-card">
@@ -34,9 +39,11 @@ module.exports = React.createClass( {
 				</button>
 
 				<div className="new-card-fields">
-					{ this.props.hasStoredCards ?
-						<h6 className="new-card-header">{ this.translate( 'Use New Credit/Debit Card' ) }:</h6> : null
-					}
+					{ this.props.hasStoredCards
+						? <h6 className="new-card-header">
+								{ this.translate( 'Use New Credit/Debit Card' ) }:
+							</h6>
+						: null }
 
 					<span className={ classes }>{ this.translate( 'All fields required' ) }</span>
 
@@ -45,7 +52,8 @@ module.exports = React.createClass( {
 						countriesList={ this.props.countriesList }
 						eventFormName="Checkout Form"
 						isFieldInvalid={ this.isFieldInvalid }
-						onFieldChange={ this.handleFieldChange } />
+						onFieldChange={ this.handleFieldChange }
+					/>
 				</div>
 			</div>
 		);
@@ -54,7 +62,7 @@ module.exports = React.createClass( {
 	handleFieldChange: function( rawDetails, maskedDetails ) {
 		upgradesActions.setNewCreditCardDetails( {
 			rawDetails: rawDetails,
-			maskedDetails: maskedDetails
+			maskedDetails: maskedDetails,
 		} );
-	}
+	},
 } );

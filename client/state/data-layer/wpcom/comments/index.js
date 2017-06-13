@@ -7,11 +7,7 @@ import { isDate } from 'lodash';
 /**
  * Internal dependencies
  */
-import {
-	COMMENTS_REQUEST,
-	COMMENTS_RECEIVE,
-	COMMENTS_COUNT_RECEIVE
-} from 'state/action-types';
+import { COMMENTS_REQUEST, COMMENTS_RECEIVE, COMMENTS_COUNT_RECEIVE } from 'state/action-types';
 import { http } from 'state/data-layer/wpcom-http/actions';
 import { dispatchRequest } from 'state/data-layer/wpcom-http/utils';
 import { errorNotice } from 'state/notices/actions';
@@ -23,17 +19,24 @@ export const fetchPostComments = ( { dispatch, getState }, action ) => {
 	const { siteId, postId, query } = action;
 	const before = getPostOldestCommentDate( getState(), siteId, postId );
 
-	dispatch( http( {
-		method: 'GET',
-		path: `/sites/${ siteId }/posts/${ postId }/replies`,
-		apiVersion: '1.1',
-		query: {
-			...query,
-			...( before && isDate( before ) && before.toISOString && {
-				before: before.toISOString()
-			} )
-		}
-	}, action ) );
+	dispatch(
+		http(
+			{
+				method: 'GET',
+				path: `/sites/${ siteId }/posts/${ postId }/replies`,
+				apiVersion: '1.1',
+				query: {
+					...query,
+					...( before &&
+					isDate( before ) &&
+					before.toISOString && {
+						before: before.toISOString(),
+					} ),
+				},
+			},
+			action,
+		),
+	);
 };
 
 export const addComments = ( { dispatch }, { siteId, postId }, next, { comments, found } ) => {
@@ -41,7 +44,7 @@ export const addComments = ( { dispatch }, { siteId, postId }, next, { comments,
 		type: COMMENTS_RECEIVE,
 		siteId,
 		postId,
-		comments
+		comments,
 	} );
 
 	// if the api have returned comments count, dispatch it
@@ -53,7 +56,7 @@ export const addComments = ( { dispatch }, { siteId, postId }, next, { comments,
 			type: COMMENTS_COUNT_RECEIVE,
 			siteId,
 			postId,
-			totalCommentsCount: found
+			totalCommentsCount: found,
 		} );
 	}
 };
@@ -68,6 +71,8 @@ export const announceFailure = ( { dispatch, getState }, { siteId, postId } ) =>
 	dispatch( errorNotice( error ) );
 };
 
-export default {
-	[ COMMENTS_REQUEST ]: [ dispatchRequest( fetchPostComments, addComments, announceFailure ) ]
+const exported = {
+	[ COMMENTS_REQUEST ]: [ dispatchRequest( fetchPostComments, addComments, announceFailure ) ],
 };
+
+export default exported;

@@ -19,7 +19,7 @@ import ContactComponent from './help-contact';
 import support from 'lib/url/support';
 import userUtils from 'lib/user/utils';
 
-export default {
+const exported = {
 	loggedOut( context, next ) {
 		if ( userUtils.isLoggedIn() ) {
 			return next();
@@ -52,7 +52,7 @@ export default {
 		renderWithReduxStore(
 			<HelpComponent isCoursesEnabled={ config.isEnabled( 'help/courses' ) } />,
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 
@@ -61,11 +61,7 @@ export default {
 
 		analytics.pageView.record( basePath, 'Help > Courses' );
 
-		renderWithReduxStore(
-			<CoursesComponent />,
-			'primary',
-			context.store
-		);
+		renderWithReduxStore( <CoursesComponent />, 'primary', context.store );
 	},
 
 	contact( context ) {
@@ -81,7 +77,11 @@ export default {
 		renderWithReduxStore(
 			<ContactComponent clientSlug={ config( 'client_slug' ) } />,
 			'primary',
-			context.store
+			context.store,
 		);
-	}
+	},
 };
+
+export default exported;
+
+export const { loggedOut, help, courses, contact } = exported;

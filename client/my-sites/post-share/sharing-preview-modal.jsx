@@ -11,17 +11,14 @@ import { pick } from 'lodash';
 import Dialog from 'components/dialog';
 import SharingPreviewPane from 'blocks/sharing-preview-pane';
 
-const SharingPreviewModal = ( props ) => {
+const SharingPreviewModal = props => {
 	const previewProps = pick( props, [ 'message', 'siteId', 'postId' ] );
-	const {
-		isVisible,
-		onClose,
-	} = props;
+	const { isVisible, onClose } = props;
 
 	return (
-		<Dialog isVisible={ isVisible } additionalClassNames="post-share__sharing-preview-modal" >
+		<Dialog isVisible={ isVisible } additionalClassNames="post-share__sharing-preview-modal">
 			<header className="post-share__sharing-preview-modal-header">
-				<button onClick={ onClose } className="post-share__sharing-preview-modal-close" >
+				<button onClick={ onClose } className="post-share__sharing-preview-modal-close">
 					<Gridicon icon="cross" />
 				</button>
 			</header>
@@ -41,3 +38,5 @@ SharingPreviewModal.propTypes = {
 };
 
 export default SharingPreviewModal;
+
+export const { propTypes } = SharingPreviewModal;

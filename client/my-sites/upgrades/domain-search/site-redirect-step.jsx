@@ -1,18 +1,20 @@
 /**
  * External dependencies
  */
-var page = require( 'page' ),
-	React = require( 'react' );
+import page from 'page';
+
+import React from 'react';
 
 /**
  * Internal dependencies
  */
-var cartItems = require( 'lib/cart-values' ).cartItems,
-	notices = require( 'notices' ),
-	{ canRedirect } = require( 'lib/domains' ),
-	DomainProductPrice = require( 'components/domains/domain-product-price' ),
-	upgradesActions = require( 'lib/upgrades/actions' ),
-	analyticsMixin = require( 'lib/mixins/analytics' );
+import { cartItems } from 'lib/cart-values';
+
+import notices from 'notices';
+import { canRedirect } from 'lib/domains';
+import DomainProductPrice from 'components/domains/domain-product-price';
+import upgradesActions from 'lib/upgrades/actions';
+import analyticsMixin from 'lib/mixins/analytics';
 
 var SiteRedirectStep = React.createClass( {
 	mixins: [ analyticsMixin( 'siteRedirect' ) ],
@@ -28,7 +30,9 @@ var SiteRedirectStep = React.createClass( {
 	},
 
 	render: function() {
-		var price = this.props.products.offsite_redirect ? this.props.products.offsite_redirect.cost_display : null;
+		var price = this.props.products.offsite_redirect
+			? this.props.products.offsite_redirect.cost_display
+			: null;
 
 		return (
 			<div className="site-redirect-step">
@@ -38,14 +42,12 @@ var SiteRedirectStep = React.createClass( {
 						<p>
 							{ this.translate( 'Redirect {{strong}}%(domain)s{{/strong}} to this domain', {
 								components: { strong: <strong /> },
-								args: { domain: this.props.selectedSite.slug }
+								args: { domain: this.props.selectedSite.slug },
 							} ) }
 						</p>
 					</div>
 
-					<DomainProductPrice
-						price={ price }
-						requiresPlan={ false } />
+					<DomainProductPrice price={ price } requiresPlan={ false } />
 
 					<fieldset>
 						<input
@@ -54,11 +56,14 @@ var SiteRedirectStep = React.createClass( {
 							value={ this.state.searchQuery }
 							placeholder={ this.translate( 'Enter a domain', { textOnly: true } ) }
 							onChange={ this.setSearchQuery }
-							onClick={ this.recordInputFocus } />
-						<button className="site-redirect-step__go button is-primary"
-								onClick={ this.recordGoButtonClick }>
+							onClick={ this.recordInputFocus }
+						/>
+						<button
+							className="site-redirect-step__go button is-primary"
+							onClick={ this.recordGoButtonClick }
+						>
 							{ this.translate( 'Go', {
-								context: 'Upgrades: Label for adding Site Redirect'
+								context: 'Upgrades: Label for adding Site Redirect',
 							} ) }
 						</button>
 					</fieldset>
@@ -91,14 +96,18 @@ var SiteRedirectStep = React.createClass( {
 			return;
 		}
 
-		canRedirect( this.props.selectedSite.ID, domain, function( error ) {
-			if ( error ) {
-				notices.error( this.getValidationErrorMessage( domain, error ) );
-				return;
-			}
+		canRedirect(
+			this.props.selectedSite.ID,
+			domain,
+			function( error ) {
+				if ( error ) {
+					notices.error( this.getValidationErrorMessage( domain, error ) );
+					return;
+				}
 
-			this.addSiteRedirectToCart( domain );
-		}.bind( this ) );
+				this.addSiteRedirectToCart( domain );
+			}.bind( this ),
+		);
 	},
 
 	addSiteRedirectToCart: function( domain ) {
@@ -113,29 +122,36 @@ var SiteRedirectStep = React.createClass( {
 		switch ( error.code ) {
 			case 'invalid_domain':
 				return this.translate( 'Sorry, %(domain)s does not appear to be a valid domain name.', {
-					args: { domain: domain }
+					args: { domain: domain },
 				} );
 
 			case 'invalid_tld':
 				return this.translate( 'Sorry, %(domain)s does not end with a valid domain extension.', {
-					args: { domain: domain }
+					args: { domain: domain },
 				} );
 
 			case 'empty_query':
 				return this.translate( 'Please enter a domain name or keyword.' );
 
 			case 'has_subscription':
-				return this.translate( "You already have Site Redirect upgrade and can't add another one to the same site." );
+				return this.translate(
+					"You already have Site Redirect upgrade and can't add another one to the same site.",
+				);
 
 			case 'already_in_cart':
-				return this.translate( "You already have Site Redirect upgrade in the Shopping Cart and can't add another one" );
+				return this.translate(
+					"You already have Site Redirect upgrade in the Shopping Cart and can't add another one",
+				);
 
 			default:
-				return this.translate( 'There is a problem adding Site Redirect that points to %(domain)s.', {
-					args: { domain: domain }
-				} );
+				return this.translate(
+					'There is a problem adding Site Redirect that points to %(domain)s.',
+					{
+						args: { domain: domain },
+					},
+				);
 		}
-	}
+	},
 } );
 
-module.exports = SiteRedirectStep;
+export default SiteRedirectStep;

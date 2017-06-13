@@ -13,22 +13,26 @@ export const handleResetPasswordRequest = ( { dispatch }, action ) => {
 		userData, // userData can be either { user } or { firstname, lastname, url }
 		method,
 		key,
-		password
+		password,
 	} = action;
 
-	wpcom.req.post( {
-		body: {
-			...userData,
-			method,
-			key,
-			password,
-		},
-		apiNamespace: 'wpcom/v2',
-		path: '/account-recovery/reset'
-	} ).then( () => dispatch( requestResetPasswordSuccess() ) )
-	.catch( ( error ) => dispatch( requestResetPasswordError( error ) ) );
+	wpcom.req
+		.post( {
+			body: {
+				...userData,
+				method,
+				key,
+				password,
+			},
+			apiNamespace: 'wpcom/v2',
+			path: '/account-recovery/reset',
+		} )
+		.then( () => dispatch( requestResetPasswordSuccess() ) )
+		.catch( error => dispatch( requestResetPasswordError( error ) ) );
 };
 
-export default {
+const exported = {
 	[ ACCOUNT_RECOVERY_RESET_PASSWORD_REQUEST ]: [ handleResetPasswordRequest ],
 };
+
+export default exported;

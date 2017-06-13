@@ -11,7 +11,9 @@ const WapiDomainInfoStore = createReducerStore( reducer, {}, [ DomainsStore.disp
 WapiDomainInfoStore.getByDomainName = function( domainName ) {
 	const state = this.get();
 
-	return ( state[ domainName ] || initialDomainState );
+	return state[ domainName ] || initialDomainState;
 };
 
 export default WapiDomainInfoStore;
+
+export const { getByDomainName } = WapiDomainInfoStore;

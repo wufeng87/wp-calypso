@@ -1,17 +1,23 @@
 /**
  * External dependencies
  */
-var page = require( 'page' );
+import page from 'page';
 
 /**
  * Internal dependencies
  */
-var controller = require( 'my-sites/controller' ),
-	pagesController = require( './controller' ),
-	config = require( 'config' );
+import controller from 'my-sites/controller';
 
-module.exports = function() {
+import pagesController from './controller';
+import config from 'config';
+
+export default function() {
 	if ( config.isEnabled( 'manage/pages' ) ) {
-		page( '/pages/:status?/:domain?', controller.siteSelection, controller.navigation, pagesController.pages );
+		page(
+			'/pages/:status?/:domain?',
+			controller.siteSelection,
+			controller.navigation,
+			pagesController.pages,
+		);
 	}
-};
+}

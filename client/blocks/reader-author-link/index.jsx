@@ -52,3 +52,5 @@ ReaderAuthorLink.propTypes = {
 };
 
 export default ReaderAuthorLink;
+
+export const { propTypes } = ReaderAuthorLink;

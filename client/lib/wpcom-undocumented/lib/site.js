@@ -1,7 +1,9 @@
 /**
  * External dependencies.
  */
-var debug = require( 'debug' )( 'calypso:wpcom-undocumented:site' );
+import debugFactory from 'debug';
+
+const debug = debugFactory( 'calypso:wpcom-undocumented:site' );
 
 /**
  * Resources array
@@ -16,13 +18,12 @@ var resources = [
 	[ 'sshCredentialsMine', 'ssh-credentials/mine', '1.1' ],
 	[ 'sshCredentialsMineDelete', 'ssh-credentials/mine/delete', '1.1', 'post' ],
 	[ 'sshScanToggle', 'ssh-credentials/mine', '1.1', 'post' ],
-	[ 'getOption', 'option/' ]
+	[ 'getOption', 'option/' ],
 ];
 
 var list = function( resourceOptions ) {
 	return function( query, fn ) {
-		var path,
-			subpath = resourceOptions.subpath;
+		var path, subpath = resourceOptions.subpath;
 
 		// Handle replacement of '/:var' in the subpath with value from query
 		subpath = subpath.replace( /\/:([^\/]+)/g, function( match, property ) {
@@ -57,7 +58,7 @@ resources.forEach( function( resource ) {
 		resourceOptions = {
 			subpath: resource[ 1 ],
 			apiVersion: resource[ 2 ] || '1',
-			method: resource[ 3 ] || 'get'
+			method: resource[ 3 ] || 'get',
 		};
 
 	UndocumentedSite.prototype[ name ] = list.call( this, resourceOptions );
@@ -83,18 +84,17 @@ function UndocumentedSite( id, wpcom ) {
 }
 
 UndocumentedSite.prototype.domains = function( callback ) {
-	return this.wpcom.req.get(
-		`/sites/${ this._id }/domains`,
-		{ apiVersion: '1.2' },
-		function( error, response ) {
-			if ( error ) {
-				callback( error );
-				return;
-			}
-
-			callback( null, response );
+	return this.wpcom.req.get( `/sites/${ this._id }/domains`, { apiVersion: '1.2' }, function(
+		error,
+		response,
+	 ) {
+		if ( error ) {
+			callback( error );
+			return;
 		}
-	);
+
+		callback( null, response );
+	} );
 };
 
 UndocumentedSite.prototype.postFormatsList = function( callback ) {
@@ -102,10 +102,13 @@ UndocumentedSite.prototype.postFormatsList = function( callback ) {
 };
 
 UndocumentedSite.prototype.postAutosave = function( postId, attributes, callback ) {
-	return this.wpcom.req.post( {
-		path: '/sites/' + this._id + '/posts/' + postId + '/autosave',
-		body: attributes
-	}, callback );
+	return this.wpcom.req.post(
+		{
+			path: '/sites/' + this._id + '/posts/' + postId + '/autosave',
+			body: attributes,
+		},
+		callback,
+	);
 };
 
 UndocumentedSite.prototype.embeds = function( attributes, callback ) {
@@ -118,9 +121,13 @@ UndocumentedSite.prototype.embeds = function( attributes, callback ) {
 };
 
 UndocumentedSite.prototype.embedReversal = function( markup, callback ) {
-	return this.wpcom.req.post( `/sites/${ this._id }/embeds/reversal`, {
-		maybe_embed: markup
-	}, callback );
+	return this.wpcom.req.post(
+		`/sites/${ this._id }/embeds/reversal`,
+		{
+			maybe_embed: markup,
+		},
+		callback,
+	);
 };
 
 UndocumentedSite.prototype.shortcodes = function( attributes, callback ) {
@@ -136,23 +143,32 @@ UndocumentedSite.prototype.getViewers = function( query, callback ) {
 };
 
 UndocumentedSite.prototype.removeViewer = function( viewerId, callback ) {
-	return this.wpcom.req.post( {
-		path: '/sites/' + this._id + '/viewers/' + viewerId + '/delete'
-	}, callback );
+	return this.wpcom.req.post(
+		{
+			path: '/sites/' + this._id + '/viewers/' + viewerId + '/delete',
+		},
+		callback,
+	);
 };
 
 UndocumentedSite.prototype.deleteUser = function( userId, attributes, callback ) {
-	return this.wpcom.req.post( {
-		path: '/sites/' + this._id + '/users/' + userId + '/delete',
-		body: attributes
-	}, callback );
+	return this.wpcom.req.post(
+		{
+			path: '/sites/' + this._id + '/users/' + userId + '/delete',
+			body: attributes,
+		},
+		callback,
+	);
 };
 
 UndocumentedSite.prototype.updateUser = function( userId, attributes, callback ) {
-	return this.wpcom.req.post( {
-		path: '/sites/' + this._id + '/users/' + userId,
-		body: attributes
-	}, callback );
+	return this.wpcom.req.post(
+		{
+			path: '/sites/' + this._id + '/users/' + userId,
+			body: attributes,
+		},
+		callback,
+	);
 };
 
 UndocumentedSite.prototype.getUser = function( login, callback ) {
@@ -160,23 +176,25 @@ UndocumentedSite.prototype.getUser = function( login, callback ) {
 };
 
 UndocumentedSite.prototype.removeFollower = function( followerId, callback ) {
-	return this.wpcom.req.post( {
-		path: '/sites/' + this._id + '/followers/' + followerId + '/delete'
-	}, callback );
-};
-
-UndocumentedSite.prototype.fetchFollowers = function( fetchOptions, callback ) {
-	return this.wpcom.req.get(
-		'/sites/' + this._id + '/followers/',
-		fetchOptions,
-		callback
+	return this.wpcom.req.post(
+		{
+			path: '/sites/' + this._id + '/followers/' + followerId + '/delete',
+		},
+		callback,
 	);
 };
 
+UndocumentedSite.prototype.fetchFollowers = function( fetchOptions, callback ) {
+	return this.wpcom.req.get( '/sites/' + this._id + '/followers/', fetchOptions, callback );
+};
+
 UndocumentedSite.prototype.removeEmailFollower = function( followerId, callback ) {
-	return this.wpcom.req.post( {
-		path: '/sites/' + this._id + '/email-followers/' + followerId + '/delete'
-	}, callback );
+	return this.wpcom.req.post(
+		{
+			path: '/sites/' + this._id + '/email-followers/' + followerId + '/delete',
+		},
+		callback,
+	);
 };
 
 UndocumentedSite.prototype.setOption = function( query, callback ) {
@@ -185,18 +203,21 @@ UndocumentedSite.prototype.setOption = function( query, callback ) {
 		{
 			option_name: query.option_name,
 			is_array: query.is_array,
-			site_option: query.site_option
+			site_option: query.site_option,
 		},
 		{ option_value: query.option_value },
-		callback
+		callback,
 	);
 };
 
 UndocumentedSite.prototype.postCounts = function( options, callback ) {
-	let query = Object.assign( {
-		type: 'post',
-		apiNamespace: 'wpcom/v2'
-	}, options );
+	let query = Object.assign(
+		{
+			type: 'post',
+			apiNamespace: 'wpcom/v2',
+		},
+		options,
+	);
 
 	const type = query.type;
 	delete query.type;
@@ -223,7 +244,7 @@ UndocumentedSite.prototype.mediaStorage = function( callback ) {
 UndocumentedSite.prototype.getGuidedTransferStatus = function() {
 	debug( '/sites/:site:/transfer' );
 	return this.wpcom.req.get( '/sites/' + this._id + '/transfer', {
-		apiNamespace: 'wpcom/v2'
+		apiNamespace: 'wpcom/v2',
 	} );
 };
 
@@ -275,13 +296,16 @@ UndocumentedSite.prototype.runThemeSetup = function() {
  * @return {Promise} A Promise to resolve when complete.
  */
 UndocumentedSite.prototype.statsOrders = function( query ) {
-	return this.wpcom.req.get( {
-		path: `/sites/${ this._id }/stats/orders`,
-		apiNamespace: 'wpcom/v2',
-	}, query );
+	return this.wpcom.req.get(
+		{
+			path: `/sites/${ this._id }/stats/orders`,
+			apiNamespace: 'wpcom/v2',
+		},
+		query,
+	);
 };
 
 /**
  * Expose `UndocumentedSite` module
  */
-module.exports = UndocumentedSite;
+export default UndocumentedSite;

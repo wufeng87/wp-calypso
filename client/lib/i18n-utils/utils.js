@@ -90,3 +90,11 @@ const i18nUtils = {
 };
 
 export default i18nUtils;
+
+export const {
+	isDefaultLocale,
+	getLanguage,
+	getLocaleFromPath,
+	addLocaleToPath,
+	removeLocaleFromPath,
+} = i18nUtils;

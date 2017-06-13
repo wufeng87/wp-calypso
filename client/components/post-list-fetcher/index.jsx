@@ -1,16 +1,17 @@
 /**
  * External dependencies
  */
-var React = require( 'react' );
+import React from 'react';
 
 /**
  * Internal dependencies
  */
-var postListStoreFactory = require( 'lib/posts/post-list-store-factory' ),
-	PostContentImagesStore = require( 'lib/posts/post-content-images-store' ),
-	Dispatcher = require( 'dispatcher' ),
-	actions = require( 'lib/posts/actions' ),
-	pollers = require( 'lib/data-poller' );
+import postListStoreFactory from 'lib/posts/post-list-store-factory';
+
+import PostContentImagesStore from 'lib/posts/post-content-images-store';
+import Dispatcher from 'dispatcher';
+import actions from 'lib/posts/actions';
+import pollers from 'lib/data-poller';
 
 var PostListFetcher;
 
@@ -35,7 +36,7 @@ function queryPosts( props ) {
 		order: props.order,
 		number: props.number,
 		before: props.before,
-		after: props.after
+		after: props.after,
 	};
 
 	if ( props.withCounts ) {
@@ -62,7 +63,7 @@ function getPostsState( postListStoreId ) {
 		page: postListStore.getPage(),
 		lastPage: postListStore.isLastPage(),
 		loading: postListStore.isFetchingNextPage(),
-		hasRecentError: postListStore.hasRecentError()
+		hasRecentError: postListStore.hasRecentError(),
 	};
 }
 
@@ -70,7 +71,8 @@ function shouldQueryPosts( props, nextProps ) {
 	// evaluates props that are used to build the post-list query,
 	// withImages is excluded because it is only used client-side
 
-	return props.type !== nextProps.type ||
+	return (
+		props.type !== nextProps.type ||
 		props.status !== nextProps.status ||
 		props.author !== nextProps.author ||
 		props.search !== nextProps.search ||
@@ -82,11 +84,11 @@ function shouldQueryPosts( props, nextProps ) {
 		props.before !== nextProps.before ||
 		props.after !== nextProps.after ||
 		props.siteID !== nextProps.siteID ||
-		props.postListStoreId !== nextProps.postListStoreId;
+		props.postListStoreId !== nextProps.postListStoreId
+	);
 }
 
 PostListFetcher = React.createClass( {
-
 	propTypes: {
 		children: React.PropTypes.element.isRequired,
 		type: React.PropTypes.string,
@@ -97,21 +99,19 @@ PostListFetcher = React.createClass( {
 		withImages: React.PropTypes.bool,
 		withCounts: React.PropTypes.bool,
 		excludeTree: React.PropTypes.number,
-		orderBy: React.PropTypes.oneOf(
-			[ 'title', 'date', 'modified', 'comment_count', 'ID' ]
-		),
+		orderBy: React.PropTypes.oneOf( [ 'title', 'date', 'modified', 'comment_count', 'ID' ] ),
 		order: React.PropTypes.oneOf( [ 'ASC', 'DESC' ] ),
 		number: React.PropTypes.number,
 		before: React.PropTypes.string,
 		after: React.PropTypes.string,
-		postListStoreId: React.PropTypes.string
+		postListStoreId: React.PropTypes.string,
 	},
 
 	getDefaultProps: function() {
 		return {
 			orderBy: 'date',
 			order: 'DESC',
-			postListStoreId: 'default'
+			postListStoreId: 'default',
 		};
 	},
 
@@ -146,7 +146,7 @@ PostListFetcher = React.createClass( {
 		}
 
 		if ( nextProps.withImages !== this.props.withImages ) {
-			listenerChange = ( nextProps.withImages ) ? 'on' : 'off';
+			listenerChange = nextProps.withImages ? 'on' : 'off';
 			PostContentImagesStore[ listenerChange ]( 'change', this.onPostsChange );
 		}
 	},
@@ -158,8 +158,7 @@ PostListFetcher = React.createClass( {
 	render: function() {
 		// Clone the child element along and pass along state (containing data from the stores)
 		return React.cloneElement( this.props.children, this.state );
-	}
-
+	},
 } );
 
-module.exports = PostListFetcher;
+export default PostListFetcher;

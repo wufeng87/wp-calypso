@@ -1,30 +1,32 @@
-
 /**
  * External dependencies
  */
 
-var isEqual = require( 'lodash/isEqual' ),
-	debug = require( 'debug' )( 'calypso:posts:post-counts-store' );
+import isEqual from 'lodash/isEqual';
+
+import debugFactory from 'debug';
+const debug = debugFactory( 'calypso:posts:post-counts-store' );
 
 const sum = obj => {
-	return Object.keys( obj )
-		.reduce( function( _sum, key ) {
-			return _sum + parseFloat( obj[ key ] );
-		}, 0 );
-}
+	return Object.keys( obj ).reduce( function( _sum, key ) {
+		return _sum + parseFloat( obj[ key ] );
+	}, 0 );
+};
 
 /**
  * Internal dependencies
  */
-var emitter = require( 'lib/mixins/emitter' ),
-	PostListStore = require( './post-list-store-factory' )(),
-	PostsStore = require( './posts-store' ),
-	sites = require( 'lib/sites-list' )(),
-	postUtils = require( 'lib/posts/utils' ),
-	Dispatcher = require( 'dispatcher' );
+import emitter from 'lib/mixins/emitter';
 
-var _counts = {},
-	PostCountsStore;
+import PostListStoreFactory from './post-list-store-factory';
+const PostListStore = PostListStoreFactory();
+import PostsStore from './posts-store';
+import sitesFactory from 'lib/sites-list';
+const sites = sitesFactory();
+import postUtils from 'lib/posts/utils';
+import Dispatcher from 'dispatcher';
+
+var _counts = {}, PostCountsStore;
 
 /**
  * Get a normalized numberic siteId
@@ -49,7 +51,6 @@ function getSiteId( id ) {
  * PostCountsStore
  */
 PostCountsStore = {
-
 	/**
 	 * Return statuses of current site
 	 *
@@ -94,7 +95,7 @@ PostCountsStore = {
 		debug( '[%s][%s] total: %o ', siteId, scope, total );
 
 		return total;
-	}
+	},
 };
 
 emitter( PostCountsStore );
@@ -243,4 +244,6 @@ function changeCounts( post, original, counts ) {
 /**
  * Expose module
  */
-module.exports = PostCountsStore;
+export default PostCountsStore;
+
+export const { get, getTotalCount, dispatchToken } = PostCountsStore;

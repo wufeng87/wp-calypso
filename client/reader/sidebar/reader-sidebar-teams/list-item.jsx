@@ -40,3 +40,5 @@ ReaderSidebarTeamsListItem.propTypes = {
 };
 
 export default ReaderSidebarTeamsListItem;
+
+export const { propTypes } = ReaderSidebarTeamsListItem;

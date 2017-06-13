@@ -1,16 +1,22 @@
 /**
  * External dependencies
  */
-var page = require( 'page' );
+import page from 'page';
 
 /**
  * Internal dependencies
  */
-var controller = require( 'my-sites/controller' ),
-	adsController = require( './controller' );
+import controller from 'my-sites/controller';
 
-module.exports = function() {
+import adsController from './controller';
+
+export default function() {
 	page( '/ads', controller.siteSelection, controller.sites );
 	page( '/ads/:site_id', adsController.redirect );
-	page( '/ads/:section/:site_id', controller.siteSelection, controller.navigation, adsController.layout );
-};
+	page(
+		'/ads/:section/:site_id',
+		controller.siteSelection,
+		controller.navigation,
+		adsController.layout,
+	);
+}

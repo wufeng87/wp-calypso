@@ -9,3 +9,5 @@ const DomainsStore = createReducerStore( reducer, initialState );
 DomainsStore.getBySite = siteId => getBySite( DomainsStore.get(), siteId );
 
 export default DomainsStore;
+
+export const { getBySite } = DomainsStore;

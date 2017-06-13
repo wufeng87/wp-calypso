@@ -1,13 +1,14 @@
 /**
  * External dependencies
  */
-const assert = require( 'chai' ).assert;
+import { assert } from 'chai';
 
 /**
  * Internal dependencies
  */
-const Dispatcher = require( 'dispatcher' ),
-	constants = require( 'lib/invites/constants' );
+import Dispatcher from 'dispatcher';
+
+import constants from 'lib/invites/constants';
 
 describe( 'List Invites Store', function() {
 	var ListInvitesStore;
@@ -25,11 +26,11 @@ describe( 'List Invites Store', function() {
 						role: 'editor',
 						user: {
 							ID: 1234,
-							name: 'Test One'
-						}
-					}
-				]
-			}
+							name: 'Test One',
+						},
+					},
+				],
+			},
 		},
 		receiveMoreInvites: {
 			type: constants.action.RECEIVE_INVITES,
@@ -43,12 +44,12 @@ describe( 'List Invites Store', function() {
 						role: 'contributor',
 						user: {
 							ID: 1234,
-							name: 'Test Two'
-						}
-					}
-				]
-			}
-		}
+							name: 'Test Two',
+						},
+					},
+				],
+			},
+		},
 	};
 
 	beforeEach( function() {

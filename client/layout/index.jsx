@@ -1,36 +1,40 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	connect = require( 'react-redux' ).connect,
-	classnames = require( 'classnames' ),
-	property = require( 'lodash/property' ),
-	sortBy = require( 'lodash/sortBy' );
+import React from 'react';
+
+import { connect } from 'react-redux';
+import classnames from 'classnames';
+import property from 'lodash/property';
+import sortBy from 'lodash/sortBy';
 
 /**
  * Internal dependencies
  */
-var AsyncLoad = require( 'components/async-load' ),
-	MasterbarLoggedIn = require( 'layout/masterbar/logged-in' ),
-	MasterbarLoggedOut = require( 'layout/masterbar/logged-out' ),
-	observe = require( 'lib/mixins/data-observe' ),
-	GlobalNotices = require( 'components/global-notices' ),
-	notices = require( 'notices' ),
-	translator = require( 'lib/translator-jumpstart' ),
-	TranslatorInvitation = require( './community-translator/invitation' ),
-	TranslatorLauncher = require( './community-translator/launcher' ),
-	Welcome = require( 'my-sites/welcome/welcome' ),
-	WelcomeMessage = require( 'layout/nux-welcome/welcome-message' ),
-	GuidedTours = require( 'layout/guided-tours' ),
-	analytics = require( 'lib/analytics' ),
-	config = require( 'config' ),
-	PulsingDot = require( 'components/pulsing-dot' ),
-	SitesListNotices = require( 'lib/sites-list/notices' ),
-	OfflineStatus = require( 'layout/offline-status' ),
-	QueryPreferences = require( 'components/data/query-preferences' ),
-	KeyboardShortcutsMenu,
-	Layout,
-	SupportUser;
+import AsyncLoad from 'components/async-load';
+
+import MasterbarLoggedIn from 'layout/masterbar/logged-in';
+import MasterbarLoggedOut from 'layout/masterbar/logged-out';
+import observe from 'lib/mixins/data-observe';
+import GlobalNotices from 'components/global-notices';
+import notices from 'notices';
+import translator from 'lib/translator-jumpstart';
+import TranslatorInvitation from './community-translator/invitation';
+import TranslatorLauncher from './community-translator/launcher';
+import Welcome from 'my-sites/welcome/welcome';
+import WelcomeMessage from 'layout/nux-welcome/welcome-message';
+import GuidedTours from 'layout/guided-tours';
+import analytics from 'lib/analytics';
+import config from 'config';
+import PulsingDot from 'components/pulsing-dot';
+import SitesListNotices from 'lib/sites-list/notices';
+import OfflineStatus from 'layout/offline-status';
+import QueryPreferences from 'components/data/query-preferences';
+
+/**
+ * Internal dependencies
+ */
+var KeyboardShortcutsMenu, Layout, SupportUser;
 
 import QuerySites from 'components/data/query-sites';
 import { isOffline } from 'state/application/selectors';
@@ -64,10 +68,7 @@ Layout = React.createClass( {
 		// connected props
 		isLoading: React.PropTypes.bool,
 		isSupportUser: React.PropTypes.bool,
-		section: React.PropTypes.oneOfType( [
-			React.PropTypes.bool,
-			React.PropTypes.object,
-		] ),
+		section: React.PropTypes.oneOfType( [ React.PropTypes.bool, React.PropTypes.object ] ),
 		isOffline: React.PropTypes.bool,
 	},
 
@@ -89,7 +90,8 @@ Layout = React.createClass( {
 			<MasterbarLoggedIn
 				user={ this.props.user }
 				section={ this.props.section.group }
-				sites={ this.props.sites } />
+				sites={ this.props.sites }
+			/>
 		);
 	},
 
@@ -102,13 +104,18 @@ Layout = React.createClass( {
 
 		const showWelcome = this.props.nuxWelcome.getWelcome();
 		const newestSite = this.newestSite();
-		const showInvitation = ! showWelcome &&
-				translatorInvitation.isPending() &&
-				translatorInvitation.isValidSection( this.props.section.name );
+		const showInvitation =
+			! showWelcome &&
+			translatorInvitation.isPending() &&
+			translatorInvitation.isValidSection( this.props.section.name );
 
 		return (
 			<span>
-				<Welcome isVisible={ showWelcome } closeAction={ this.closeWelcome } additionalClassName="NuxWelcome">
+				<Welcome
+					isVisible={ showWelcome }
+					closeAction={ this.closeWelcome }
+					additionalClassName="NuxWelcome"
+				>
 					<WelcomeMessage welcomeSite={ newestSite } />
 				</Welcome>
 				<TranslatorInvitation isVisible={ showInvitation } />
@@ -118,26 +125,24 @@ Layout = React.createClass( {
 
 	renderPreview() {
 		if ( config.isEnabled( 'preview-layout' ) && this.props.section.group === 'sites' ) {
-			return (
-				<SitePreview />
-			);
+			return <SitePreview />;
 		}
 	},
 
 	render: function() {
 		const sectionClass = classnames(
-				'layout',
-				`is-group-${ this.props.section.group }`,
-				`is-section-${ this.props.section.name }`,
-				`focus-${ this.props.currentLayoutFocus }`,
-				{ 'is-support-user': this.props.isSupportUser },
-				{ 'has-no-sidebar': ! this.props.hasSidebar },
-				{ 'wp-singletree-layout': !! this.props.primary },
-				{ 'has-chat': this.props.chatIsOpen }
-			),
+			'layout',
+			`is-group-${ this.props.section.group }`,
+			`is-section-${ this.props.section.name }`,
+			`focus-${ this.props.currentLayoutFocus }`,
+			{ 'is-support-user': this.props.isSupportUser },
+			{ 'has-no-sidebar': ! this.props.hasSidebar },
+			{ 'wp-singletree-layout': !! this.props.primary },
+			{ 'has-chat': this.props.chatIsOpen },
+		),
 			loadingClass = classnames( {
 				layout__loader: true,
-				'is-active': this.props.isLoading
+				'is-active': this.props.isLoading,
 			} );
 
 		return (
@@ -150,11 +155,17 @@ Layout = React.createClass( {
 				{ config.isEnabled( 'keyboard-shortcuts' ) ? <KeyboardShortcutsMenu /> : null }
 				{ this.renderMasterbar() }
 				{ config.isEnabled( 'support-user' ) && <SupportUser /> }
-				<div className={ loadingClass } ><PulsingDot active={ this.props.isLoading } chunkName={ this.props.section.name } /></div>
+				<div className={ loadingClass }>
+					<PulsingDot active={ this.props.isLoading } chunkName={ this.props.section.name } />
+				</div>
 				{ this.props.isOffline && <OfflineStatus /> }
 				<div id="content" className="layout__content">
 					{ this.renderWelcome() }
-					<GlobalNotices id="notices" notices={ notices.list } forcePinned={ 'post' === this.props.section.name } />
+					<GlobalNotices
+						id="notices"
+						notices={ notices.list }
+						forcePinned={ 'post' === this.props.section.name }
+					/>
 					<div id="primary" className="layout__primary">
 						{ this.props.primary }
 					</div>
@@ -164,25 +175,26 @@ Layout = React.createClass( {
 				</div>
 				<TranslatorLauncher
 					isEnabled={ translator.isEnabled() }
-					isActive={ translator.isActivated() } />
+					isActive={ translator.isActivated() }
+				/>
 				{ this.renderPreview() }
-				{ config.isEnabled( 'happychat' ) && this.props.chatIsOpen && <AsyncLoad require="components/happychat" /> }
+				{ config.isEnabled( 'happychat' ) &&
+					this.props.chatIsOpen &&
+					<AsyncLoad require="components/happychat" /> }
 			</div>
 		);
-	}
+	},
 } );
 
-export default connect(
-	( state ) => {
-		const { isLoading, section } = state.ui;
-		return {
-			isLoading,
-			isSupportUser: state.support.isSupportUser,
-			section,
-			hasSidebar: hasSidebar( state ),
-			isOffline: isOffline( state ),
-			currentLayoutFocus: getCurrentLayoutFocus( state ),
-			chatIsOpen: isHappychatOpen( state )
-		};
-	}
-)( Layout );
+export default connect( state => {
+	const { isLoading, section } = state.ui;
+	return {
+		isLoading,
+		isSupportUser: state.support.isSupportUser,
+		section,
+		hasSidebar: hasSidebar( state ),
+		isOffline: isOffline( state ),
+		currentLayoutFocus: getCurrentLayoutFocus( state ),
+		chatIsOpen: isHappychatOpen( state ),
+	};
+} )( Layout );

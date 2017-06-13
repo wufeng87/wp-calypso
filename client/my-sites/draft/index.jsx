@@ -1,26 +1,28 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	classnames = require( 'classnames' ),
-	noop = require( 'lodash/noop' ),
-	url = require( 'url' );
+import React from 'react';
+
+import classnames from 'classnames';
+import noop from 'lodash/noop';
+import url from 'url';
 import { connect } from 'react-redux';
 
 /**
  * Internal dependencies
  */
-var CompactCard = require( 'components/card/compact' ),
-	Gridicon = require( 'gridicons' ),
-	NoticeAction = require( 'components/notice/notice-action' ),
-	SiteIcon = require( 'blocks/site-icon' ),
-	PostRelativeTimeStatus = require( 'my-sites/post-relative-time-status' ),
-	PopoverMenu = require( 'components/popover/menu' ),
-	PopoverMenuItem = require( 'components/popover/menu-item' ),
-	actions = require( 'lib/posts/actions' ),
-	updatePostStatus = require( 'lib/mixins/update-post-status' ),
-	utils = require( 'lib/posts/utils' ),
-	hasTouch = require( 'lib/touch-detect' ).hasTouch;
+import CompactCard from 'components/card/compact';
+
+import Gridicon from 'gridicons';
+import NoticeAction from 'components/notice/notice-action';
+import SiteIcon from 'blocks/site-icon';
+import PostRelativeTimeStatus from 'my-sites/post-relative-time-status';
+import PopoverMenu from 'components/popover/menu';
+import PopoverMenuItem from 'components/popover/menu-item';
+import actions from 'lib/posts/actions';
+import updatePostStatus from 'lib/mixins/update-post-status';
+import utils from 'lib/posts/utils';
+import { hasTouch } from 'lib/touch-detect';
 
 import Gravatar from 'components/gravatar';
 import photon from 'photon';
@@ -29,7 +31,6 @@ import { getSite } from 'state/sites/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
 
 const Draft = React.createClass( {
-
 	mixins: [ updatePostStatus ],
 
 	propTypes: {
@@ -39,7 +40,7 @@ const Draft = React.createClass( {
 		onTitleClick: React.PropTypes.func,
 		postImages: React.PropTypes.object,
 		selected: React.PropTypes.bool,
-		showAuthor: React.PropTypes.bool
+		showAuthor: React.PropTypes.bool,
 	},
 
 	getDefaultProps: function() {
@@ -47,7 +48,7 @@ const Draft = React.createClass( {
 			showAllActions: false,
 			onTitleClick: noop,
 			selected: false,
-			showAuthor: false
+			showAuthor: false,
 		};
 	},
 
@@ -56,7 +57,7 @@ const Draft = React.createClass( {
 			fullImage: false,
 			showPopoverMenu: false,
 			isRestoring: false,
-			hasError: false
+			hasError: false,
 		};
 	},
 
@@ -69,7 +70,7 @@ const Draft = React.createClass( {
 
 		this.setState( {
 			showPopoverMenu: false,
-			isTrashing: true
+			isTrashing: true,
 		} );
 
 		updateStatus = function( error ) {
@@ -80,7 +81,7 @@ const Draft = React.createClass( {
 			if ( error ) {
 				return this.setState( {
 					isTrashing: false,
-					hasError: true
+					hasError: true,
 				} );
 			}
 
@@ -97,7 +98,7 @@ const Draft = React.createClass( {
 
 		this.setState( {
 			showPopoverMenu: false,
-			isRestoring: true
+			isRestoring: true,
 		} );
 
 		updateStatus = function( error ) {
@@ -108,7 +109,7 @@ const Draft = React.createClass( {
 			if ( error ) {
 				return this.setState( {
 					isRestoring: false,
-					hasError: true
+					hasError: true,
 				} );
 			}
 
@@ -125,7 +126,7 @@ const Draft = React.createClass( {
 	},
 
 	publishPost: function() {
-		this.setState( { showPopoverMenu: false	} );
+		this.setState( { showPopoverMenu: false } );
 		if ( utils.userCan( 'publish_post', this.props.post ) ) {
 			this.updatePostStatus( 'publish' );
 		}
@@ -133,14 +134,12 @@ const Draft = React.createClass( {
 
 	togglePopoverMenu: function() {
 		this.setState( {
-			showPopoverMenu: ! this.state.showPopoverMenu
+			showPopoverMenu: ! this.state.showPopoverMenu,
 		} );
 	},
 
 	render: function() {
-		var post = this.props.post,
-			image = null,
-			site, classes, imageUrl, editPostURL, title;
+		var post = this.props.post, image = null, site, classes, imageUrl, editPostURL, title;
 
 		if ( this.props.isPlaceholder ) {
 			return this.postPlaceholder();
@@ -195,8 +194,7 @@ const Draft = React.createClass( {
 				{ post.excerpt &&
 					<span className="draft__excerpt">
 						<a href={ editPostURL } onClick={ this.props.onTitleClick }>{ post.excerpt }</a>
-					</span>
-				}
+					</span> }
 				{ this.props.selectedSiteId ? this.draftActions() : <SiteIcon site={ site } size={ 32 } /> }
 				{ image ? this.renderImage( imageUrl ) : null }
 				{ this.props.post.status === 'trash' ? this.restoreButton() : null }
@@ -212,10 +210,8 @@ const Draft = React.createClass( {
 		}
 
 		return (
-			<div className="draft__featured-image" style={ style } onClick={ this.toggleImageState } >
-				{ this.state.fullImage ?
-					<img className="draft__image" src={ image } />
-				: null }
+			<div className="draft__featured-image" style={ style } onClick={ this.toggleImageState }>
+				{ this.state.fullImage ? <img className="draft__image" src={ image } /> : null }
 			</div>
 		);
 	},
@@ -236,21 +232,27 @@ const Draft = React.createClass( {
 	showStatusChange: function() {
 		if ( this.props.post.status === 'publish' ) {
 			return (
-					<Notice isCompact = { true }
-						status="is-success"
-						text={ 'Post successfully published.' }
-						button={ 'View' }
-						showDismiss={ false }>
-						<NoticeAction href={ this.props.post.URL }>
-							{ 'View' }
-						</NoticeAction>
-					</Notice>
-					);
+				<Notice
+					isCompact={ true }
+					status="is-success"
+					text={ 'Post successfully published.' }
+					button={ 'View' }
+					showDismiss={ false }
+				>
+					<NoticeAction href={ this.props.post.URL }>
+						{ 'View' }
+					</NoticeAction>
+				</Notice>
+			);
 		} else if ( this.state.hasError ) {
-			return <Notice isCompact = { true }
-						status="is-error"
-						text={ 'There was a problem.' }
-						showDismiss={ false } />;
+			return (
+				<Notice
+					isCompact={ true }
+					status="is-error"
+					text={ 'There was a problem.' }
+					showDismiss={ false }
+				/>
+			);
 		}
 	},
 
@@ -260,7 +262,9 @@ const Draft = React.createClass( {
 				<h3 className="draft__title" />
 				<div className="draft__actions">
 					<p className="post-relative-time-status">
-						<span className="time"><span className="noticon noticon-time" /><span className="time-text" /></span>
+						<span className="time">
+							<span className="noticon noticon-time" /><span className="time-text" />
+						</span>
 					</p>
 				</div>
 			</CompactCard>
@@ -287,15 +291,23 @@ const Draft = React.createClass( {
 		return (
 			<div className="draft__all-actions">
 				<PostRelativeTimeStatus post={ this.props.post } includeEditLink={ true } />
-				<span className="draft__actions-toggle noticon noticon-ellipsis" onClick={ this.togglePopoverMenu } ref="popoverMenuButton" />
+				<span
+					className="draft__actions-toggle noticon noticon-ellipsis"
+					onClick={ this.togglePopoverMenu }
+					ref="popoverMenuButton"
+				/>
 				<PopoverMenu
 					isVisible={ this.state.showPopoverMenu }
 					onClose={ this.togglePopoverMenu }
 					position={ 'bottom left' }
 					context={ this.refs && this.refs.popoverMenuButton }
 				>
-					<PopoverMenuItem onClick={ this.previewPost }>{ this.translate( 'Preview' ) }</PopoverMenuItem>
-					<PopoverMenuItem onClick={ this.publishPost }>{ this.translate( 'Publish' ) }</PopoverMenuItem>
+					<PopoverMenuItem onClick={ this.previewPost }>
+						{ this.translate( 'Preview' ) }
+					</PopoverMenuItem>
+					<PopoverMenuItem onClick={ this.publishPost }>
+						{ this.translate( 'Publish' ) }
+					</PopoverMenuItem>
 					<PopoverMenuItem className="draft__trash-item" onClick={ this.trashPost }>
 						{ this.translate( 'Send to Trash' ) }
 					</PopoverMenuItem>
@@ -306,10 +318,10 @@ const Draft = React.createClass( {
 
 	draftActions: function() {
 		return this.props.showAllActions ? this.renderAllActions() : this.renderTrashAction();
-	}
+	},
 } );
 
-export default connect( ( state, { siteId } ) => {
+export default connect( ( state, { siteId } ) => {
 	return {
 		site: getSite( state, siteId ),
 		selectedSiteId: getSelectedSiteId( state ),

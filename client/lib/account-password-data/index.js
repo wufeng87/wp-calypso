@@ -1,18 +1,24 @@
 /**
  * External dependencies
  */
-var debug = require( 'debug' )( 'calypso:password-generator' ),
-	merge = require( 'lodash/merge' ),
-	pick = require( 'lodash/pick' ),
-	random = require( 'lodash/random' ),
-	map = require( 'lodash/map' ),
-	sample = require( 'lodash/sample' );
+import debugFactory from 'debug';
+
+const debug = debugFactory( 'calypso:password-generator' );
+import merge from 'lodash/merge';
+import pick from 'lodash/pick';
+import random from 'lodash/random';
+import map from 'lodash/map';
+import sample from 'lodash/sample';
 
 /**
  * Internal dependencies
  */
-var wpcom = require( 'lib/wp' ).undocumented(),
-	makeEmitter = require( 'lib/mixins/emitter' );
+import makeEmitter from 'lib/mixins/emitter';
+
+/**
+ * Internal dependencies
+ */
+var wpcom = require( 'lib/wp' ).undocumented();
 
 /**
  * Initialize AccountPasswordData with defaults
@@ -40,25 +46,25 @@ AccountPasswordData.prototype.validate = function( password, callback ) {
 		return;
 	}
 
-	wpcom.me().validatePassword( password, function( error, data ) {
-		if ( error ) {
-			debug( 'Password is not valid. Please try again.' );
-			callback( error );
-			return;
-		}
+	wpcom.me().validatePassword(
+		password,
+		function( error, data ) {
+			if ( error ) {
+				debug( 'Password is not valid. Please try again.' );
+				callback( error );
+				return;
+			}
 
-		// Store the results from the API call as well as the password
-		// string in this.validatedPassword
-		this.validatedPassword = merge(
-			{ password: password },
-			data
-		);
+			// Store the results from the API call as well as the password
+			// string in this.validatedPassword
+			this.validatedPassword = merge( { password: password }, data );
 
-		debug( JSON.stringify( this.validatedPassword ) );
+			debug( JSON.stringify( this.validatedPassword ) );
 
-		this.emit( 'change' );
-		callback( null, error );
-	}.bind( this ) );
+			this.emit( 'change' );
+			callback( null, error );
+		}.bind( this ),
+	);
 };
 
 AccountPasswordData.prototype.passwordValidationSuccess = function() {
@@ -96,7 +102,8 @@ AccountPasswordData.prototype.getValidationFailures = function() {
 AccountPasswordData.prototype.generate = function() {
 	var i,
 		length = random( 12, 35 ),
-		chars = map( this.charsets, function( charset ) { // Ensure one character from each character set is in the password
+		chars = map( this.charsets, function( charset ) {
+			// Ensure one character from each character set is in the password
 			return sample( charset );
 		} );
 
@@ -112,4 +119,4 @@ AccountPasswordData.prototype.generate = function() {
 	return chars.join( '' );
 };
 
-module.exports = new AccountPasswordData();
+export default new AccountPasswordData();

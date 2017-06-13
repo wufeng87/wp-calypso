@@ -2,17 +2,14 @@
  * External dependencies
  */
 import React, { PropTypes, PureComponent } from 'react';
-import {
-	identity,
-	partial
-} from 'lodash';
+import { identity, partial } from 'lodash';
 
 export class VerticalMenu extends PureComponent {
 	constructor( props ) {
 		super( props );
 
 		this.state = {
-			selectedIndex: 0
+			selectedIndex: 0,
 		};
 
 		this.select = this.select.bind( this );
@@ -30,12 +27,12 @@ export class VerticalMenu extends PureComponent {
 
 		return (
 			<div className="vertical-menu">
-				{ React.Children.map( children, ( Item, index ) => (
+				{ React.Children.map( children, ( Item, index ) =>
 					React.cloneElement( Item, {
 						isSelected: index === selectedIndex,
-						onClick: partial( this.select, index )
-					} )
-				) ) }
+						onClick: partial( this.select, index ),
+					} ),
+				 ) }
 			</div>
 		);
 	}
@@ -43,13 +40,13 @@ export class VerticalMenu extends PureComponent {
 
 VerticalMenu.propTypes = {
 	onClick: PropTypes.func,
-	children: PropTypes.arrayOf(
-		PropTypes.element
-	)
+	children: PropTypes.arrayOf( PropTypes.element ),
 };
 
 VerticalMenu.defaultProps = {
-	onClick: identity
+	onClick: identity,
 };
 
 export default VerticalMenu;
+
+export const { propTypes, defaultProps } = VerticalMenu;

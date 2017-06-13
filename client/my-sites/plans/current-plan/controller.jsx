@@ -12,7 +12,7 @@ import CurrentPlan from './';
 import { isFreePlan } from 'lib/products-values';
 import { getSelectedSite } from 'state/ui/selectors';
 
-export default {
+const exported = {
 	currentPlan( context ) {
 		const state = context.store.getState();
 
@@ -33,7 +33,11 @@ export default {
 		renderWithReduxStore(
 			<CurrentPlan context={ context } />,
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
-	}
+	},
 };
+
+export default exported;
+
+export const { currentPlan } = exported;

@@ -20,12 +20,12 @@ const SiteExample = ( { site } ) => (
 	</Card>
 );
 
-const ConnectedSiteExample = connect(
-	( state ) => ( {
-		site: getSite( state, get( getCurrentUser( state ), 'primary_blog', null ) ),
-	} )
-)( SiteExample );
+const ConnectedSiteExample = connect( state => ( {
+	site: getSite( state, get( getCurrentUser( state ), 'primary_blog', null ) ),
+} ) )( SiteExample );
 
 ConnectedSiteExample.displayName = 'Site';
 
 export default ConnectedSiteExample;
+
+export const { displayName } = ConnectedSiteExample;

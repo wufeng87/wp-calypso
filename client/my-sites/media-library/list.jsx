@@ -1,25 +1,28 @@
 /**
  * External dependencies
  */
-var ReactDom = require( 'react-dom' ),
-	React = require( 'react' ),
-	clone = require( 'lodash/clone' ),
-	noop = require( 'lodash/noop' ),
-	filter = require( 'lodash/filter' ),
-	findIndex = require( 'lodash/findIndex' );
+import ReactDom from 'react-dom';
+
+import React from 'react';
+import clone from 'lodash/clone';
+import noop from 'lodash/noop';
+import filter from 'lodash/filter';
+import findIndex from 'lodash/findIndex';
 
 import { connect } from 'react-redux';
 
 /**
  * Internal dependencies
  */
-var MediaActions = require( 'lib/media/actions' ),
-	MediaUtils = require( 'lib/media/utils' ),
-	ListItem = require( './list-item' ),
-	ListNoResults = require( './list-no-results' ),
-	ListNoContent = require( './list-no-content' ),
-	InfiniteList = require( 'components/infinite-list' ),
-	user = require( 'lib/user' )();
+import MediaActions from 'lib/media/actions';
+
+import MediaUtils from 'lib/media/utils';
+import ListItem from './list-item';
+import ListNoResults from './list-no-results';
+import ListNoContent from './list-no-content';
+import InfiniteList from 'components/infinite-list';
+import userFactory from 'lib/user';
+const user = userFactory();
 
 import ListPlanUpgradeNudge from './list-plan-upgrade-nudge';
 import { getPreference } from 'state/preferences/selectors';
@@ -43,7 +46,7 @@ export const MediaLibraryList = React.createClass( {
 		mediaOnFetchNextPage: React.PropTypes.func,
 		single: React.PropTypes.bool,
 		scrollable: React.PropTypes.bool,
-		onEditItem: React.PropTypes.func
+		onEditItem: React.PropTypes.func,
 	},
 
 	getInitialState: function() {
@@ -60,7 +63,7 @@ export const MediaLibraryList = React.createClass( {
 			mediaOnFetchNextPage: noop,
 			single: false,
 			scrollable: false,
-			onEditItem: noop
+			onEditItem: noop,
 		};
 	},
 
@@ -70,7 +73,7 @@ export const MediaLibraryList = React.createClass( {
 		}
 
 		this.setState( {
-			listContext: ReactDom.findDOMNode( component )
+			listContext: ReactDom.findDOMNode( component ),
 		} );
 	},
 
@@ -86,15 +89,16 @@ export const MediaLibraryList = React.createClass( {
 		var itemsPerRow = this.getItemsPerRow(),
 			isFillingEntireRow = itemsPerRow === 1 / this.props.mediaScale,
 			isLastInRow = 0 === ( index + 1 ) % itemsPerRow,
-			style, marginValue;
+			style,
+			marginValue;
 
 		style = {
 			paddingBottom: this.props.rowPadding,
-			fontSize: this.props.mediaScale * 225
+			fontSize: this.props.mediaScale * 225,
 		};
 
 		if ( ! isFillingEntireRow && ! isLastInRow ) {
-			marginValue = ( 1 % this.props.mediaScale ) / ( itemsPerRow - 1 ) * 100 + '%';
+			marginValue = 1 % this.props.mediaScale / ( itemsPerRow - 1 ) * 100 + '%';
 
 			if ( user.isRTL() ) {
 				style.marginLeft = marginValue;
@@ -117,7 +121,7 @@ export const MediaLibraryList = React.createClass( {
 		}
 
 		const selectedItemsIndex = findIndex( selectedItems, { ID: item.ID } );
-		const isToBeSelected = ( -1 === selectedItemsIndex );
+		const isToBeSelected = -1 === selectedItemsIndex;
 		const selectedMediaIndex = findIndex( this.props.media, { ID: item.ID } );
 
 		let start = selectedMediaIndex;
@@ -130,7 +134,7 @@ export const MediaLibraryList = React.createClass( {
 
 		for ( let i = start; i <= end; i++ ) {
 			let interimIndex = findIndex( selectedItems, {
-				ID: this.props.media[ i ].ID
+				ID: this.props.media[ i ].ID,
 			} );
 
 			if ( isToBeSelected && -1 === interimIndex ) {
@@ -141,7 +145,7 @@ export const MediaLibraryList = React.createClass( {
 		}
 
 		this.setState( {
-			lastSelectedMediaIndex: selectedMediaIndex
+			lastSelectedMediaIndex: selectedMediaIndex,
 		} );
 
 		if ( this.props.site ) {
@@ -160,12 +164,11 @@ export const MediaLibraryList = React.createClass( {
 			ref = this.getItemRef( item ),
 			showGalleryHelp;
 
-		showGalleryHelp = (
+		showGalleryHelp =
 			! this.props.single &&
 			selectedIndex !== -1 &&
 			selectedItems.length === 1 &&
-			'image' === MediaUtils.getMimePrefix( item )
-		);
+			'image' === MediaUtils.getMimePrefix( item );
 
 		return (
 			<ListItem
@@ -178,14 +181,15 @@ export const MediaLibraryList = React.createClass( {
 				showGalleryHelp={ showGalleryHelp }
 				selectedIndex={ selectedIndex }
 				onToggle={ this.toggleItem }
-				onEditItem={ this.props.onEditItem } />
+				onEditItem={ this.props.onEditItem }
+			/>
 		);
 	},
 
 	renderLoadingPlaceholders: function() {
 		var itemsPerRow = this.getItemsPerRow(),
 			itemsVisible = ( this.props.media || [] ).length,
-			placeholders = itemsPerRow - ( itemsVisible % itemsPerRow );
+			placeholders = itemsPerRow - itemsVisible % itemsPerRow;
 
 		// We render enough placeholders to occupy the remainder of the row
 		return Array.apply( null, new Array( placeholders ) ).map( function( value, i ) {
@@ -193,7 +197,8 @@ export const MediaLibraryList = React.createClass( {
 				<ListItem
 					key={ 'placeholder-' + i }
 					style={ this.getMediaItemStyle( itemsVisible + i ) }
-					scale={ this.props.mediaScale } />
+					scale={ this.props.mediaScale }
+				/>
 			);
 		}, this );
 	},
@@ -209,7 +214,7 @@ export const MediaLibraryList = React.createClass( {
 			return React.createElement( this.props.search ? ListNoResults : ListNoContent, {
 				site: this.props.site,
 				filter: this.props.filter,
-				search: this.props.search
+				search: this.props.search,
 			} );
 		}
 
@@ -232,11 +237,17 @@ export const MediaLibraryList = React.createClass( {
 				getItemRef={ this.getItemRef }
 				renderItem={ this.renderItem }
 				renderLoadingPlaceholders={ this.renderLoadingPlaceholders }
-				className="media-library__list" />
+				className="media-library__list"
+			/>
 		);
-	}
+	},
 } );
 
-export default connect( ( state ) => ( {
-	mediaScale: getPreference( state, 'mediaScale' )
-} ), null, null, { pure: false } )( MediaLibraryList );
+export default connect(
+	state => ( {
+		mediaScale: getPreference( state, 'mediaScale' ),
+	} ),
+	null,
+	null,
+	{ pure: false },
+)( MediaLibraryList );

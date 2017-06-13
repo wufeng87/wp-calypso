@@ -14,18 +14,23 @@ function isSpecialStream( id ) {
 	return /^following|a8c|likes/.test( id );
 }
 
-module.exports = {
+const exported = {
 	get: function( id ) {
 		if ( isSpecialStream( id ) ) {
 			return specialCache[ id ];
 		}
 		return cache.get( id );
 	},
+
 	set: function( id, store ) {
 		if ( isSpecialStream( id ) ) {
 			specialCache[ id ] = store;
 		} else {
 			cache.set( id, store );
 		}
-	}
+	},
 };
+
+export default exported;
+
+export const { get, set } = exported;

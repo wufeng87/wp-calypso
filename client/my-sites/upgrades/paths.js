@@ -84,7 +84,11 @@ function domainManagementPrimaryDomain( siteName, domainName ) {
 }
 
 function domainManagementTransfer( siteName, domainName, transferType = '' ) {
-	return domainManagementEdit( siteName, domainName, filter( [ 'transfer', transferType ] ).join( '/' ) );
+	return domainManagementEdit(
+		siteName,
+		domainName,
+		filter( [ 'transfer', transferType ] ).join( '/' ),
+	);
 }
 
 function domainManagementTransferOut( siteName, domainName ) {
@@ -106,7 +110,7 @@ function getSectionName( pathname ) {
 	return matches ? matches[ 1 ] : null;
 }
 
-module.exports = {
+const exported = {
 	domainManagementAddGoogleApps,
 	domainManagementContactsPrivacy,
 	domainManagementDns,
@@ -124,5 +128,27 @@ module.exports = {
 	domainManagementTransferOut,
 	domainManagementTransferToAnotherUser,
 	domainManagementTransferToOtherSite,
-	getSectionName
+	getSectionName,
+};
+
+export default exported;
+export {
+	domainManagementAddGoogleApps,
+	domainManagementContactsPrivacy,
+	domainManagementDns,
+	domainManagementEdit,
+	domainManagementEditContactInfo,
+	domainManagementEmail,
+	domainManagementEmailForwarding,
+	domainManagementList,
+	domainManagementNameServers,
+	domainManagementPrimaryDomain,
+	domainManagementPrivacyProtection,
+	domainManagementRedirectSettings,
+	domainManagementRoot,
+	domainManagementTransfer,
+	domainManagementTransferOut,
+	domainManagementTransferToAnotherUser,
+	domainManagementTransferToOtherSite,
+	getSectionName,
 };

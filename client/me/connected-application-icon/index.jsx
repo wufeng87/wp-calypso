@@ -1,20 +1,19 @@
 /**
  * External dependencies
  */
-var React = require( 'react' );
+import React from 'react';
 
 /**
  * Internal dependencies
  */
-var PluginIcon = require( 'my-sites/plugins/plugin-icon/plugin-icon' );
+import PluginIcon from 'my-sites/plugins/plugin-icon/plugin-icon';
 
-module.exports = React.createClass( {
-
+export default React.createClass( {
 	displayName: 'ConnectedApplicationIcon',
 
 	getDefaultProps: function() {
 		return {
-			size: 40
+			size: 40,
 		};
 	},
 
@@ -26,5 +25,5 @@ module.exports = React.createClass( {
 				size={ this.props.size }
 			/>
 		);
-	}
+	},
 } );

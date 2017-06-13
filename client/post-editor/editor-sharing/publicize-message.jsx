@@ -1,17 +1,18 @@
 /**
  * External dependencies
  */
-const React = require( 'react' );
+import React from 'react';
 
 /**
  * Internal dependencies
  */
-const CountedTextarea = require( 'components/forms/counted-textarea' ),
-	FormTextarea = require( 'components/forms/form-textarea' ),
-	PostActions = require( 'lib/posts/actions' ),
-	stats = require( 'lib/posts/stats' ),
-	TrackInputChanges = require( 'components/track-input-changes' ),
-	InfoPopover = require( 'components/info-popover' );
+import CountedTextarea from 'components/forms/counted-textarea';
+
+import FormTextarea from 'components/forms/form-textarea';
+import PostActions from 'lib/posts/actions';
+import stats from 'lib/posts/stats';
+import TrackInputChanges from 'components/track-input-changes';
+import InfoPopover from 'components/info-popover';
 
 export default React.createClass( {
 	displayName: 'PublicizeMessage',
@@ -21,7 +22,7 @@ export default React.createClass( {
 		preview: React.PropTypes.string,
 		acceptableLength: React.PropTypes.number,
 		requireCount: React.PropTypes.bool,
-		onChange: React.PropTypes.func
+		onChange: React.PropTypes.func,
 	},
 
 	getDefaultProps: function() {
@@ -56,8 +57,8 @@ export default React.createClass( {
 			>
 				{ this.translate(
 					'The length includes space for the link to your post and an attached image.',
-					{ context: 'Post editor sharing message counter explanation' }
-			) }
+					{ context: 'Post editor sharing message counter explanation' },
+				) }
 			</InfoPopover>
 		);
 	},
@@ -83,7 +84,8 @@ export default React.createClass( {
 					value={ this.props.message }
 					placeholder={ this.props.preview }
 					onChange={ this.onChange }
-					className="editor-sharing__message-input"/>
+					className="editor-sharing__message-input"
+				/>
 			);
 		}
 	},
@@ -92,12 +94,15 @@ export default React.createClass( {
 		return (
 			<div className="editor-sharing__publicize-message">
 				<h5 className="editor-sharing__message-heading">
-					{ this.translate( 'Customize the message', { context: 'Post editor sharing message heading' } ) }
+					{ this.translate(
+						'Customize the message',
+						{ context: 'Post editor sharing message heading' },
+					) }
 				</h5>
 				<TrackInputChanges onNewValue={ this.recordStats }>
 					{ this.renderTextarea() }
 				</TrackInputChanges>
 			</div>
 		);
-	}
+	},
 } );

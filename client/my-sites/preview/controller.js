@@ -8,7 +8,7 @@ import React from 'react';
  */
 import WebPreviewContent from 'components/web-preview/content';
 
-export default {
+const exported = {
 	preview: function( context, next ) {
 		context.primary = (
 			<WebPreviewContent
@@ -19,3 +19,7 @@ export default {
 		next();
 	},
 };
+
+export default exported;
+
+export const { preview } = exported;

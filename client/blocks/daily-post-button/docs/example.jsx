@@ -20,3 +20,5 @@ const DailyPostButtonExample = () => {
 DailyPostButtonExample.displayName = 'DailyPostButton';
 
 export default DailyPostButtonExample;
+
+export const { displayName } = DailyPostButtonExample;

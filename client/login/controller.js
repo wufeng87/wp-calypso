@@ -9,7 +9,7 @@ import React from 'react';
 import WPLogin from './wp-login';
 import MagicLogin from './magic-login';
 
-export default {
+const exported = {
 	login( context, next ) {
 		const { lang, path, params } = context;
 
@@ -18,8 +18,13 @@ export default {
 		);
 		next();
 	},
+
 	magicLogin( context, next ) {
 		context.primary = <MagicLogin />;
 		next();
-	}
+	},
 };
+
+export default exported;
+
+export const { login, magicLogin } = exported;

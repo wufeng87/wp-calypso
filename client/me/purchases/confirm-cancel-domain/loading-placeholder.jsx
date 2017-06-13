@@ -41,3 +41,5 @@ ConfirmCancelDomainLoadingPlaceholder.propTypes = {
 };
 
 export default ConfirmCancelDomainLoadingPlaceholder;
+
+export const { propTypes } = ConfirmCancelDomainLoadingPlaceholder;

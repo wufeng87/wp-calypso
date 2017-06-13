@@ -11,7 +11,7 @@ import omit from 'lodash/omit';
  */
 import Gravatar from 'components/gravatar';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'PeopleProfile',
 
 	mixins: [ PureRenderMixin ],
@@ -35,7 +35,10 @@ module.exports = React.createClass( {
 
 		switch ( role ) {
 			case 'super admin':
-				text = this.translate( 'Super Admin', { context: 'Noun: A user role displayed in a badge' } );
+				text = this.translate(
+					'Super Admin',
+					{ context: 'Noun: A user role displayed in a badge' },
+				);
 				break;
 			case 'administrator':
 				text = this.translate( 'Admin', { context: 'Noun: A user role displayed in a badge' } );
@@ -47,10 +50,16 @@ module.exports = React.createClass( {
 				text = this.translate( 'Author', { context: 'Noun: A user role displayed in a badge' } );
 				break;
 			case 'contributor':
-				text = this.translate( 'Contributor', { context: 'Noun: A user role displayed in a badge' } );
+				text = this.translate(
+					'Contributor',
+					{ context: 'Noun: A user role displayed in a badge' },
+				);
 				break;
 			case 'subscriber':
-				text = this.translate( 'Subscriber', { context: 'Noun: A user role displayed in a badge' } );
+				text = this.translate(
+					'Subscriber',
+					{ context: 'Noun: A user role displayed in a badge' },
+				);
 				break;
 			default:
 				text = role;
@@ -68,7 +77,10 @@ module.exports = React.createClass( {
 		const user = this.props.user;
 		let name;
 		if ( ! user ) {
-			name = this.translate( 'Loading Users', { context: 'Placeholder text while fetching users.' } );
+			name = this.translate(
+				'Loading Users',
+				{ context: 'Placeholder text while fetching users.' },
+			);
 		} else if ( user.name ) {
 			name = user.name;
 		} else if ( user.label ) {
@@ -89,7 +101,10 @@ module.exports = React.createClass( {
 	renderLogin() {
 		let login;
 		if ( ! this.props.user ) {
-			login = this.translate( 'Loading Users', { context: 'Placeholder text while fetching users.' } );
+			login = this.translate(
+				'Loading Users',
+				{ context: 'Placeholder text while fetching users.' },
+			);
 		} else if ( this.props.user.login ) {
 			login = this.props.user.login;
 		}
@@ -106,8 +121,7 @@ module.exports = React.createClass( {
 	},
 
 	renderRole() {
-		let superAdminBadge,
-			roleBadge;
+		let superAdminBadge, roleBadge;
 
 		if ( this.props.user && this.props.user.is_super_admin ) {
 			superAdminBadge = (
@@ -144,14 +158,12 @@ module.exports = React.createClass( {
 
 		return (
 			<div className="people-profile__subscribed">
-				{
-					this.translate( 'Since %(formattedDate)s', {
-						context: 'How long a user has been subscribed to a blog. Example: "Since Sep 16, 2015"',
-						args: {
-							formattedDate: this.moment( this.props.user.date_subscribed ).format( 'll' )
-						}
-					} )
-				}
+				{ this.translate( 'Since %(formattedDate)s', {
+					context: 'How long a user has been subscribed to a blog. Example: "Since Sep 16, 2015"',
+					args: {
+						formattedDate: this.moment( this.props.user.date_subscribed ).format( 'll' ),
+					},
+				} ) }
 			</div>
 		);
 	},
@@ -163,7 +175,7 @@ module.exports = React.createClass( {
 	render: function() {
 		const user = this.props.user,
 			classes = classNames( 'people-profile', {
-				'is-placeholder': ! user
+				'is-placeholder': ! user,
 			} );
 
 		return (
@@ -178,5 +190,5 @@ module.exports = React.createClass( {
 				</div>
 			</div>
 		);
-	}
+	},
 } );

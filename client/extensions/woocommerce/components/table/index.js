@@ -10,10 +10,13 @@ import classnames from 'classnames';
 import Card from 'components/card';
 
 const Table = ( { className, compact, header, children, ...props } ) => {
-	const classes = classnames( {
-		table: true,
-		'is-compact-table': compact,
-	}, className );
+	const classes = classnames(
+		{
+			table: true,
+			'is-compact-table': compact,
+		},
+		className,
+	);
 	return (
 		<Card className={ classes }>
 			<table { ...props }>
@@ -34,3 +37,5 @@ Table.propTypes = {
 };
 
 export default Table;
+
+export const { propTypes } = Table;

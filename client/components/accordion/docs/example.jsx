@@ -3,29 +3,31 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	PureRenderMixin = require( 'react-pure-render/mixin' );
+import React from 'react';
+
+import PureRenderMixin from 'react-pure-render/mixin';
 
 /**
  * Internal dependencies
  */
-var Accordion = require( 'components/accordion' ),
-	Gridicon = require( 'gridicons' );
+import Accordion from 'components/accordion';
 
-module.exports = React.createClass( {
+import Gridicon from 'gridicons';
+
+export default React.createClass( {
 	displayName: 'AccordionExample',
 
 	mixins: [ PureRenderMixin ],
 
 	getInitialState: function() {
 		return {
-			showSubtitles: true
+			showSubtitles: true,
 		};
 	},
 
 	_toggleShowSubtitles: function() {
 		this.setState( {
-			showSubtitles: ! this.state.showSubtitles
+			showSubtitles: ! this.state.showSubtitles,
 		} );
 	},
 
@@ -52,18 +54,25 @@ module.exports = React.createClass( {
 					</Accordion>
 					<Accordion
 						title="Section Three"
-						subtitle={ this.state.showSubtitles ? 'With Subtitle' : null }>
+						subtitle={ this.state.showSubtitles ? 'With Subtitle' : null }
+					>
 						Suspendisse pellentesque diam in nisi pulvinar maximus. Integer feugiat feugiat justo ac vehicula. Curabitur iaculis, risus suscipit sodales auctor, nisl urna elementum sem, non vestibulum mauris ante et purus. Duis iaculis nisl neque, eget rutrum erat imperdiet non.
 					</Accordion>
 					<Accordion
 						title="Section Four"
-						subtitle={ this.state.showSubtitles ? 'With a Very Long Subtitle to Demonstrate the Fade Effect' : null }>
+						subtitle={
+							this.state.showSubtitles
+								? 'With a Very Long Subtitle to Demonstrate the Fade Effect'
+								: null
+						}
+					>
 						Drumstick ham tongue flank doner pork chop picanha. Cow short ribs tail kevin capicola ball tip. Leberkas shankle landjaeger tenderloin, chuck cupim pastrami cow frankfurter. Kielbasa bacon capicola shoulder porchetta, frankfurter rump short loin pig cupim.
 					</Accordion>
 					<Accordion
 						title="Section Five"
 						subtitle={ this.state.showSubtitles ? 'With Subtitle and Icon' : null }
-						icon={ <Gridicon icon="time" /> }>
+						icon={ <Gridicon icon="time" /> }
+					>
 						Etiam dictum odio elit, id faucibus urna elementum ac. Mauris in est nec tortor luctus auctor ut a velit. Suspendisse vulputate lectus arcu, sed condimentum risus rutrum vitae. Nullam sagittis ultricies nisl. Duis accumsan libero vel arcu sodales venenatis.
 					</Accordion>
 					<Accordion
@@ -72,12 +81,13 @@ module.exports = React.createClass( {
 						status={ {
 							type: 'warning',
 							text: 'Warning!',
-							url: '/devdocs/design'
-						} }>
+							url: '/devdocs/design',
+						} }
+					>
 						Suspendisse pellentesque diam in nisi pulvinar maximus. Integer feugiat feugiat justo ac vehicula. Curabitur iaculis, risus suscipit sodales auctor, nisl urna elementum sem, non vestibulum mauris ante et purus. Duis iaculis nisl neque, eget rutrum erat imperdiet non.
 					</Accordion>
 				</div>
 			</div>
 		);
-	}
+	},
 } );

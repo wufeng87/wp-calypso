@@ -16,7 +16,7 @@ const SharingServiceExample = ( { image, label, single } ) => (
 SharingServiceExample.propTypes = {
 	image: PropTypes.shape( {
 		src: PropTypes.string,
-		alt: PropTypes.string
+		alt: PropTypes.string,
 	} ),
 	label: PropTypes.node,
 	single: PropTypes.bool,
@@ -27,3 +27,5 @@ SharingServiceExample.defaultProps = {
 };
 
 export default SharingServiceExample;
+
+export const { propTypes, defaultProps } = SharingServiceExample;

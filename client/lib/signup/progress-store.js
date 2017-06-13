@@ -1,22 +1,25 @@
 /**
  * External dependencies
  */
-var debug = require( 'debug' )( 'calypso:signup-progress-store' ), // eslint-disable-line no-unused-vars
-	store = require( 'store' ),
-	assign = require( 'lodash/assign' ),
-	omit = require( 'lodash/omit' ),
-	find = require( 'lodash/find' ),
-	map = require( 'lodash/map' ),
-	isEmpty = require( 'lodash/isEmpty' ),
-	clone = require( 'lodash/clone' );
+import debugFactory from 'debug';
+
+const debug = debugFactory( 'calypso:signup-progress-store' ); // eslint-disable-line no-unused-vars
+import store from 'store';
+import assign from 'lodash/assign';
+import omit from 'lodash/omit';
+import find from 'lodash/find';
+import map from 'lodash/map';
+import isEmpty from 'lodash/isEmpty';
+import clone from 'lodash/clone';
 
 /**
  * Internal dependencies
  */
-var Dispatcher = require( 'dispatcher' ),
-	emitter = require( 'lib/mixins/emitter' ),
-	SignupDependencyStore = require( './dependency-store' ),
-	steps = require( 'signup/config/steps' );
+import Dispatcher from 'dispatcher';
+
+import emitter from 'lib/mixins/emitter';
+import SignupDependencyStore from './dependency-store';
+import steps from 'signup/config/steps';
 
 /**
  * Constants
@@ -35,7 +38,7 @@ var SignupProgressStore = {
 	reset: function() {
 		signupProgress = [];
 		store.remove( STORAGE_KEY );
-	}
+	},
 };
 
 emitter( SignupProgressStore );
@@ -77,10 +80,12 @@ function updateOrAddStep( step ) {
 }
 
 function setStepInvalid( step, errors ) {
-	updateOrAddStep( assign( {}, step, {
-		status: 'invalid',
-		errors: errors
-	} ) );
+	updateOrAddStep(
+		assign( {}, step, {
+			status: 'invalid',
+			errors: errors,
+		} ),
+	);
 }
 
 function saveStep( step ) {
@@ -92,7 +97,8 @@ function saveStep( step ) {
 }
 
 function submitStep( step ) {
-	const stepHasApiRequestFunction = steps[ step.stepName ] && steps[ step.stepName ].apiRequestFunction,
+	const stepHasApiRequestFunction =
+		steps[ step.stepName ] && steps[ step.stepName ].apiRequestFunction,
 		status = stepHasApiRequestFunction ? 'pending' : 'completed';
 
 	updateOrAddStep( assign( {}, step, { status } ) );
@@ -133,8 +139,7 @@ function handleChange() {
 }
 
 SignupProgressStore.dispatchToken = Dispatcher.register( function( payload ) {
-	var action = payload.action,
-		step = addTimestamp( action.data );
+	var action = payload.action, step = addTimestamp( action.data );
 
 	Dispatcher.waitFor( [ SignupDependencyStore.dispatchToken ] );
 
@@ -163,4 +168,6 @@ SignupProgressStore.dispatchToken = Dispatcher.register( function( payload ) {
 	}
 } );
 
-module.exports = SignupProgressStore;
+export default SignupProgressStore;
+
+export const { dispatchToken } = SignupProgressStore;

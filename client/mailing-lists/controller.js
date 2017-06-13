@@ -11,22 +11,31 @@ import { setSection } from 'state/ui/actions';
 import MainComponent from './main';
 import { renderWithReduxStore } from 'lib/react-helpers';
 
-export default {
+const exported = {
 	unsubscribe( context ) {
 		// We don't need the sidebar here.
-		context.store.dispatch( setSection( { name: 'me' }, {
-			hasSidebar: false
-		} ) );
+		context.store.dispatch(
+			setSection(
+				{ name: 'me' },
+				{
+					hasSidebar: false,
+				},
+			),
+		);
 
 		renderWithReduxStore(
 			React.createElement( MainComponent, {
 				email: context.query.email,
 				category: context.query.category,
 				hmac: context.query.hmac,
-				context: omit( context.query, [ 'email', 'category', 'hmac' ] )
+				context: omit( context.query, [ 'email', 'category', 'hmac' ] ),
 			} ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
-	}
+	},
 };
+
+export default exported;
+
+export const { unsubscribe } = exported;

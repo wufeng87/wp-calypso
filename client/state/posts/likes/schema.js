@@ -1,6 +1,7 @@
-export default {
+const exported = {
 	type: 'object',
 	additionalProperties: false,
+
 	patternProperties: {
 		// Site ID
 		'^\\d+$': {
@@ -15,19 +16,23 @@ export default {
 					properties: {
 						likes: {
 							type: 'array',
-							description: 'List of post likes'
+							description: 'List of post likes',
 						},
 						iLike: {
 							type: 'boolean',
-							description: 'Whether the current authenticated user likes the post or not'
+							description: 'Whether the current authenticated user likes the post or not',
 						},
 						found: {
 							type: 'number',
-							description: 'The total of post likes'
-						}
-					}
-				}
-			}
-		}
-	}
+							description: 'The total of post likes',
+						},
+					},
+				},
+			},
+		},
+	},
 };
+
+export default exported;
+
+export const { type, additionalProperties, patternProperties } = exported;

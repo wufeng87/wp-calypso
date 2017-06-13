@@ -21,7 +21,7 @@ export function requestCommentEmailSubscription( { dispatch }, action ) {
 			apiVersion: '1.2',
 			onSuccess: action,
 			onFailure: action,
-		} )
+		} ),
 	);
 }
 
@@ -39,12 +39,16 @@ export function receiveCommentEmailSubscriptionError( { dispatch }, action, next
 	next( unsubscribeToNewCommentEmail( action.payload.blogId ) );
 }
 
-export default {
+const exported = {
 	[ READER_SUBSCRIBE_TO_NEW_COMMENT_EMAIL ]: [
 		dispatchRequest(
 			requestCommentEmailSubscription,
 			receiveCommentEmailSubscription,
-			receiveCommentEmailSubscriptionError
+			receiveCommentEmailSubscriptionError,
 		),
 	],
 };
+
+export default exported;
+
+export { READER_SUBSCRIBE_TO_NEW_COMMENT_EMAIL };

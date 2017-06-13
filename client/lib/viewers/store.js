@@ -1,15 +1,18 @@
 /**
  * External dependencies
  */
-var debug = require( 'debug' )( 'calypso:viewers:store' ),
-	assign = require( 'lodash/assign' ),
-	values = require( 'lodash/values' );
+import debugFactory from 'debug';
+
+const debug = debugFactory( 'calypso:viewers:store' );
+import assign from 'lodash/assign';
+import values from 'lodash/values';
 
 /**
  * Internal dependencies
  */
-var Dispatcher = require( 'dispatcher' ),
-	emitter = require( 'lib/mixins/emitter' );
+import Dispatcher from 'dispatcher';
+
+import emitter from 'lib/mixins/emitter';
 
 var _fetchingViewers = {},
 	_viewersBySite = {},
@@ -25,7 +28,7 @@ var ViewersStore = {
 			totalViewers: _totalViewers[ siteId ] || 0,
 			fetchingViewers: _fetchingViewers[ siteId ],
 			currentViewersPage: _viewersCurrentPage[ siteId ],
-			numViewersFetched: _numViewersFetched[ siteId ]
+			numViewersFetched: _numViewersFetched[ siteId ],
 		};
 	},
 
@@ -43,7 +46,7 @@ var ViewersStore = {
 
 	emitChange: function() {
 		this.emit( 'change' );
-	}
+	},
 };
 
 function updateViewer( siteId, id, viewer ) {
@@ -132,4 +135,6 @@ ViewersStore.dispatchToken = Dispatcher.register( function( payload ) {
 
 emitter( ViewersStore );
 
-module.exports = ViewersStore;
+export default ViewersStore;
+
+export const { dispatchToken } = ViewersStore;

@@ -1,22 +1,24 @@
 /**
  * External dependencies
  */
-var React = require( 'react' );
+import React from 'react';
+
 import { noop, find } from 'lodash';
 
 /**
  * Internal dependencies
  */
-var FormLabel = require( 'components/forms/form-label' ),
-	FormTelInput = require( 'components/forms/form-tel-input' ),
-	FormFieldset = require( 'components/forms/form-fieldset' ),
-	CountrySelect = require( 'components/forms/form-country-select' ),
-	classnames = require( 'classnames' ),
-	phoneValidation = require( 'lib/phone-validation' );
+import FormLabel from 'components/forms/form-label';
+
+import FormTelInput from 'components/forms/form-tel-input';
+import FormFieldset from 'components/forms/form-fieldset';
+import CountrySelect from 'components/forms/form-country-select';
+import classnames from 'classnames';
+import phoneValidation from 'lib/phone-validation';
 
 var CLEAN_REGEX = /^0|[\s.\-()]+/g;
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'FormPhoneInput',
 
 	propTypes: {
@@ -26,7 +28,7 @@ module.exports = React.createClass( {
 		isDisabled: React.PropTypes.bool,
 		countrySelectProps: React.PropTypes.object,
 		phoneInputProps: React.PropTypes.object,
-		onChange: React.PropTypes.func
+		onChange: React.PropTypes.func,
 	},
 
 	getDefaultProps: function() {
@@ -34,14 +36,14 @@ module.exports = React.createClass( {
 			isDisabled: false,
 			countrySelectProps: {},
 			phoneInputProps: {},
-			onChange: noop
+			onChange: noop,
 		};
 	},
 
 	getInitialState: function() {
 		return {
 			countryCode: this.props.initialCountryCode || '',
-			phoneNumber: this.props.initialPhoneNumber || ''
+			phoneNumber: this.props.initialPhoneNumber || '',
 		};
 	},
 
@@ -55,18 +57,23 @@ module.exports = React.createClass( {
 
 	render: function() {
 		var countryValueLink = {
-				value: this.state.countryCode,
-				requestChange: this._handleCountryChange
-			},
+			value: this.state.countryCode,
+			requestChange: this._handleCountryChange,
+		},
 			phoneValueLink = {
 				value: this.state.phoneNumber,
-				requestChange: this._handlePhoneChange
+				requestChange: this._handlePhoneChange,
 			};
 
 		return (
 			<div className={ classnames( this.props.className, 'form-phone-input' ) }>
 				<FormFieldset className="form-fieldset__country">
-					<FormLabel htmlFor="country_code">{ this.translate( 'Country Code', { context: 'The country code for the phone for the user.' } ) }</FormLabel>
+					<FormLabel htmlFor="country_code">
+						{ this.translate(
+							'Country Code',
+							{ context: 'The country code for the phone for the user.' },
+						) }
+					</FormLabel>
 					<CountrySelect
 						{ ...this.props.countrySelectProps }
 						countriesList={ this.props.countriesList }
@@ -93,7 +100,7 @@ module.exports = React.createClass( {
 	_getCountryData: function() {
 		// TODO: move this to country-list or CountrySelect
 		return find( this.props.countriesList.get(), {
-			code: this.state.countryCode
+			code: this.state.countryCode,
 		} );
 	},
 
@@ -127,7 +134,7 @@ module.exports = React.createClass( {
 		}
 
 		this.setState( {
-			countryCode: countries[ 0 ].code
+			countryCode: countries[ 0 ].code,
 		} );
 	},
 
@@ -147,7 +154,7 @@ module.exports = React.createClass( {
 			validation: isValid,
 			countryData: countryData,
 			phoneNumber: numberClean,
-			phoneNumberFull: numberFull
+			phoneNumberFull: numberFull,
 		};
-	}
+	},
 } );

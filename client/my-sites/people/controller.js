@@ -24,7 +24,7 @@ import { getSelectedSite, getSelectedSiteId, getSelectedSiteSlug } from 'state/u
 import isSiteAutomatedTransfer from 'state/selectors/is-site-automated-transfer';
 import { isJetpackSite } from 'state/sites/selectors';
 
-export default {
+const exported = {
 	redirectToTeam,
 
 	enforceSiteEnding( context, next ) {
@@ -47,8 +47,13 @@ export default {
 
 	person( context ) {
 		renderSingleTeamMember( context );
-	}
+	},
 };
+
+export default exported;
+export { redirectToTeam };
+
+export const { enforceSiteEnding, people, invitePeople, person } = exported;
 
 function redirectToTeam( context ) {
 	if ( context ) {
@@ -66,10 +71,10 @@ function renderPeopleList( filter, context ) {
 		React.createElement( PeopleList, {
 			peopleLog: PeopleLogStore,
 			filter: filter,
-			search: context.query.s
+			search: context.query.s,
 		} ),
 		document.getElementById( 'primary' ),
-		context.store
+		context.store,
 	);
 	analytics.pageView.record( 'people/' + filter + '/:site', 'People > ' + titlecase( filter ) );
 }
@@ -93,10 +98,10 @@ function renderInvitePeople( context ) {
 
 	renderWithReduxStore(
 		React.createElement( InvitePeople, {
-			site: site
+			site: site,
 		} ),
 		document.getElementById( 'primary' ),
-		context.store
+		context.store,
 	);
 }
 
@@ -106,9 +111,9 @@ function renderSingleTeamMember( context ) {
 	renderWithReduxStore(
 		React.createElement( EditTeamMember, {
 			userLogin: context.params.user_login,
-			prevPath: context.prevPath
+			prevPath: context.prevPath,
 		} ),
 		document.getElementById( 'primary' ),
-		context.store
+		context.store,
 	);
 }

@@ -1,4 +1,4 @@
-module.exports = {
+const exported = {
 	action: {
 		FETCH_NEXT_PAGE: 'FETCH_NEXT_FEED_STREAM_PAGE',
 		RECEIVE_PAGE: 'RECEIVE_FEED_STREAM_PAGE',
@@ -11,6 +11,10 @@ module.exports = {
 		SELECT_PREV_ITEM: 'SELECT_PREV_ITEM',
 		SELECT_FIRST_ITEM: 'SELECT_FIRST_ITEM',
 		DISMISS_POST: 'DISMISS_FEED_STREAM_POST',
-		SHUFFLE_POSTS: 'SHUFFLE_FEED_STREAM_POSTS'
-	}
+		SHUFFLE_POSTS: 'SHUFFLE_FEED_STREAM_POSTS',
+	},
 };
+
+export default exported;
+
+export const { action } = exported;

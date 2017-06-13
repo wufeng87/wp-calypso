@@ -1,26 +1,26 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	TestUtils = require( 'react-addons-test-utils' ),
-	assign = require( 'lodash/assign' ),
-	expect = require( 'chai' ).expect;
+import React from 'react';
+
+import TestUtils from 'react-addons-test-utils';
+import assign from 'lodash/assign';
+import { expect } from 'chai';
 
 /**
  * Internal dependencies
  */
-var passToChildren = require( '../' );
+import passToChildren from '../';
 
 /**
  * Module variables
  */
-var DUMMY_PROPS = { data: [ 1, 2, 3 ] },
-	PassThrough;
+var DUMMY_PROPS = { data: [ 1, 2, 3 ] }, PassThrough;
 
 PassThrough = React.createClass( {
 	render: function() {
 		return passToChildren( this, DUMMY_PROPS );
-	}
+	},
 } );
 
 describe( 'index', function() {
@@ -84,9 +84,11 @@ describe( 'index', function() {
 		result = renderer.getRenderOutput();
 
 		expect( result.type ).to.equal( 'div' );
-		expect( result.props ).to.eql( assign( {}, DUMMY_PROPS, {
-			preserve: true
-		} ) );
+		expect( result.props ).to.eql(
+			assign( {}, DUMMY_PROPS, {
+				preserve: true,
+			} ),
+		);
 	} );
 
 	it( 'should preserve props passed to the instance itself', function() {
@@ -96,8 +98,10 @@ describe( 'index', function() {
 		result = renderer.getRenderOutput();
 
 		expect( result.type ).to.equal( 'div' );
-		expect( result.props ).to.eql( assign( {}, DUMMY_PROPS, {
-			preserve: true
-		} ) );
+		expect( result.props ).to.eql(
+			assign( {}, DUMMY_PROPS, {
+				preserve: true,
+			} ),
+		);
 	} );
 } );

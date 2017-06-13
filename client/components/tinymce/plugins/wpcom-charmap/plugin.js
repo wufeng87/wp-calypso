@@ -36,9 +36,9 @@ function wpcomCharMapPlugin( editor ) {
 				React.createElement( CharMap, {
 					showDialog: visibility === 'show',
 					onClose: onClose,
-					editor: editor
+					editor: editor,
 				} ),
-				node
+				node,
 			);
 		}
 
@@ -46,6 +46,6 @@ function wpcomCharMapPlugin( editor ) {
 	} );
 }
 
-module.exports = function() {
+export default function() {
 	tinymce.PluginManager.add( 'wpcom/charmap', wpcomCharMapPlugin );
-};
+}

@@ -5,14 +5,13 @@
 /**
  * Internal dependency.
  */
-var config = require( 'config' );
+import config from 'config';
 
 var JQUERY_URL = 'https://s0.wp.com/wp-includes/js/jquery/jquery.js',
 	callbacksForURLsInProgress = {};
 
 var loadScript = function( url, callback ) {
-	var script = document.createElement( 'script' ),
-		loaded = false;
+	var script = document.createElement( 'script' ), loaded = false;
 
 	function handleCompletedRequest( event ) {
 		var errorArgument = null;
@@ -86,9 +85,12 @@ const removeScriptCallback = function( url, callback ) {
 	callbacksForURLsInProgress[ url ].splice( index, 1 );
 };
 
-module.exports = {
+const exported = {
 	loadScript: loadScript,
 	loadjQueryDependentScript: loadjQueryDependentScript,
 	removeScriptCallback: removeScriptCallback,
-	JQUERY_URL: JQUERY_URL
+	JQUERY_URL: JQUERY_URL,
 };
+
+export default exported;
+export { loadScript, loadjQueryDependentScript, removeScriptCallback, JQUERY_URL };

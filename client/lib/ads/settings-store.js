@@ -63,7 +63,7 @@ WordadsSettingsStore = {
 
 	emitChange: function() {
 		this.emit( 'change' );
-	}
+	},
 };
 
 function updateSettings( siteId, data ) {
@@ -107,4 +107,17 @@ WordadsSettingsStore.dispatchToken = Dispatcher.register( function( payload ) {
 
 emitter( WordadsSettingsStore );
 
-module.exports = WordadsSettingsStore;
+export default WordadsSettingsStore;
+
+export const {
+	get,
+	getById,
+	isLoading,
+	isSubmitting,
+	getLoadingError,
+	getNotice,
+	clearNotices,
+	settingsLoaded,
+	emitChange,
+	dispatchToken,
+} = WordadsSettingsStore;

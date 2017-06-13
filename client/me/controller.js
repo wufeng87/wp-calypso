@@ -18,38 +18,35 @@ import { renderWithReduxStore } from 'lib/react-helpers';
 
 const ANALYTICS_PAGE_TITLE = 'Me';
 
-export default {
+const exported = {
 	sidebar( context, next ) {
 		const SidebarComponent = require( 'me/sidebar' );
 
 		renderWithReduxStore(
 			React.createElement( SidebarComponent, {
-				context: context
+				context: context,
 			} ),
 			document.getElementById( 'secondary' ),
-			context.store
+			context.store,
 		);
 
 		next();
 	},
 
 	profile( context ) {
-		const ProfileComponent = require( 'me/profile' ),
-			basePath = context.path;
+		const ProfileComponent = require( 'me/profile' ), basePath = context.path;
 
 		context.store.dispatch( setTitle( i18n.translate( 'My Profile', { textOnly: true } ) ) ); // FIXME: Auto-converted from the Flux setTitle action. Please use <DocumentHead> instead.
 
 		analytics.pageView.record( basePath, ANALYTICS_PAGE_TITLE + ' > My Profile' );
 
 		renderWithReduxStore(
-			React.createElement( ProfileComponent,
-				{
-					userSettings: userSettings,
-					path: context.path
-				}
-			),
+			React.createElement( ProfileComponent, {
+				userSettings: userSettings,
+				path: context.path,
+			} ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 
@@ -62,14 +59,12 @@ export default {
 		analytics.pageView.record( basePath, ANALYTICS_PAGE_TITLE + ' > Get Apps' );
 
 		renderWithReduxStore(
-			React.createElement( AppsComponent,
-				{
-					userSettings: userSettings,
-					path: context.path
-				}
-			),
+			React.createElement( AppsComponent, {
+				userSettings: userSettings,
+				path: context.path,
+			} ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 
@@ -92,10 +87,10 @@ export default {
 			React.createElement( NextSteps, {
 				path: context.path,
 				isWelcome: isWelcome,
-				trophiesData: trophiesData
+				trophiesData: trophiesData,
 			} ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 
@@ -119,5 +114,18 @@ export default {
 
 	findFriendsRedirect() {
 		page.redirect( '/me' );
-	}
+	},
 };
+
+export default exported;
+
+export const {
+	sidebar,
+	profile,
+	apps,
+	nextSteps,
+	nextStepsWelcomeRedirect,
+	profileRedirect,
+	trophiesRedirect,
+	findFriendsRedirect,
+} = exported;

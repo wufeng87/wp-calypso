@@ -12,7 +12,9 @@ const Masterbar = ( { children } ) => (
 Masterbar.displayName = 'Masterbar';
 
 Masterbar.propTypes = {
-	children: React.PropTypes.node.isRequired
+	children: React.PropTypes.node.isRequired,
 };
 
 export default Masterbar;
+
+export const { displayName, propTypes } = Masterbar;

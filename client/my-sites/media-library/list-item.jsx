@@ -1,23 +1,25 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	classNames = require( 'classnames' ),
-	noop = require( 'lodash/noop' ),
-	assign = require( 'lodash/assign' ),
-	omit = require( 'lodash/omit' ),
-	isEqual = require( 'lodash/isEqual' );
+import React from 'react';
+
+import classNames from 'classnames';
+import noop from 'lodash/noop';
+import assign from 'lodash/assign';
+import omit from 'lodash/omit';
+import isEqual from 'lodash/isEqual';
 
 /**
  * External dependencies
  */
-var Spinner = require( 'components/spinner' ),
-	Gridicon = require( 'gridicons' ),
-	ListItemImage = require( './list-item-image' ),
-	ListItemVideo = require( './list-item-video' ),
-	ListItemAudio = require( './list-item-audio' ),
-	ListItemDocument = require( './list-item-document' ),
-	MediaUtils = require( 'lib/media/utils' );
+import Spinner from 'components/spinner';
+
+import Gridicon from 'gridicons';
+import ListItemImage from './list-item-image';
+import ListItemVideo from './list-item-video';
+import ListItemAudio from './list-item-audio';
+import ListItemDocument from './list-item-document';
+import MediaUtils from 'lib/media/utils';
 
 import EditorMediaModalGalleryHelp from 'post-editor/media-modal/gallery-help';
 
@@ -42,7 +44,7 @@ export default React.createClass( {
 			photon: true,
 			selectedIndex: -1,
 			onToggle: noop,
-			onEditItem: noop
+			onEditItem: noop,
 		};
 	},
 
@@ -67,10 +69,18 @@ export default React.createClass( {
 		}
 
 		switch ( MediaUtils.getMimePrefix( this.props.media ) ) {
-			case 'image': component = ListItemImage; break;
-			case 'video': component = ListItemVideo; break;
-			case 'audio': component = ListItemAudio; break;
-			default: component = ListItemDocument; break;
+			case 'image':
+				component = ListItemImage;
+				break;
+			case 'video':
+				component = ListItemVideo;
+				break;
+			case 'audio':
+				component = ListItemAudio;
+				break;
+			default:
+				component = ListItemDocument;
+				break;
 		}
 
 		return React.createElement( component, this.props );
@@ -91,14 +101,17 @@ export default React.createClass( {
 			'is-placeholder': ! this.props.media,
 			'is-selected': -1 !== this.props.selectedIndex,
 			'is-transient': this.props.media && this.props.media.transient,
-			'is-small': this.props.scale <= 0.125
+			'is-small': this.props.scale <= 0.125,
 		} );
 
 		props = omit( this.props, Object.keys( this.constructor.propTypes ) );
 
-		style = assign( {
-			width: ( this.props.scale * 100 ) + '%'
-		}, this.props.style );
+		style = assign(
+			{
+				width: this.props.scale * 100 + '%',
+			},
+			this.props.style,
+		);
 
 		if ( this.props.media ) {
 			title = this.props.media.file;
@@ -120,6 +133,5 @@ export default React.createClass( {
 				</figure>
 			</div>
 		);
-	}
+	},
 } );
-

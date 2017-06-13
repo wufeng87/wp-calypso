@@ -15,11 +15,7 @@ import emitter from 'lib/mixins/emitter';
  */
 const debug = debugModule( 'calypso:wordads:store' );
 
-var _tos = {},
-	_loadingError = null,
-	_notice = null,
-	_isLoading = false,
-	WordadsTosStore;
+var _tos = {}, _loadingError = null, _notice = null, _isLoading = false, WordadsTosStore;
 
 WordadsTosStore = {
 	get: function() {
@@ -31,7 +27,7 @@ WordadsTosStore = {
 			tos: _tos.hasOwnProperty( siteId ) ? _tos[ siteId ] : null,
 			isLoading: _isLoading,
 			error: _loadingError,
-			notice: _notice
+			notice: _notice,
 		};
 	},
 
@@ -54,7 +50,7 @@ WordadsTosStore = {
 
 	emitChange: function() {
 		this.emit( 'change' );
-	}
+	},
 };
 
 function updateTos( siteId, data ) {
@@ -95,4 +91,15 @@ WordadsTosStore.dispatchToken = Dispatcher.register( function( payload ) {
 
 emitter( WordadsTosStore );
 
-module.exports = WordadsTosStore;
+export default WordadsTosStore;
+
+export const {
+	get,
+	getById,
+	isLoading,
+	getLoadingError,
+	getNotice,
+	clearNotices,
+	emitChange,
+	dispatchToken,
+} = WordadsTosStore;

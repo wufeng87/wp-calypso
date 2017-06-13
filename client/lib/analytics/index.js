@@ -1,32 +1,34 @@
 /**
  * External dependencies
  */
-const debug = require( 'debug' ),
-	assign = require( 'lodash/assign' ),
-	isObjectLike = require( 'lodash/isObjectLike' ),
-	times = require( 'lodash/times' ),
-	omit = require( 'lodash/omit' ),
-	pickBy = require( 'lodash/pickBy' ),
-	startsWith = require( 'lodash/startsWith' ),
-	isUndefined = require( 'lodash/isUndefined' ),
-	url = require( 'url' ),
-	qs = require( 'qs' );
+import debug from 'debug';
+
+import assign from 'lodash/assign';
+import isObjectLike from 'lodash/isObjectLike';
+import times from 'lodash/times';
+import omit from 'lodash/omit';
+import pickBy from 'lodash/pickBy';
+import startsWith from 'lodash/startsWith';
+import isUndefined from 'lodash/isUndefined';
+import url from 'url';
+import qs from 'qs';
 
 import cookie from 'cookie';
 
 /**
  * Internal dependencies
  */
-const config = require( 'config' ),
-	loadScript = require( 'lib/load-script' ).loadScript;
+import config from 'config';
 
-let _superProps,
-	_user,
-	_selectedSite,
-	_siteCount,
-	_dispatch;
+import { loadScript } from 'lib/load-script';
 
-import { retarget, recordAliasInFloodlight, recordPageViewInFloodlight } from 'lib/analytics/ad-tracking';
+let _superProps, _user, _selectedSite, _siteCount, _dispatch;
+
+import {
+	retarget,
+	recordAliasInFloodlight,
+	recordPageViewInFloodlight,
+} from 'lib/analytics/ad-tracking';
 import { doNotTrack, isPiiUrl } from 'lib/analytics/utils';
 import { ANALYTICS_SUPER_PROPS_UPDATE } from 'state/action-types';
 const mcDebug = debug( 'calypso:analytics:mc' );
@@ -37,9 +39,11 @@ import emitter from 'lib/mixins/emitter';
 
 // Load tracking scripts
 window._tkq = window._tkq || [];
-window.ga = window.ga || function() {
-	( window.ga.q = window.ga.q || [] ).push( arguments );
-};
+window.ga =
+	window.ga ||
+	function() {
+		( window.ga.q = window.ga.q || [] ).push( arguments );
+	};
 window.ga.l = +new Date();
 
 loadScript( '//stats.wp.com/w.js?56' ); // W_JS_VER
@@ -144,7 +148,12 @@ const analytics = {
 
 			if ( config( 'mc_analytics_enabled' ) ) {
 				const uriComponent = buildQuerystring( group, name );
-				new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom-no-pv' + uriComponent + '&t=' + Math.random();
+				new Image().src =
+					document.location.protocol +
+					'//pixel.wp.com/g.gif?v=wpcom-no-pv' +
+					uriComponent +
+					'&t=' +
+					Math.random();
 			}
 		},
 
@@ -158,9 +167,14 @@ const analytics = {
 
 			if ( config( 'mc_analytics_enabled' ) ) {
 				const uriComponent = buildQuerystringNoPrefix( group, name );
-				new Image().src = document.location.protocol + '//pixel.wp.com/g.gif?v=wpcom' + uriComponent + '&t=' + Math.random();
+				new Image().src =
+					document.location.protocol +
+					'//pixel.wp.com/g.gif?v=wpcom' +
+					uriComponent +
+					'&t=' +
+					Math.random();
 			}
-		}
+		},
 	},
 
 	// pageView is a wrapper for pageview events across Tracks and GA
@@ -170,7 +184,7 @@ const analytics = {
 			analytics.tracks.recordPageView( urlPath );
 			analytics.ga.recordPageView( urlPath, pageTitle );
 			analytics.emit( 'page-view', urlPath, pageTitle );
-		}
+		},
 	},
 
 	timing: {
@@ -178,7 +192,7 @@ const analytics = {
 			const urlPath = mostRecentUrlPath || 'unknown';
 			analytics.ga.recordTiming( urlPath, eventType, duration, triggerName );
 			analytics.statsd.recordTiming( urlPath, eventType, duration, triggerName );
-		}
+		},
 	},
 
 	tracks: {
@@ -190,10 +204,9 @@ const analytics = {
 			if ( process.env.NODE_ENV !== 'production' ) {
 				for ( const key in eventProperties ) {
 					if ( isObjectLike( eventProperties[ key ] ) && typeof console !== 'undefined' ) {
-						const errorMessage = (
+						const errorMessage =
 							`Unable to record event "${ eventName }" because nested` +
-							`properties are not supported by Tracks. Check '${ key }' on`
-						);
+							`properties are not supported by Tracks. Check '${ key }' on`;
 						console.error( errorMessage, eventProperties ); //eslint-disable-line no-console
 
 						return;
@@ -227,7 +240,7 @@ const analytics = {
 		recordPageView: function( urlPath ) {
 			let eventProperties = {
 				path: urlPath,
-				do_not_track: doNotTrack() ? 1 : 0
+				do_not_track: doNotTrack() ? 1 : 0,
 			};
 
 			// Record all `utm` marketing parameters as event properties on the page view event
@@ -275,17 +288,19 @@ const analytics = {
 			const cookies = cookie.parse( document.cookie );
 
 			return cookies.tk_ai;
-		}
+		},
 	},
 
 	statsd: {
 		/* eslint-disable no-unused-vars */
 		recordTiming: function( pageUrl, eventType, duration, triggerName ) {
-		// ignore triggerName for now, it has no obvious place in statsd
-		/* eslint-enable no-unused-vars */
+			// ignore triggerName for now, it has no obvious place in statsd
+			/* eslint-enable no-unused-vars */
 
 			if ( config( 'boom_analytics_enabled' ) ) {
-				let featureSlug = pageUrl === '/' ? 'homepage' : pageUrl.replace( /^\//, '' ).replace( /\.|\/|:/g, '_' );
+				let featureSlug = pageUrl === '/'
+					? 'homepage'
+					: pageUrl.replace( /^\//, '' ).replace( /\.|\/|:/g, '_' );
 				let matched;
 				// prevent explosion of read list metrics
 				// this is a hack - ultimately we want to report this URLs in a more generic way to
@@ -313,19 +328,18 @@ const analytics = {
 				const type = eventType.replace( '-', '_' );
 				const json = JSON.stringify( {
 					beacons: [
-						`calypso.${ config( 'boom_analytics_key' ) }.${ featureSlug }.${ type }:${ duration }|ms`
-					]
+						`calypso.${ config( 'boom_analytics_key' ) }.${ featureSlug }.${ type }:${ duration }|ms`,
+					],
 				} );
 
 				const [ encodedUrl, jsonData ] = [ pageUrl, json ].map( encodeURIComponent );
 				new Image().src = `https://pixel.wp.com/boom.gif?v=calypso&u=${ encodedUrl }&json=${ jsonData }`;
 			}
-		}
+		},
 	},
 
 	// Google Analytics usage and event stat tracking
 	ga: {
-
 		initialized: false,
 
 		initialize: function() {
@@ -359,7 +373,7 @@ const analytics = {
 			window.ga( 'send', {
 				hitType: 'pageview',
 				page: urlPath,
-				title: pageTitle
+				title: pageTitle,
 			} );
 		},
 
@@ -395,16 +409,18 @@ const analytics = {
 			gaDebug( 'Recording Timing ~ [URL: ' + urlPath + '] [Duration: ' + duration + ']' );
 
 			window.ga( 'send', 'timing', urlPath, eventType, duration, triggerName );
-		}
+		},
 	},
 
 	// HotJar tracking
 	hotjar: {
 		addHotJarScript: function() {
 			( function( h, o, t, j, a, r ) {
-				h.hj = h.hj || function() {
-					( h.hj.q = h.hj.q || [] ).push( arguments );
-				};
+				h.hj =
+					h.hj ||
+					function() {
+						( h.hj.q = h.hj.q || [] ).push( arguments );
+					};
 				h._hjSettings = { hjid: 227769, hjsv: 5 };
 				a = o.getElementsByTagName( 'head' )[ 0 ];
 				r = o.createElement( 'script' );
@@ -412,7 +428,7 @@ const analytics = {
 				r.src = t + h._hjSettings.hjid + j + h._hjSettings.hjsv;
 				a.appendChild( r );
 			} )( window, document, '//static.hotjar.com/c/hotjar-', '.js?sv=' );
-		}
+		},
 	},
 
 	identifyUser: function() {
@@ -434,7 +450,26 @@ const analytics = {
 
 	clearedIdentity: function() {
 		window._tkq.push( [ 'clearIdentity' ] );
-	}
+	},
 };
 emitter( analytics );
-module.exports = analytics;
+export default analytics;
+
+export const {
+	initialize,
+	setUser,
+	setSuperProps,
+	setSelectedSite,
+	setSiteCount,
+	setDispatch,
+	mc,
+	pageView,
+	timing,
+	tracks,
+	statsd,
+	ga,
+	hotjar,
+	identifyUser,
+	setProperties,
+	clearedIdentity,
+} = analytics;

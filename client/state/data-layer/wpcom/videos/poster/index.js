@@ -4,11 +4,7 @@
 import { http } from 'state/data-layer/wpcom-http/actions';
 import { dispatchRequest } from 'state/data-layer/wpcom-http/utils';
 import { VIDEO_EDITOR_UPDATE_POSTER } from 'state/action-types';
-import {
-	setPosterUrl,
-	showError,
-	showUploadProgress,
-} from 'state/ui/editor/video-editor/actions';
+import { setPosterUrl, showError, showUploadProgress } from 'state/ui/editor/video-editor/actions';
 
 /**
  * Updates the poster for a video.
@@ -54,9 +50,15 @@ export const receiveUploadProgress = ( { dispatch }, action, next, progress ) =>
 	dispatch( showUploadProgress( percentage ) );
 };
 
-export const dispatchPosterRequest =
-	dispatchRequest( updatePoster, receivePosterUrl, receivePosterError, receiveUploadProgress );
+export const dispatchPosterRequest = dispatchRequest(
+	updatePoster,
+	receivePosterUrl,
+	receivePosterError,
+	receiveUploadProgress,
+);
 
-export default {
+const exported = {
 	[ VIDEO_EDITOR_UPDATE_POSTER ]: [ dispatchPosterRequest ],
 };
+
+export default exported;

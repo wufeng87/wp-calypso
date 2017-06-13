@@ -1,22 +1,25 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	debug = require( 'debug' )( 'calypso:my-sites:people:team-list' ),
-	omit = require( 'lodash/omit' );
+import React from 'react';
+
+import debugFactory from 'debug';
+const debug = debugFactory( 'calypso:my-sites:people:team-list' );
+import omit from 'lodash/omit';
 
 /**
  * Internal dependencies
  */
-var Card = require( 'components/card' ),
-	PeopleListItem = require( 'my-sites/people/people-list-item' ),
-	SiteUsersFetcher = require( 'components/site-users-fetcher' ),
-	UsersActions = require( 'lib/users/actions' ),
-	InfiniteList = require( 'components/infinite-list' ),
-	deterministicStringify = require( 'lib/deterministic-stringify' ),
-	NoResults = require( 'my-sites/no-results' ),
-	analytics = require( 'lib/analytics' ),
-	PeopleListSectionHeader = require( 'my-sites/people/people-list-section-header' );
+import Card from 'components/card';
+
+import PeopleListItem from 'my-sites/people/people-list-item';
+import SiteUsersFetcher from 'components/site-users-fetcher';
+import UsersActions from 'lib/users/actions';
+import InfiniteList from 'components/infinite-list';
+import deterministicStringify from 'lib/deterministic-stringify';
+import NoResults from 'my-sites/no-results';
+import analytics from 'lib/analytics';
+import PeopleListSectionHeader from 'my-sites/people/people-list-section-header';
 
 /**
  * Module Variables
@@ -26,7 +29,7 @@ var Team = React.createClass( {
 
 	getInitialState: function() {
 		return {
-			bulkEditing: false
+			bulkEditing: false,
 		};
 	},
 
@@ -37,21 +40,23 @@ var Team = React.createClass( {
 	render: function() {
 		var key = deterministicStringify( omit( this.props.fetchOptions, [ 'number', 'offset' ] ) ),
 			headerText = this.translate( 'Team', { context: 'A navigation label.' } ),
-			listClass = ( this.state.bulkEditing ) ? 'bulk-editing' : null,
+			listClass = this.state.bulkEditing ? 'bulk-editing' : null,
 			people;
 
-		if ( this.props.fetchInitialized && ! this.props.users.length && this.props.fetchOptions.search && ! this.props.fetchingUsers ) {
+		if (
+			this.props.fetchInitialized &&
+			! this.props.users.length &&
+			this.props.fetchOptions.search &&
+			! this.props.fetchingUsers
+		) {
 			return (
 				<NoResults
 					image="/calypso/images/people/mystery-person.svg"
-					text={
-						this.translate( 'No results found for {{em}}%(searchTerm)s{{/em}}',
-							{
-								args: { searchTerm: this.props.search },
-								components: { em: <em /> }
-							}
-						)
-					} />
+					text={ this.translate( 'No results found for {{em}}%(searchTerm)s{{/em}}', {
+						args: { searchTerm: this.props.search },
+						components: { em: <em /> },
+					} ) }
+				/>
 			);
 		}
 
@@ -64,12 +69,12 @@ var Team = React.createClass( {
 						count: this.props.users.length,
 						args: {
 							numberPeople: this.props.totalUsers,
-							searchTerm: this.props.search
+							searchTerm: this.props.search,
 						},
 						components: {
-							em: <em />
-						}
-					}
+							em: <em />,
+						},
+					},
 				);
 			}
 
@@ -85,8 +90,8 @@ var Team = React.createClass( {
 					getItemRef={ this._getPersonRef }
 					renderLoadingPlaceholders={ this._renderLoadingPeople }
 					renderItem={ this._renderPerson }
-					guessedItemHeight={ 126 }>
-				</InfiniteList>
+					guessedItemHeight={ 126 }
+				/>
 			);
 		} else {
 			people = this._renderLoadingPeople();
@@ -97,7 +102,12 @@ var Team = React.createClass( {
 				<PeopleListSectionHeader
 					label={ headerText }
 					site={ this.props.site }
-					count={ this.props.fetchingUsers || this.props.fetchOptions.search ? null : this.props.totalUsers } />
+					count={
+						this.props.fetchingUsers || this.props.fetchOptions.search
+							? null
+							: this.props.totalUsers
+					}
+				/>
 				<Card className={ listClass }>
 					{ people }
 				</Card>
@@ -113,7 +123,8 @@ var Team = React.createClass( {
 				user={ user }
 				type="user"
 				site={ this.props.site }
-				isSelectable={ this.state.bulkEditing } />
+				isSelectable={ this.state.bulkEditing }
+			/>
 		);
 	},
 
@@ -131,11 +142,10 @@ var Team = React.createClass( {
 
 	_renderLoadingPeople: function() {
 		return <PeopleListItem key="people-list-item-placeholder" />;
-	}
-
+	},
 } );
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'TeamList',
 
 	render: function() {
@@ -143,16 +153,16 @@ module.exports = React.createClass( {
 			siteId: this.props.site && this.props.site.ID,
 			order: 'ASC',
 			order_by: 'display_name',
-			search: ( this.props.search ) ? '*' + this.props.search + '*' : null,
-			search_columns: [ 'display_name', 'user_login' ]
+			search: this.props.search ? '*' + this.props.search + '*' : null,
+			search_columns: [ 'display_name', 'user_login' ],
 		};
 
 		Object.freeze( fetchOptions );
 
 		return (
-			<SiteUsersFetcher fetchOptions={ fetchOptions } >
+			<SiteUsersFetcher fetchOptions={ fetchOptions }>
 				<Team { ...this.props } />
 			</SiteUsersFetcher>
 		);
-	}
+	},
 } );

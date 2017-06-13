@@ -1,26 +1,28 @@
 /**
  * External dependencies
  */
-var assign = require( 'lodash/assign' ),
-	debug = require( 'debug' )( 'calypso:posts:post-edit-store' ),
-	emitter = require( 'lib/mixins/emitter' ),
-	isEqual = require( 'lodash/isEqual' ),
-	filter = require( 'lodash/filter' ),
-	without = require( 'lodash/without' ),
-	pickBy = require( 'lodash/pickBy' );
+import assign from 'lodash/assign';
+
+import debugFactory from 'debug';
+const debug = debugFactory( 'calypso:posts:post-edit-store' );
+import emitter from 'lib/mixins/emitter';
+import isEqual from 'lodash/isEqual';
+import filter from 'lodash/filter';
+import without from 'lodash/without';
+import pickBy from 'lodash/pickBy';
 
 /**
  * Internal dependencies
  */
-var Dispatcher = require( 'dispatcher' ),
-	decodeEntities = require( 'lib/formatting' ).decodeEntities,
-	utils = require( './utils' );
+import Dispatcher from 'dispatcher';
+
+import { decodeEntities } from 'lib/formatting';
+import utils from './utils';
 
 /**
  * Module variables
  */
-var REGEXP_EMPTY_CONTENT = /^<p>(<br[^>]*>|&nbsp;|\s)*<\/p>$/,
-	CONTENT_LENGTH_ASSUME_SET = 50;
+var REGEXP_EMPTY_CONTENT = /^<p>(<br[^>]*>|&nbsp;|\s)*<\/p>$/, CONTENT_LENGTH_ASSUME_SET = 50;
 
 var _initialRawContent = null,
 	_isAutosaving = false,
@@ -109,7 +111,7 @@ function initializeNewPost( siteId, options ) {
 		status: 'draft',
 		type: options.postType || 'post',
 		content: options.content || '',
-		title: options.title || ''
+		title: options.title || '',
 	};
 
 	startEditing( args );
@@ -181,15 +183,16 @@ function setRawContent( content ) {
 }
 
 function isContentEmpty( content ) {
-	return ! content || ( content.length < CONTENT_LENGTH_ASSUME_SET && REGEXP_EMPTY_CONTENT.test( content ) );
+	return (
+		! content ||
+		( content.length < CONTENT_LENGTH_ASSUME_SET && REGEXP_EMPTY_CONTENT.test( content ) )
+	);
 }
 
 function dispatcherCallback( payload ) {
-	var action = payload.action,
-		changed;
+	var action = payload.action, changed;
 
 	switch ( action.type ) {
-
 		case 'EDIT_POST':
 			changed = set( action.post );
 			if ( changed ) {
@@ -251,7 +254,6 @@ function dispatcherCallback( payload ) {
 		case 'EDIT_POST_SAVE':
 			_queueChanges = true;
 			break;
-
 		// called by post changes elsewhere e.g. drafts drawer
 		case 'RECEIVE_UPDATED_POST':
 			if ( ! action.error ) {
@@ -284,7 +286,9 @@ function dispatcherCallback( payload ) {
 		case 'RECEIVE_POST_AUTOSAVE':
 			_isAutosaving = false;
 			if ( ! action.error ) {
-				_previewUrl = utils.getPreviewURL( assign( { preview_URL: action.autosave.preview_URL }, _savedPost ) );
+				_previewUrl = utils.getPreviewURL(
+					assign( { preview_URL: action.autosave.preview_URL }, _savedPost ),
+				);
 			}
 			PostEditStore.emit( 'change' );
 			break;
@@ -300,7 +304,6 @@ function dispatcherCallback( payload ) {
 }
 
 PostEditStore = {
-
 	get: function() {
 		return _post;
 	},
@@ -314,8 +317,7 @@ PostEditStore = {
 	},
 
 	getChangedAttributes: function() {
-		var changedAttributes,
-			metadata;
+		var changedAttributes, metadata;
 
 		if ( this.isNew() ) {
 			return _post;
@@ -396,12 +398,27 @@ PostEditStore = {
 		}
 
 		return ! isContentEmpty( _post.content );
-	}
-
+	},
 };
 
 emitter( PostEditStore );
 
 PostEditStore.dispatchToken = Dispatcher.register( dispatcherCallback );
 
-module.exports = PostEditStore;
+export default PostEditStore;
+
+export const {
+	get,
+	getSavedPost,
+	getRawContent,
+	getChangedAttributes,
+	getLoadingError,
+	isDirty,
+	isNew,
+	isLoading,
+	isAutosaving,
+	isSaveBlocked,
+	getPreviewUrl,
+	hasContent,
+	dispatchToken,
+} = PostEditStore;

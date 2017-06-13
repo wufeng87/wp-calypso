@@ -1,25 +1,26 @@
 /**
  * External Dependencies
  */
-const ReactDom = require( 'react-dom' ),
-	React = require( 'react' ),
-	classnames = require( 'classnames' ),
-	autosize = require( 'autosize' ),
-	forEach = require( 'lodash/forEach' ),
-	assign = require( 'lodash/assign' ),
-	tinymce = require( 'tinymce/tinymce' );
+import ReactDom from 'react-dom';
 
-require( 'tinymce/themes/modern/theme.js' );
+import React from 'react';
+import classnames from 'classnames';
+import autosize from 'autosize';
+import forEach from 'lodash/forEach';
+import assign from 'lodash/assign';
+import tinymce from 'tinymce/tinymce';
+import 'tinymce/themes/modern/theme.js';
 
 // TinyMCE plugins
-require( 'tinymce/plugins/colorpicker/plugin.js' );
-require( 'tinymce/plugins/directionality/plugin.js' );
-require( 'tinymce/plugins/hr/plugin.js' );
-require( 'tinymce/plugins/lists/plugin.js' );
-require( 'tinymce/plugins/media/plugin.js' );
-require( 'tinymce/plugins/paste/plugin.js' );
-require( 'tinymce/plugins/tabfocus/plugin.js' );
-require( 'tinymce/plugins/textcolor/plugin.js' );
+import 'tinymce/plugins/colorpicker/plugin.js';
+
+import 'tinymce/plugins/directionality/plugin.js';
+import 'tinymce/plugins/hr/plugin.js';
+import 'tinymce/plugins/lists/plugin.js';
+import 'tinymce/plugins/media/plugin.js';
+import 'tinymce/plugins/paste/plugin.js';
+import 'tinymce/plugins/tabfocus/plugin.js';
+import 'tinymce/plugins/textcolor/plugin.js';
 
 // TinyMCE plugins that we've forked or written ourselves
 import wpcomPlugin from './plugins/wpcom/plugin.js';
@@ -72,15 +73,17 @@ import wpEmojiPlugin from './plugins/wpemoji/plugin';
 	embedReversalPlugin,
 	markdownPlugin,
 	wpEmojiPlugin,
-].forEach( ( initializePlugin ) => initializePlugin() );
+].forEach( initializePlugin => initializePlugin() );
 
 /**
  * Internal Dependencies
  */
-const user = require( 'lib/user' )(),
-	i18n = require( './i18n' ),
-	viewport = require( 'lib/viewport' ),
-	config = require( 'config' );
+import userFactory from 'lib/user';
+
+const user = userFactory();
+import i18n from './i18n';
+import viewport from 'lib/viewport';
+import config from 'config';
 import { decodeEntities, wpautop, removep } from 'lib/formatting';
 
 /**
@@ -106,7 +109,7 @@ const EVENTS = {
 	show: 'onShow',
 	submit: 'onSubmit',
 	undo: 'onUndo',
-	setContent: 'onSetContent'
+	setContent: 'onSetContent',
 };
 
 const PLUGINS = [
@@ -154,7 +157,7 @@ const CONTENT_CSS = [
 	'//fonts.googleapis.com/css?family=Noto+Serif:400,400i,700,700i&subset=cyrillic,cyrillic-ext,greek,greek-ext,latin-ext,vietnamese',
 ];
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'TinyMCE',
 
 	propTypes: {
@@ -176,23 +179,23 @@ module.exports = React.createClass( {
 		tabIndex: React.PropTypes.number,
 		isNew: React.PropTypes.bool,
 		onTextEditorChange: React.PropTypes.func,
-		onKeyUp: React.PropTypes.func
+		onKeyUp: React.PropTypes.func,
 	},
 
 	contextTypes: {
-		store: React.PropTypes.object
+		store: React.PropTypes.object,
 	},
 
 	getDefaultProps: function() {
 		return {
 			mode: 'tinymce',
-			isNew: false
+			isNew: false,
 		};
 	},
 
 	getInitialState: function() {
 		return {
-			content: ''
+			content: '',
 		};
 	},
 
@@ -227,10 +230,13 @@ module.exports = React.createClass( {
 			}
 
 			this.bindEditorEvents();
-			editor.on( 'SetTextAreaContent', ( event ) => this.setTextAreaContent( event.content ) );
+			editor.on( 'SetTextAreaContent', event => this.setTextAreaContent( event.content ) );
 
 			if ( ! viewport.isMobile() ) {
-				editor.once( 'PostRender', this.toggleEditor.bind( this, { autofocus: ! this.props.isNew } ) );
+				editor.once(
+					'PostRender',
+					this.toggleEditor.bind( this, { autofocus: ! this.props.isNew } ),
+				);
 			}
 		}.bind( this );
 
@@ -250,34 +256,34 @@ module.exports = React.createClass( {
 				alignleft: [
 					{
 						selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li',
-						styles: { textAlign: 'left' }
+						styles: { textAlign: 'left' },
 					},
 					{
 						selector: 'img,table,dl.wp-caption',
-						classes: 'alignleft'
-					}
+						classes: 'alignleft',
+					},
 				],
 				aligncenter: [
 					{
 						selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li',
-						styles: { textAlign: 'center' }
+						styles: { textAlign: 'center' },
 					},
 					{
 						selector: 'img,table,dl.wp-caption',
-						classes: 'aligncenter'
-					}
+						classes: 'aligncenter',
+					},
 				],
 				alignright: [
 					{
 						selector: 'p,h1,h2,h3,h4,h5,h6,td,th,div,ul,ol,li',
-						styles: { textAlign: 'right' }
+						styles: { textAlign: 'right' },
 					},
 					{
 						selector: 'img,table,dl.wp-caption',
-						classes: 'alignright'
-					}
+						classes: 'alignright',
+					},
 				],
-				strikethrough: { inline: 'del' }
+				strikethrough: { inline: 'del' },
 			},
 			relative_urls: false,
 			remove_script_host: false,
@@ -320,8 +326,7 @@ module.exports = React.createClass( {
 			body_class: 'content post-type-post post-status-draft post-format-standard locale-en-us',
 			add_unload_trigger: false,
 
-			setup: setup
-
+			setup: setup,
 		} );
 
 		autosize( ReactDom.findDOMNode( this.refs.text ) );
@@ -335,11 +340,14 @@ module.exports = React.createClass( {
 	},
 
 	destroyEditor() {
-		forEach( EVENTS, function( eventHandler, eventName ) {
-			if ( this.props[ eventHandler ] ) {
-				this._editor.off( eventName, this.props[ eventHandler ] );
-			}
-		}.bind( this ) );
+		forEach(
+			EVENTS,
+			function( eventHandler, eventName ) {
+				if ( this.props[ eventHandler ] ) {
+					this._editor.off( eventName, this.props[ eventHandler ] );
+				}
+			}.bind( this ),
+		);
 
 		tinymce.remove( this._editor );
 		this._editor = null;
@@ -353,15 +361,18 @@ module.exports = React.createClass( {
 	bindEditorEvents: function( prevProps ) {
 		prevProps = prevProps || {};
 
-		forEach( EVENTS, function( eventHandler, eventName ) {
-			if ( prevProps[ eventHandler ] !== this.props[ eventHandler ] ) {
-				if ( this.props[ eventHandler ] ) {
-					this._editor.on( eventName, this.props[ eventHandler ] );
-				} else {
-					this._editor.off( eventName, this.props[ eventHandler ] );
+		forEach(
+			EVENTS,
+			function( eventHandler, eventName ) {
+				if ( prevProps[ eventHandler ] !== this.props[ eventHandler ] ) {
+					if ( this.props[ eventHandler ] ) {
+						this._editor.on( eventName, this.props[ eventHandler ] );
+					} else {
+						this._editor.off( eventName, this.props[ eventHandler ] );
+					}
 				}
-			}
-		}.bind( this ) );
+			}.bind( this ),
+		);
 	},
 
 	toggleEditor: function( options = { autofocus: true } ) {
@@ -373,7 +384,7 @@ module.exports = React.createClass( {
 			this._editor.hide();
 			this.doAutosizeUpdate();
 			if ( options.autofocus ) {
-				this.focusEditor( );
+				this.focusEditor();
 			}
 			return;
 		}
@@ -429,9 +440,12 @@ module.exports = React.createClass( {
 	},
 
 	setTextAreaContent: function( content ) {
-		this.setState( {
-			content: decodeEntities( content )
-		}, this.doAutosizeUpdate );
+		this.setState(
+			{
+				content: decodeEntities( content ),
+			},
+			this.doAutosizeUpdate,
+		);
 	},
 
 	setEditorContent: function( content, args = {} ) {
@@ -487,17 +501,17 @@ module.exports = React.createClass( {
 		const { mode } = this.props;
 		const className = classnames( {
 			tinymce: true,
-			'is-visible': mode === 'html'
+			'is-visible': mode === 'html',
 		} );
 
 		return (
 			<div>
-				{ 'html' === mode && config.isEnabled( 'post-editor/html-toolbar' ) &&
+				{ 'html' === mode &&
+					config.isEnabled( 'post-editor/html-toolbar' ) &&
 					<EditorHtmlToolbar
 						content={ this.refs.text }
 						onToolbarChangeContent={ this.onToolbarChangeContent }
-					/>
-				}
+					/> }
 				<textarea
 					ref="text"
 					className={ className }
@@ -508,5 +522,5 @@ module.exports = React.createClass( {
 				/>
 			</div>
 		);
-	}
+	},
 } );

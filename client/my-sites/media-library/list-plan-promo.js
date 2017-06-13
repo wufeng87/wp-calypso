@@ -9,27 +9,37 @@ import { preventWidows } from 'lib/formatting';
 /**
  * Internal dependencies
  */
-const EmptyContent = require( 'components/empty-content' ),
-	Button = require( 'components/button' );
+import EmptyContent from 'components/empty-content';
 
-module.exports = React.createClass( {
+import Button from 'components/button';
+
+export default React.createClass( {
 	displayName: 'MediaLibraryListPlanPromo',
 
 	propTypes: {
 		site: React.PropTypes.object,
-		filter: React.PropTypes.string
+		filter: React.PropTypes.string,
 	},
 
 	getTitle: function() {
 		switch ( this.props.filter ) {
 			case 'videos':
-				return this.translate( 'Upload Videos', { textOnly: true, context: 'Media upload plan needed' } );
+				return this.translate(
+					'Upload Videos',
+					{ textOnly: true, context: 'Media upload plan needed' },
+				);
 
 			case 'audio':
-				return this.translate( 'Upload Audio', { textOnly: true, context: 'Media upload plan needed' } );
+				return this.translate(
+					'Upload Audio',
+					{ textOnly: true, context: 'Media upload plan needed' },
+				);
 
 			default:
-				return this.translate( 'Upload Media', { textOnly: true, context: 'Media upload plan needed' } );
+				return this.translate(
+					'Upload Media',
+					{ textOnly: true, context: 'Media upload plan needed' },
+				);
 		}
 	},
 
@@ -39,22 +49,28 @@ module.exports = React.createClass( {
 				return preventWidows(
 					this.translate(
 						'To upload video files to your site, upgrade your plan.',
-						{ textOnly: true, context: 'Media upgrade promo' }
-				), 2 );
+						{ textOnly: true, context: 'Media upgrade promo' },
+					),
+					2,
+				);
 
 			case 'audio':
 				return preventWidows(
 					this.translate(
 						'To upload audio files to your site, upgrade your plan.',
-						{ textOnly: true, context: 'Media upgrade promo' }
-				), 2 );
+						{ textOnly: true, context: 'Media upgrade promo' },
+					),
+					2,
+				);
 
 			default:
 				return preventWidows(
 					this.translate(
 						'To upload audio and video files to your site, upgrade your plan.',
-						{ textOnly: true, context: 'Media upgrade promo' }
-				), 2 );
+						{ textOnly: true, context: 'Media upgrade promo' },
+					),
+					2,
+				);
 		}
 	},
 
@@ -68,7 +84,9 @@ module.exports = React.createClass( {
 
 	render: function() {
 		const action = (
-			<Button className="button is-primary" onClick={ this.viewPlansPage }>{ this.translate( 'See Plans' ) }</Button>
+			<Button className="button is-primary" onClick={ this.viewPlansPage }>
+				{ this.translate( 'See Plans' ) }
+			</Button>
 		);
 
 		return (
@@ -76,7 +94,8 @@ module.exports = React.createClass( {
 				title={ this.getTitle() }
 				line={ this.getSummary() }
 				action={ this.props.children || action }
-				illustration={ '' } />
+				illustration={ '' }
+			/>
 		);
-	}
+	},
 } );

@@ -1,11 +1,11 @@
 /**
  * External dependencies
  */
-const React = require( 'react' );
+import React from 'react';
 
 const ContactDisplay = React.createClass( {
 	propTypes: {
-		contactInformation: React.PropTypes.object.isRequired
+		contactInformation: React.PropTypes.object.isRequired,
 	},
 
 	render() {
@@ -32,7 +32,7 @@ const ContactDisplay = React.createClass( {
 				</div>
 			</div>
 		);
-	}
+	},
 } );
 
-module.exports = ContactDisplay;
+export default ContactDisplay;

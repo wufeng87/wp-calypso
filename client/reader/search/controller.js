@@ -78,7 +78,7 @@ const exported = {
 					basePath,
 					fullAnalyticsPageTitle,
 					analyticsPageTitle,
-					mcKey
+					mcKey,
 				) }
 				onUpdatesShown={ trackUpdatesLoaded.bind( null, mcKey ) }
 				showBack={ false }
@@ -89,11 +89,13 @@ const exported = {
 				searchType={ show }
 			/>,
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 };
 
 export default exported;
+
+export const {} = exported;
 
 export const { search } = exported;

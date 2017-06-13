@@ -13,8 +13,7 @@ import { setDocumentHeadTitle as setTitle } from 'state/document-head/actions';
 import { renderWithReduxStore } from 'lib/react-helpers';
 import { getSelectedSite } from 'state/ui/selectors';
 
-module.exports = {
-
+const exported = {
 	media: function( context ) {
 		var MediaComponent = require( 'my-sites/media/main' ),
 			filter = context.params.filter,
@@ -39,11 +38,14 @@ module.exports = {
 			React.createElement( MediaComponent, {
 				selectedSite,
 				filter: filter,
-				search: search
+				search: search,
 			} ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
-	}
-
+	},
 };
+
+export default exported;
+
+export const { media } = exported;

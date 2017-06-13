@@ -1,22 +1,24 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	debug = require( 'debug' )( 'calypso:me:security:password' );
+import React from 'react';
+
+import debugFactory from 'debug';
+const debug = debugFactory( 'calypso:me:security:password' );
 
 /**
  * Internal dependencies
  */
-var MeSidebarNavigation = require( 'me/sidebar-navigation' ),
-	Card = require( 'components/card' ),
-	AccountPassword = require( 'me/account-password' ),
-	ReauthRequired = require( 'me/reauth-required' ),
-	twoStepAuthorization = require( 'lib/two-step-authorization' ),
-	SecuritySectionNav = require( 'me/security-section-nav' ),
-	Main = require( 'components/main' );
+import MeSidebarNavigation from 'me/sidebar-navigation';
 
-module.exports = React.createClass( {
+import Card from 'components/card';
+import AccountPassword from 'me/account-password';
+import ReauthRequired from 'me/reauth-required';
+import twoStepAuthorization from 'lib/two-step-authorization';
+import SecuritySectionNav from 'me/security-section-nav';
+import Main from 'components/main';
 
+export default React.createClass( {
 	displayName: 'Security',
 
 	componentDidMount: function() {
@@ -39,7 +41,7 @@ module.exports = React.createClass( {
 					<p>
 						{ this.translate(
 							'To update your password enter a new one below. Your password should be at least six characters long. ' +
-							'To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ & ).'
+								'To make it stronger, use upper and lower case letters, numbers and symbols like ! " ? $ % ^ & ).',
 						) }
 					</p>
 
@@ -50,5 +52,5 @@ module.exports = React.createClass( {
 				</Card>
 			</Main>
 		);
-	}
+	},
 } );

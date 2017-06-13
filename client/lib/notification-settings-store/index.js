@@ -18,8 +18,8 @@ const initialState = {
 	error: null,
 	settings: {
 		clean: null,
-		dirty: null
-	}
+		dirty: null,
+	},
 };
 
 function toggleSetting( state, source ) {
@@ -69,9 +69,11 @@ NotificationSettingsStore.getStateFor = function( source ) {
 		status: state.get( 'status' ),
 		error: state.get( 'error' ),
 		settings: dirty && dirty.get( source ),
-		hasUnsavedChanges: ! Immutable.is( clean, dirty )
+		hasUnsavedChanges: ! Immutable.is( clean, dirty ),
 	};
 };
 
 export default NotificationSettingsStore;
 /*eslint-enable new-cap */
+
+export const { getStateFor } = NotificationSettingsStore;

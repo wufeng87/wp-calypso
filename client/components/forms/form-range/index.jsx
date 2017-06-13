@@ -1,20 +1,21 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	omit = require( 'lodash/omit' ),
-	classnames = require( 'classnames' );
+import React from 'react';
 
-module.exports = React.createClass( {
+import omit from 'lodash/omit';
+import classnames from 'classnames';
+
+export default React.createClass( {
 	displayName: 'FormRange',
 
 	propTypes: {
-		onChange: React.PropTypes.func
+		onChange: React.PropTypes.func,
 	},
 
 	getDefaultProps: function() {
 		return {
-			onChange: function() {}
+			onChange: function() {},
 		};
 	},
 
@@ -44,6 +45,13 @@ module.exports = React.createClass( {
 	render: function() {
 		var classes = classnames( this.props.className, 'form-range' );
 
-		return <input ref="range" type="range" className={ classes } { ...omit( this.props, 'className' ) } />;
-	}
+		return (
+			<input
+				ref="range"
+				type="range"
+				className={ classes }
+				{ ...omit( this.props, 'className' ) }
+			/>
+		);
+	},
 } );

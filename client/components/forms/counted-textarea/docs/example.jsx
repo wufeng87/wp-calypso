@@ -1,28 +1,29 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	PureRenderMixin = require( 'react-pure-render/mixin' );
+import React from 'react';
+
+import PureRenderMixin from 'react-pure-render/mixin';
 
 /**
  * Internal dependencies
  */
-var CountedTextarea = require( 'components/forms/counted-textarea' );
+import CountedTextarea from 'components/forms/counted-textarea';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'CountedTextareas',
 
 	mixins: [ PureRenderMixin ],
 
 	getInitialState: function() {
 		return {
-			value: 'Hello World!'
+			value: 'Hello World!',
 		};
 	},
 
 	onChange: function( event ) {
 		this.setState( {
-			value: event.target.value
+			value: event.target.value,
 		} );
 	},
 
@@ -31,7 +32,8 @@ module.exports = React.createClass( {
 			<CountedTextarea
 				value={ this.state.value }
 				onChange={ this.onChange }
-				acceptableLength={ 20 } />
+				acceptableLength={ 20 }
+			/>
 		);
-	}
+	},
 } );

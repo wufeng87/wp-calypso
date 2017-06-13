@@ -31,7 +31,7 @@ const basePageTitle = 'Signup'; // used for analytics, doesn't require translati
  */
 let refParameter, queryObject;
 
-export default {
+const exported = {
 	redirectWithoutLocaleIfLoggedIn( context, next ) {
 		if ( user.get() && utils.getLocale( context.params ) ) {
 			const flowName = utils.getFlowName( context.params ),
@@ -68,7 +68,10 @@ export default {
 
 	redirectToFlow( context, next ) {
 		if ( context.pathname !== utils.getValidPath( context.params ) ) {
-			return page.redirect( utils.getValidPath( context.params ) + ( context.querystring ? '?' + context.querystring : '' ) );
+			return page.redirect(
+				utils.getValidPath( context.params ) +
+					( context.querystring ? '?' + context.querystring : '' ),
+			);
 		}
 
 		next();
@@ -80,7 +83,10 @@ export default {
 			stepName = utils.getStepName( context.params ),
 			stepSectionName = utils.getStepSectionName( context.params );
 
-		analytics.pageView.record( basePath, basePageTitle + ' > Start > ' + flowName + ' > ' + stepName );
+		analytics.pageView.record(
+			basePath,
+			basePageTitle + ' > Start > ' + flowName + ' > ' + stepName,
+		);
 
 		ReactDom.unmountComponentAtNode( document.getElementById( 'secondary' ) );
 		context.store.dispatch( setLayoutFocus( 'content' ) );
@@ -93,10 +99,20 @@ export default {
 				locale: utils.getLocale( context.params ),
 				flowName: flowName,
 				stepName: stepName,
-				stepSectionName: stepSectionName
+				stepSectionName: stepSectionName,
 			} ),
 			'primary',
-			context.store
+			context.store,
 		);
-	}
+	},
 };
+
+export default exported;
+
+export const {
+	redirectWithoutLocaleIfLoggedIn,
+	saveRefParameter,
+	saveQueryObject,
+	redirectToFlow,
+	start,
+} = exported;

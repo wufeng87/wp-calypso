@@ -12,21 +12,21 @@ import DropZone from 'components/drop-zone';
 import MediaActions from 'lib/media/actions';
 import { userCan } from 'lib/site/utils';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'MediaLibraryDropZone',
 
 	propTypes: {
 		site: React.PropTypes.object,
 		fullScreen: React.PropTypes.bool,
 		onAddMedia: React.PropTypes.func,
-		trackStats: React.PropTypes.bool
+		trackStats: React.PropTypes.bool,
 	},
 
 	getDefaultProps: function() {
 		return {
 			fullScreen: true,
 			onAddMedia: noop,
-			trackStats: true
+			trackStats: true,
 		};
 	},
 
@@ -76,7 +76,8 @@ module.exports = React.createClass( {
 			<DropZone
 				fullScreen={ this.props.fullScreen }
 				onVerifyValidTransfer={ this.isValidTransfer }
-				onFilesDrop={ this.uploadFiles } />
+				onFilesDrop={ this.uploadFiles }
+			/>
 		);
-	}
+	},
 } );

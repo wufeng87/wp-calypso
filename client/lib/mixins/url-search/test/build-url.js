@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-var expect = require( 'chai' ).expect;
+import { expect } from 'chai';
 
 /**
  * Internal dependencies
  */
-var buildUrl = require( '../build-url' );
+import buildUrl from '../build-url';
 
 describe( 'build-url', function() {
 	it( 'should accept a path without existing query parameters', function() {

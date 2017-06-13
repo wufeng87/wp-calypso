@@ -30,3 +30,5 @@ ExpandableSidebarHeading.defaultProps = {
 };
 
 export default ExpandableSidebarHeading;
+
+export const { propTypes, defaultProps } = ExpandableSidebarHeading;

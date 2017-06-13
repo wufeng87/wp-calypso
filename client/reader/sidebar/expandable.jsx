@@ -63,3 +63,5 @@ ExpandableSidebarMenu.defaultProps = {
 };
 
 export default ExpandableSidebarMenu;
+
+export const { propTypes, defaultProps } = ExpandableSidebarMenu;

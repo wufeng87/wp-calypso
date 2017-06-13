@@ -1,6 +1,5 @@
-var deterministicStringify = require( 'lib/deterministic-stringify' );
-
-var assert = require( 'assert' );
+import deterministicStringify from 'lib/deterministic-stringify';
+import assert from 'assert';
 
 describe( 'index', function() {
 	it( 'should handle boolean', function() {
@@ -35,12 +34,15 @@ describe( 'index', function() {
 		var options, optionsDifferentSort;
 		options = {
 			b: [ 2, 1 ],
-			a: true
+			a: true,
 		};
 		optionsDifferentSort = {
 			a: true,
-			b: [ 1, 2 ]
+			b: [ 1, 2 ],
 		};
-		assert.equal( deterministicStringify( options ), deterministicStringify( optionsDifferentSort ) );
+		assert.equal(
+			deterministicStringify( options ),
+			deterministicStringify( optionsDifferentSort ),
+		);
 	} );
 } );

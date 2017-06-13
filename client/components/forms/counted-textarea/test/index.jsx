@@ -1,11 +1,12 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	ReactClass = require( 'react/lib/ReactClass' ),
-	TestUtils = require( 'react-addons-test-utils' ),
-	expect = require( 'chai' ).expect,
-	i18n = require( 'i18n-calypso' );
+import React from 'react';
+
+import ReactClass from 'react/lib/ReactClass';
+import TestUtils from 'react-addons-test-utils';
+import { expect } from 'chai';
+import i18n from 'i18n-calypso';
 
 describe( 'index', function() {
 	var CountedTextarea, renderer;
@@ -49,11 +50,11 @@ describe( 'index', function() {
 	} );
 
 	it( 'should pass props to the child textarea', function() {
-		var value = 'Hello World!',
-			placeholder = 'placeholder test',
-			result;
+		var value = 'Hello World!', placeholder = 'placeholder test', result;
 
-		renderer.render( <CountedTextarea value={ value } className="custom-class" placeholder={ placeholder } /> );
+		renderer.render(
+			<CountedTextarea value={ value } className="custom-class" placeholder={ placeholder } />,
+		);
 		result = renderer.getRenderOutput();
 
 		expect( result.props.children ).to.have.length( 2 );
@@ -63,44 +64,53 @@ describe( 'index', function() {
 	} );
 
 	it( 'should not use the placeholder as the counted item if value is empty and countPlaceholderLength is not set', function() {
-		var value = '',
-			placeholder = 'placeholder test',
-			result;
+		var value = '', placeholder = 'placeholder test', result;
 
-		renderer.render( <CountedTextarea value={ value } className="custom-class" placeholder={ placeholder } /> );
+		renderer.render(
+			<CountedTextarea value={ value } className="custom-class" placeholder={ placeholder } />,
+		);
 		result = renderer.getRenderOutput();
 
 		expect( result.props.children[ 1 ].props.children[ 0 ] ).to.equal( '0 characters' );
 	} );
 
 	it( 'should use the placeholder as the counted item if value is empty and countPlaceholderLength is true', function() {
-		var value = '',
-			placeholder = 'placeholder test',
-			result;
+		var value = '', placeholder = 'placeholder test', result;
 
-		renderer.render( <CountedTextarea value={ value } className="custom-class" placeholder={ placeholder } countPlaceholderLength={ true } /> );
+		renderer.render(
+			<CountedTextarea
+				value={ value }
+				className="custom-class"
+				placeholder={ placeholder }
+				countPlaceholderLength={ true }
+			/>,
+		);
 		result = renderer.getRenderOutput();
 
 		expect( result.props.children[ 1 ].props.children[ 0 ] ).to.equal( '16 characters' );
 	} );
 
 	it( 'should use the value as the counted item if value is set', function() {
-		var value = 'Hello World!',
-			placeholder = 'placeholder test',
-			result;
+		var value = 'Hello World!', placeholder = 'placeholder test', result;
 
-		renderer.render( <CountedTextarea value={ value } className="custom-class" placeholder={ placeholder }/> );
+		renderer.render(
+			<CountedTextarea value={ value } className="custom-class" placeholder={ placeholder } />,
+		);
 		result = renderer.getRenderOutput();
 
 		expect( result.props.children[ 1 ].props.children[ 0 ] ).to.equal( '12 characters' );
 	} );
 
 	it( 'should not pass acceptableLength prop to the child textarea', function() {
-		var value = 'Hello World!',
-			acceptableLength = 140,
-			result;
+		var value = 'Hello World!', acceptableLength = 140, result;
 
-		renderer.render( <CountedTextarea value={ value } className="custom-class" acceptableLength={ acceptableLength } /> );
+		renderer.render(
+			<CountedTextarea
+				value={ value }
+				className="custom-class"
+				acceptableLength={ acceptableLength }
+			/>,
+		);
 		result = renderer.getRenderOutput();
 
 		expect( result.props.children ).to.have.length( 2 );
@@ -110,11 +120,15 @@ describe( 'index', function() {
 	} );
 
 	it( 'should render a reversed count when set to showRemainingCount', function() {
-		var value = 'Hello World!',
-			acceptableLength = 140,
-			result;
+		var value = 'Hello World!', acceptableLength = 140, result;
 
-		renderer.render( <CountedTextarea value={ value } acceptableLength={ acceptableLength } showRemainingCharacters={ true } /> );
+		renderer.render(
+			<CountedTextarea
+				value={ value }
+				acceptableLength={ acceptableLength }
+				showRemainingCharacters={ true }
+			/>,
+		);
 		result = renderer.getRenderOutput();
 
 		expect( result.props.className ).to.equal( 'counted-textarea' );
@@ -128,7 +142,15 @@ describe( 'index', function() {
 			additionalPanelContent = 'Extra stuff',
 			result;
 
-		renderer.render( <CountedTextarea value={ value } acceptableLength={ acceptableLength } showRemainingCharacters={ true } > { additionalPanelContent } </CountedTextarea> );
+		renderer.render(
+			<CountedTextarea
+				value={ value }
+				acceptableLength={ acceptableLength }
+				showRemainingCharacters={ true }
+			>
+				{' '}{ additionalPanelContent }{' '}
+			</CountedTextarea>,
+		);
 		result = renderer.getRenderOutput();
 
 		expect( result.props.className ).to.equal( 'counted-textarea' );

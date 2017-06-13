@@ -1,11 +1,14 @@
-var plugins = require( './plugins' );
-module.exports = {
+import plugins from './plugins';
+
+const exported = {
 	ID: 91234567890,
 	URL: 'http://example.com/site1',
 	canUpdateFiles: true,
+
 	capabilities: {
-		manage_options: true
+		manage_options: true,
 	},
+
 	description: 'Just another Sandbox Sites site',
 	domain: 'http://example.com/site1',
 	hasJetpackProtect: true,
@@ -18,6 +21,7 @@ module.exports = {
 	logo: {},
 	meta: {},
 	name: 'Site 1',
+
 	options: {
 		admin_url: 'http://example.com/site2/wp-admin/',
 		allowed_file_types: [],
@@ -53,8 +57,9 @@ module.exports = {
 		timezone: '',
 		unmapped_url: 'http://example.com/site2',
 		upgraded_filetypes_enabled: true,
-		videopress_enabled: false
+		videopress_enabled: false,
 	},
+
 	plan: 1,
 	plugins: plugins,
 	post_count: 5,
@@ -66,5 +71,39 @@ module.exports = {
 	jp_version: '3.7',
 	user_can_manage: true,
 	visible: true,
-	wpcom_url: 'example.com/site1'
+	wpcom_url: 'example.com/site1',
 };
+
+export default exported;
+export { plugins };
+
+export const {
+	ID,
+	URL,
+	canUpdateFiles,
+	capabilities,
+	description,
+	domain,
+	hasJetpackProtect,
+	hasMinimumJetpackVersion,
+	icon,
+	is_following,
+	is_private,
+	jetpack,
+	lang,
+	logo,
+	meta,
+	name,
+	options,
+	plan,
+	post_count,
+	single_user_site,
+	slug,
+	subscribers_count,
+	title,
+	update,
+	jp_version,
+	user_can_manage,
+	visible,
+	wpcom_url,
+} = exported;

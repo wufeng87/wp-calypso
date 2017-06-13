@@ -18,11 +18,10 @@ import { buildBody } from '../utils';
 export function requestUpdatePostEmailSubscription( { dispatch, getState }, action ) {
 	const actionWithRevert = merge( {}, action, {
 		meta: {
-			previousState: get( getReaderFollowForBlog( getState(), action.payload.blogId ), [
-				'delivery_frequency',
-				'email',
-				'post_delivery_frequency',
-			] ),
+			previousState: get(
+				getReaderFollowForBlog( getState(), action.payload.blogId ),
+				[ 'delivery_frequency', 'email', 'post_delivery_frequency' ],
+			),
 		},
 	} );
 	dispatch(
@@ -33,7 +32,7 @@ export function requestUpdatePostEmailSubscription( { dispatch, getState }, acti
 			body: buildBody( get( action, [ 'payload', 'deliveryFrequency' ] ) ),
 			onSuccess: actionWithRevert,
 			onFailure: actionWithRevert,
-		} )
+		} ),
 	);
 }
 
@@ -47,22 +46,26 @@ export function receiveUpdatePostEmailSubscription( store, action, next, respons
 export function receiveUpdatePostEmailSubscriptionError(
 	{ dispatch },
 	{ payload: { blogId }, meta: { previousState } },
-	next
+	next,
  ) {
 	dispatch(
 		errorNotice(
-			translate( 'Sorry, we had a problem updating that subscription. Please try again.' )
-		)
+			translate( 'Sorry, we had a problem updating that subscription. Please try again.' ),
+		),
 	);
 	next( updateNewPostEmailSubscription( blogId, previousState ) );
 }
 
-export default {
+const exported = {
 	[ READER_UPDATE_NEW_POST_EMAIL_SUBSCRIPTION ]: [
 		dispatchRequest(
 			requestUpdatePostEmailSubscription,
 			receiveUpdatePostEmailSubscription,
-			receiveUpdatePostEmailSubscriptionError
+			receiveUpdatePostEmailSubscriptionError,
 		),
 	],
 };
+
+export default exported;
+
+export { READER_UPDATE_NEW_POST_EMAIL_SUBSCRIPTION };

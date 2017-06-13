@@ -7,19 +7,20 @@ import PureRenderMixin from 'react-pure-render/mixin';
 /**
  * Internal dependencies
  */
-const Card = require( 'components/card' ),
-	CompactCard = require( 'components/card/compact' ),
-	Gridicon = require( 'gridicons' ),
-	FormSectionHeading = require( 'components/forms/form-section-heading' ),
-	FormFieldset = require( 'components/forms/form-fieldset' ),
-	FormLabel = require( 'components/forms/form-label' ),
-	FormRadio = require( 'components/forms/form-radio' ),
-	FormButton = require( 'components/forms/form-button' ),
-	FormButtonsBar = require( 'components/forms/form-buttons-bar' ),
-	AuthorSelector = require( 'blocks/author-selector' ),
-	UsersActions = require( 'lib/users/actions' ),
-	accept = require( 'lib/accept' ),
-	analytics = require( 'lib/analytics' );
+import Card from 'components/card';
+
+import CompactCard from 'components/card/compact';
+import Gridicon from 'gridicons';
+import FormSectionHeading from 'components/forms/form-section-heading';
+import FormFieldset from 'components/forms/form-fieldset';
+import FormLabel from 'components/forms/form-label';
+import FormRadio from 'components/forms/form-radio';
+import FormButton from 'components/forms/form-button';
+import FormButtonsBar from 'components/forms/form-buttons-bar';
+import AuthorSelector from 'blocks/author-selector';
+import UsersActions from 'lib/users/actions';
+import accept from 'lib/accept';
+import analytics from 'lib/analytics';
 import Gravatar from 'components/gravatar';
 import { localize } from 'i18n-calypso';
 
@@ -40,7 +41,7 @@ const DeleteUser = React.createClass( {
 		return {
 			showDialog: false,
 			radioOption: false,
-			reassignUser: false
+			reassignUser: false,
 		};
 	},
 
@@ -53,7 +54,7 @@ const DeleteUser = React.createClass( {
 		return translate( 'Remove %(username)s', {
 			args: {
 				username: this.props.user.name,
-			}
+			},
 		} );
 	},
 
@@ -66,14 +67,12 @@ const DeleteUser = React.createClass( {
 		return translate( 'Delete %(username)s', {
 			args: {
 				username: this.props.user.name,
-			}
+			},
 		} );
 	},
 
 	handleRadioChange: function( event ) {
-		const name = event.currentTarget.name,
-			value = event.currentTarget.value,
-			updateObj = {};
+		const name = event.currentTarget.name, value = event.currentTarget.value, updateObj = {};
 
 		updateObj[ name ] = value;
 
@@ -87,45 +86,49 @@ const DeleteUser = React.createClass( {
 
 	onSelectAuthor: function( author ) {
 		this.setState( {
-			reassignUser: author
+			reassignUser: author,
 		} );
 	},
 
 	removeUser: function() {
 		const { translate } = this.props;
-		accept( (
+		accept(
 			<div>
 				<p>
-				{
-					this.props.user && this.props.user.name
-					? translate(
-						'If you remove %(username)s, that user will no longer be able to access this site, ' +
-						'but any content that was created by %(username)s will remain on the site.', {
-							args: {
-								username: this.props.user.name
-							}
-						}
-					)
-					: translate(
-						'If you remove this user, he or she will no longer be able to access this site, ' +
-						'but any content that was created by this user will remain on the site.'
-					)
-				}
+					{ this.props.user && this.props.user.name
+						? translate(
+								'If you remove %(username)s, that user will no longer be able to access this site, ' +
+									'but any content that was created by %(username)s will remain on the site.',
+								{
+									args: {
+										username: this.props.user.name,
+									},
+								},
+							)
+						: translate(
+								'If you remove this user, he or she will no longer be able to access this site, ' +
+									'but any content that was created by this user will remain on the site.',
+							) }
 				</p>
 				<p>
 					{ translate( 'Would you still like to remove this user?' ) }
 				</p>
-			</div>
-			),
+			</div>,
 			accepted => {
 				if ( accepted ) {
-					analytics.ga.recordEvent( 'People', 'Clicked Confirm Remove User on Edit User Network Site' );
+					analytics.ga.recordEvent(
+						'People',
+						'Clicked Confirm Remove User on Edit User Network Site',
+					);
 					UsersActions.deleteUser( this.props.siteId, this.props.user.ID );
 				} else {
-					analytics.ga.recordEvent( 'People', 'Clicked Cancel Remove User on Edit User Network Site' );
+					analytics.ga.recordEvent(
+						'People',
+						'Clicked Cancel Remove User on Edit User Network Site',
+					);
 				}
 			},
-			translate( 'Remove' )
+			translate( 'Remove' ),
 		);
 		analytics.ga.recordEvent( 'People', 'Clicked Remove User on Edit User Network Site' );
 	},
@@ -166,21 +169,17 @@ const DeleteUser = React.createClass( {
 						exclude={ [ this.props.user.ID ] }
 						ignoreContext={ this.reassignLabel }
 					>
-						{
-							this.state.reassignUser
-							? (
-								<span>
+						{ this.state.reassignUser
+							? <span>
 									<Gravatar size={ 26 } user={ this.state.reassignUser } />
 									<span className="delete-user__reassign-user-name">
 										{ this.state.reassignUser.name }
 									</span>
 								</span>
-							)
-							: this.getAuthorSelectPlaceholder()
-						}
+							: this.getAuthorSelectPlaceholder() }
 					</AuthorSelector>
-				)
-			}
+				),
+			},
 		} );
 	},
 
@@ -202,21 +201,20 @@ const DeleteUser = React.createClass( {
 					</FormSectionHeading>
 
 					<p className="delete-user__explanation">
-						{
-							this.props.user.name
+						{ this.props.user.name
 							? translate(
-								'You have the option of reassigning all content created by ' +
-								'%(username)s, or deleting the content entirely.', {
-									args: {
-										username: this.props.user.name,
-									}
-								}
-							)
+									'You have the option of reassigning all content created by ' +
+										'%(username)s, or deleting the content entirely.',
+									{
+										args: {
+											username: this.props.user.name,
+										},
+									},
+								)
 							: translate(
-								'You have the option of reassigning all content created by ' +
-								'this user, or deleting the content entirely.'
-							)
-						}
+									'You have the option of reassigning all content created by ' +
+										'this user, or deleting the content entirely.',
+								) }
 					</p>
 
 					<FormFieldset>
@@ -242,25 +240,19 @@ const DeleteUser = React.createClass( {
 							/>
 
 							<span>
-								{
-									this.props.user.name
-									? translate(
-										'Delete all content created by %(username)s', {
+								{ this.props.user.name
+									? translate( 'Delete all content created by %(username)s', {
 											args: {
 												username: this.props.user.name ? this.props.user.name : '',
-											}
-										}
-									)
-									: translate(
-										'Delete all content created by this user'
-									)
-								}
+											},
+										} )
+									: translate( 'Delete all content created by this user' ) }
 							</span>
 						</FormLabel>
 					</FormFieldset>
 
 					<FormButtonsBar>
-						<FormButton disabled={ this.isDeleteButtonDisabled() } >
+						<FormButton disabled={ this.isDeleteButtonDisabled() }>
 							{ translate( 'Delete user', { context: 'Button label' } ) }
 						</FormButton>
 					</FormButtonsBar>
@@ -271,10 +263,8 @@ const DeleteUser = React.createClass( {
 
 	renderMultisite: function() {
 		return (
-			<CompactCard className="delete-user__multisite" >
-				<a
-					className="delete-user__remove-user"
-					onClick={ this.removeUser }>
+			<CompactCard className="delete-user__multisite">
+				<a className="delete-user__remove-user" onClick={ this.removeUser }>
 					<Gridicon icon="trash" />
 					{ this.getRemoveText() }
 				</a>
@@ -292,7 +282,7 @@ const DeleteUser = React.createClass( {
 		}
 
 		return this.props.isMultisite ? this.renderMultisite() : this.renderSingleSite();
-	}
+	},
 } );
 
 export default localize( DeleteUser );

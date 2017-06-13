@@ -1,8 +1,11 @@
 const whoisType = {
 	REGISTRANT: 'registrant',
-	PRIVACY_SERVICE: 'privacy_service'
+	PRIVACY_SERVICE: 'privacy_service',
 };
 
-export default {
-	whoisType
+const exported = {
+	whoisType,
 };
+
+export default exported;
+export { whoisType };

@@ -17,9 +17,7 @@ import { withoutHttp } from 'lib/url';
 const languages = config( 'languages' );
 
 function getLanguage( slug ) {
-	var len = languages.length,
-		language,
-		index;
+	var len = languages.length, language, index;
 
 	for ( index = 0; index < len; index++ ) {
 		if ( slug === languages[ index ].langSlug ) {
@@ -36,7 +34,7 @@ function getSiteSlug( url ) {
 	return slug.replace( /\//g, '::' );
 }
 
-module.exports = {
+const exported = {
 	filterUserObject: function( obj ) {
 		var user = {},
 			allowedKeys = [
@@ -57,13 +55,9 @@ module.exports = {
 				'primary_blog',
 				'primary_blog_url',
 				'meta',
-				'is_new_reader'
+				'is_new_reader',
 			],
-			decodeWhitelist = [
-				'display_name',
-				'description',
-				'user_URL'
-			];
+			decodeWhitelist = [ 'display_name', 'description', 'user_URL' ];
 
 		allowedKeys.forEach( function( key ) {
 			user[ key ] = obj[ key ] && includes( decodeWhitelist, key )
@@ -80,8 +74,11 @@ module.exports = {
 		return {
 			primarySiteSlug: getSiteSlug( primayBlogUrl ),
 			localeSlug: attributes.language,
-			isRTL: !! ( language && language.rtl )
+			isRTL: !! ( language && language.rtl ),
 		};
-	}
-
+	},
 };
+
+export default exported;
+
+export const { filterUserObject, getComputedAttributes } = exported;

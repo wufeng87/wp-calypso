@@ -9,4 +9,9 @@ function fakeLoader( url, callback ) {
 
 fakeLoader.urlsLoaded = [];
 
-module.exports = { loadScript: fakeLoader };
+const exported = {
+	loadScript: fakeLoader,
+};
+
+export default exported;
+export { fakeLoader as loadScript };

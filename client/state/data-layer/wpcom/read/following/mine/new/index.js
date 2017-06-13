@@ -28,7 +28,7 @@ export function requestFollow( { dispatch }, action ) {
 			},
 			onSuccess: action,
 			onFailure: action,
-		} )
+		} ),
 	);
 }
 
@@ -42,7 +42,9 @@ export function receiveFollow( store, action, next, response ) {
 
 export function followError( { dispatch }, action, next, response ) {
 	dispatch(
-		errorNotice( translate( 'Sorry, there was a problem following that site. Please try again.' ) )
+		errorNotice(
+			translate( 'Sorry, there was a problem following that site. Please try again.' ),
+		),
 	);
 
 	if ( response && response.info ) {
@@ -52,6 +54,8 @@ export function followError( { dispatch }, action, next, response ) {
 	next( unfollow( action.payload.feedUrl ) );
 }
 
-export default {
+const exported = {
 	[ READER_FOLLOW ]: [ dispatchRequest( requestFollow, receiveFollow, followError ) ],
 };
+
+export default exported;

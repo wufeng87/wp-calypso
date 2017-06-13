@@ -26,7 +26,7 @@ export function requestUnfollow( { dispatch }, action ) {
 			},
 			onSuccess: action,
 			onFailure: action,
-		} )
+		} ),
 	);
 }
 
@@ -41,12 +41,16 @@ export function receiveUnfollow( store, action, next, response ) {
 export function unfollowError( { dispatch }, action, next ) {
 	dispatch(
 		errorNotice(
-			translate( 'Sorry, there was a problem unfollowing that site. Please try again.' )
-		)
+			translate( 'Sorry, there was a problem unfollowing that site. Please try again.' ),
+		),
 	);
 	next( follow( action.payload.feedUrl ) );
 }
 
-export default {
+const exported = {
 	[ READER_UNFOLLOW ]: [ dispatchRequest( requestUnfollow, receiveUnfollow, unfollowError ) ],
 };
+
+export default exported;
+
+export { READER_UNFOLLOW };

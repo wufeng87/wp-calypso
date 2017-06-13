@@ -11,7 +11,7 @@ import { renderWithReduxStore } from 'lib/react-helpers';
 import get from 'lodash/get';
 import { isValidFeatureKey } from 'lib/plans';
 
-export default {
+const exported = {
 	plans( context ) {
 		const Plans = require( 'my-sites/plans/main' ),
 			CheckoutData = require( 'components/data/checkout' );
@@ -26,7 +26,7 @@ export default {
 				/>
 			</CheckoutData>,
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 
@@ -56,5 +56,9 @@ export default {
 		}
 
 		return page.redirect( '/plans' );
-	}
+	},
 };
+
+export default exported;
+
+export const { plans, features, redirectToCheckout, redirectToPlans } = exported;

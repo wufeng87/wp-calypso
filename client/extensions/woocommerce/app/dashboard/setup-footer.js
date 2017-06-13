@@ -23,3 +23,5 @@ SetupFooter.propTypes = {
 };
 
 export default SetupFooter;
+
+export const { propTypes } = SetupFooter;

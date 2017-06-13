@@ -2,11 +2,12 @@
  * Stub i18n
  */
 
-function I18n() {
-}
+function I18n() {}
 
 I18n.translate = function( string ) {
 	return string;
 };
 
-module.exports = I18n;
+export default I18n;
+
+export const { translate } = I18n;

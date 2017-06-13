@@ -2,8 +2,13 @@ function createDomainObject( status ) {
 	return {
 		locked: status.locked,
 		pendingTransfer: status.pending_transfer,
-		transferProhibited: status.transfer_prohibited
+		transferProhibited: status.transfer_prohibited,
 	};
 }
 
-export default { createDomainObject };
+const exported = {
+	createDomainObject,
+};
+
+export default exported;
+export { createDomainObject };

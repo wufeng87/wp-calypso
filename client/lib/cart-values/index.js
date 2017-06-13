@@ -1,16 +1,18 @@
 /**
  * External dependencies
  */
-var update = require( 'react-addons-update' ),
-	i18n = require( 'i18n-calypso' ),
-	extend = require( 'lodash/extend' ),
-	config = require( 'config' );
+import update from 'react-addons-update';
+
+import i18n from 'i18n-calypso';
+import extend from 'lodash/extend';
+import config from 'config';
 
 /**
  * Internal dependencies
  */
-var cartItems = require( './cart-items' ),
-	productsValues = require( 'lib/products-values' );
+import cartItems from './cart-items';
+
+import productsValues from 'lib/products-values';
 
 /**
  * Create a new empty cart.
@@ -32,7 +34,7 @@ function applyCoupon( coupon ) {
 	return function( cart ) {
 		return update( cart, {
 			coupon: { $set: coupon },
-			is_coupon_applied: { $set: false }
+			is_coupon_applied: { $set: false },
 		} );
 	};
 }
@@ -66,7 +68,9 @@ function getNewMessages( previousCartValue, nextCartValue ) {
 	nextCartMessages = nextCartValue.messages || [];
 
 	// If there is no previous cart then just return the messages for the new cart
-	if ( ! previousCartValue || ! previousCartValue.client_metadata || ! nextCartValue.client_metadata ) {
+	if (
+		! previousCartValue || ! previousCartValue.client_metadata || ! nextCartValue.client_metadata
+	) {
 		return nextCartMessages;
 	}
 
@@ -97,8 +101,8 @@ function fillInAllCartItemAttributes( cart, products ) {
 				return items.map( function( cartItem ) {
 					return fillInSingleCartItemAttributes( cartItem, products );
 				} );
-			}
-		}
+			},
+		},
 	} );
 }
 
@@ -147,11 +151,13 @@ function isCreditCardPaymentsEnabled( cart ) {
 }
 
 function isPayPalExpressEnabled( cart ) {
-	return config.isEnabled( 'upgrades/paypal' ) &&
-			0 <= cart.allowed_payment_methods.indexOf( 'WPCOM_Billing_PayPal_Express' );
+	return (
+		config.isEnabled( 'upgrades/paypal' ) &&
+		0 <= cart.allowed_payment_methods.indexOf( 'WPCOM_Billing_PayPal_Express' )
+	);
 }
 
-module.exports = {
+const exported = {
 	applyCoupon,
 	canRemoveFromCart,
 	cartItems,
@@ -164,5 +170,22 @@ module.exports = {
 	isPaidForFullyInCredits,
 	isPaymentMethodEnabled,
 	isPayPalExpressEnabled,
-	isCreditCardPaymentsEnabled
+	isCreditCardPaymentsEnabled,
+};
+
+export default exported;
+export {
+	applyCoupon,
+	canRemoveFromCart,
+	cartItems,
+	emptyCart,
+	fillInAllCartItemAttributes,
+	fillInSingleCartItemAttributes,
+	getNewMessages,
+	getRefundPolicy,
+	isFree,
+	isPaidForFullyInCredits,
+	isPaymentMethodEnabled,
+	isPayPalExpressEnabled,
+	isCreditCardPaymentsEnabled,
 };

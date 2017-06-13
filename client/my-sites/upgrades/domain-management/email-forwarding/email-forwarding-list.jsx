@@ -1,17 +1,16 @@
 /**
  * External dependencies
  */
-var React = require( 'react' );
+import React from 'react';
 
 /**
  * Internal dependencies
  */
-var EmailForwardingItem = require( './email-forwarding-item' );
+import EmailForwardingItem from './email-forwarding-item';
 
 var EmailForwardingList = React.createClass( {
 	render: function() {
-		var emailForwardingItems,
-			{ list, hasLoadedFromServer } = this.props.emailForwarding;
+		var emailForwardingItems, { list, hasLoadedFromServer } = this.props.emailForwarding;
 
 		if ( ! list && ! hasLoadedFromServer ) {
 			return <span>{ this.translate( 'Loading…' ) }</span>;
@@ -21,18 +20,18 @@ var EmailForwardingList = React.createClass( {
 			return null;
 		}
 
-		emailForwardingItems = list.map( ( emailForwarding ) => {
+		emailForwardingItems = list.map( emailForwarding => {
 			return (
 				<EmailForwardingItem
 					key={ emailForwarding.email }
 					emailData={ emailForwarding }
 					selectedSite={ this.props.selectedSite }
-					/>
+				/>
 			);
 		} );
 
 		return <ul className="email-forwarding__list">{ emailForwardingItems }</ul>;
-	}
+	},
 } );
 
-module.exports = EmailForwardingList;
+export default EmailForwardingList;

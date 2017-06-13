@@ -17,3 +17,5 @@ SiteRedirectStore.getBySite = function( siteId ) {
 };
 
 export default SiteRedirectStore;
+
+export const { getBySite } = SiteRedirectStore;

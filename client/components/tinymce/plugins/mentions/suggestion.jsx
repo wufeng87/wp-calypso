@@ -58,3 +58,5 @@ Suggestion.defaultProps = {
 };
 
 export default Suggestion;
+
+export const { propTypes, defaultProps } = Suggestion;

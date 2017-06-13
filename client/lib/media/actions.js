@@ -1,19 +1,22 @@
 /**
  * External dependencies
  */
-var debug = require( 'debug' )( 'calypso:media' ),
-	assign = require( 'lodash/assign' );
+import debugFactory from 'debug';
+
+const debug = debugFactory('calypso:media');
+import assign from 'lodash/assign';
 
 /**
  * Internal dependencies
  */
-var Dispatcher = require( 'dispatcher' ),
-	wpcom = require( 'lib/wp' ),
-	MediaUtils = require( './utils' ),
-	PostEditStore = require( 'lib/posts/post-edit-store' ),
-	MediaStore = require( './store' ),
-	MediaListStore = require( './list-store' ),
-	MediaValidationStore = require( './validation-store' );
+import Dispatcher from 'dispatcher';
+
+import wpcom from 'lib/wp';
+import MediaUtils from './utils';
+import PostEditStore from 'lib/posts/post-edit-store';
+import MediaStore from './store';
+import MediaListStore from './list-store';
+import MediaValidationStore from './validation-store';
 
 /**
  * Module variables
@@ -286,4 +289,17 @@ MediaActions.clearValidationErrorsByType = function( siteId, type ) {
 	} );
 };
 
-module.exports = MediaActions;
+export default MediaActions;
+
+export const {
+    setQuery,
+    fetch,
+    fetchNextPage,
+    add,
+    edit,
+    update,
+    delete,
+    setLibrarySelectedItems,
+    clearValidationErrors,
+    clearValidationErrorsByType
+} = MediaActions;

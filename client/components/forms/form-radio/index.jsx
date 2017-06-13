@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	classnames = require( 'classnames' ),
-	omit = require( 'lodash/omit' );
+import React from 'react';
 
-module.exports = React.createClass( {
+import classnames from 'classnames';
+import omit from 'lodash/omit';
 
+export default React.createClass( {
 	displayName: 'FormRadio',
 
 	render: function() {
@@ -16,7 +16,8 @@ module.exports = React.createClass( {
 			<input
 				{ ...otherProps }
 				type="radio"
-				className={ classnames( this.props.className, 'form-radio' ) } />
+				className={ classnames( this.props.className, 'form-radio' ) }
+			/>
 		);
-	}
+	},
 } );

@@ -6,7 +6,7 @@ const DOMAIN_PURCHASE = {
 	productName: 'Domain Registration',
 	productSlug: 'domain_reg',
 	isRefundable: true,
-	isCancelable: true
+	isCancelable: true,
 };
 
 const DOMAIN_PURCHASE_PENDING_TRANSFER = {
@@ -16,18 +16,18 @@ const DOMAIN_PURCHASE_PENDING_TRANSFER = {
 	meta: 'foo.com',
 	productName: 'Domain Registration',
 	productSlug: 'domain_reg',
-	pendingTransfer: true
+	pendingTransfer: true,
 };
 
 const DOMAIN_PURCHASE_EXPIRED = Object.assign( {}, DOMAIN_PURCHASE, {
 	expiryStatus: 'expired',
 	id: 10002,
-	isCancelable: false
+	isCancelable: false,
 } );
 
 const DOMAIN_PURCHASE_INCLUDED_IN_PLAN = Object.assign( {}, DOMAIN_PURCHASE, {
 	id: 10004,
-	expiryStatus: 'included'
+	expiryStatus: 'included',
 } );
 
 const DOMAIN_MAPPING_PURCHASE = {
@@ -37,13 +37,13 @@ const DOMAIN_MAPPING_PURCHASE = {
 	meta: 'boo.com',
 	productName: 'Domain Mapping',
 	productSlug: 'domain_map',
-	isCancelable: true
+	isCancelable: true,
 };
 
 const DOMAIN_MAPPING_PURCHASE_EXPIRED = Object.assign( {}, DOMAIN_MAPPING_PURCHASE, {
 	expiryStatus: 'expired',
 	id: 20002,
-	isCancelable: false
+	isCancelable: false,
 } );
 
 const SITE_REDIRECT_PURCHASE = {
@@ -53,12 +53,12 @@ const SITE_REDIRECT_PURCHASE = {
 	meta: '',
 	productName: 'Site Redirect',
 	productSlug: 'offsite_redirect',
-	isCancelable: false
+	isCancelable: false,
 };
 
 const SITE_REDIRECT_PURCHASE_EXPIRED = Object.assign( {}, SITE_REDIRECT_PURCHASE, {
 	expiryStatus: 'expired',
-	id: 30002
+	id: 30002,
 } );
 
 const PLAN_PURCHASE = {
@@ -70,10 +70,10 @@ const PLAN_PURCHASE = {
 	isRefundable: true,
 	isCancelable: true,
 	isRenewable: true,
-	isDomainRegistration: false
+	isDomainRegistration: false,
 };
 
-export default {
+const exported = {
 	DOMAIN_PURCHASE,
 	DOMAIN_PURCHASE_PENDING_TRANSFER,
 	DOMAIN_PURCHASE_EXPIRED,
@@ -82,5 +82,18 @@ export default {
 	DOMAIN_MAPPING_PURCHASE_EXPIRED,
 	PLAN_PURCHASE,
 	SITE_REDIRECT_PURCHASE,
-	SITE_REDIRECT_PURCHASE_EXPIRED
+	SITE_REDIRECT_PURCHASE_EXPIRED,
+};
+
+export default exported;
+export {
+	DOMAIN_PURCHASE,
+	DOMAIN_PURCHASE_PENDING_TRANSFER,
+	DOMAIN_PURCHASE_EXPIRED,
+	DOMAIN_PURCHASE_INCLUDED_IN_PLAN,
+	DOMAIN_MAPPING_PURCHASE,
+	DOMAIN_MAPPING_PURCHASE_EXPIRED,
+	PLAN_PURCHASE,
+	SITE_REDIRECT_PURCHASE,
+	SITE_REDIRECT_PURCHASE_EXPIRED,
 };

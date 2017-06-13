@@ -1,24 +1,23 @@
 // Reader List Store
 
 // External Dependencies
-var Dispatcher = require( 'dispatcher' ),
-	find = require( 'lodash/find' ),
-	reject = require( 'lodash/reject' ),
-	isEqual = require( 'lodash/isEqual' );
+import Dispatcher from 'dispatcher';
+
+import find from 'lodash/find';
+import reject from 'lodash/reject';
+import isEqual from 'lodash/isEqual';
 
 // Internal Dependencies
-var emitter = require( 'lib/mixins/emitter' ),
-	ListStore = require( './lists' );
+import emitter from 'lib/mixins/emitter';
 
-var lists = null,
-	errors = [],
-	ReaderListStore,
-	isFetching = false;
+import ListStore from './lists';
+
+var lists = null, errors = [], ReaderListStore, isFetching = false;
 
 function mapApiToId( list ) {
 	return {
 		owner: list.owner,
-		slug: list.slug
+		slug: list.slug,
 	};
 }
 
@@ -32,9 +31,12 @@ function sortList() {
 
 ReaderListStore = {
 	get: function() {
-		return lists && lists.map( function( list ) {
-			return ListStore.get( list.owner, list.slug );
-		} );
+		return (
+			lists &&
+			lists.map( function( list ) {
+				return ListStore.get( list.owner, list.slug );
+			} )
+		);
 	},
 
 	findByOwnerAndSlug: function( owner, slug ) {
@@ -67,8 +69,7 @@ ReaderListStore = {
 	},
 
 	unfollowList: function( data ) {
-		var key = mapApiToId( data ),
-			newList = reject( lists, key );
+		var key = mapApiToId( data ), newList = reject( lists, key );
 
 		if ( newList.length !== lists.length ) {
 			lists = newList;
@@ -89,7 +90,7 @@ ReaderListStore = {
 	setIsFetching: function( val ) {
 		isFetching = val;
 		ReaderListStore.emitChange();
-	}
+	},
 };
 
 emitter( ReaderListStore );
@@ -137,4 +138,17 @@ ReaderListStore.dispatchToken = Dispatcher.register( function( payload ) {
 	}
 } );
 
-module.exports = ReaderListStore;
+export default ReaderListStore;
+
+export const {
+	get,
+	findByOwnerAndSlug,
+	isSubscribed,
+	receiveLists,
+	followList,
+	unfollowList,
+	receiveCreateReaderList,
+	isFetching,
+	setIsFetching,
+	dispatchToken,
+} = ReaderListStore;

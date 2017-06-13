@@ -1,8 +1,10 @@
 /**
  * External Dependencies
  */
-var async = require( 'async' ),
-	debug = require( 'debug' )( 'calypso:post-normalizer' );
+import async from 'async';
+
+import debugFactory from 'debug';
+const debug = debugFactory( 'calypso:post-normalizer' );
 /**
  * Internal dependencies
  */
@@ -31,23 +33,24 @@ function normalizePost( post, transforms, callback ) {
 		return;
 	}
 
-	let normalizedPost = Object.assign( {}, post ),
-		postDebug = debugForPost( post );
+	let normalizedPost = Object.assign( {}, post ), postDebug = debugForPost( post );
 
 	postDebug( 'running transforms' );
 
 	async.eachSeries(
-		transforms, function( transform, transformCallback ) {
+		transforms,
+		function( transform, transformCallback ) {
 			postDebug( 'running transform ' + ( transform.name || 'anonymous' ) );
 			transform( normalizedPost, transformCallback );
-		}, function( err ) {
+		},
+		function( err ) {
 			postDebug( 'transforms complete' );
 			if ( err ) {
 				callback( err );
 			} else {
 				callback( null, normalizedPost );
 			}
-		}
+		},
 	);
 }
 
@@ -83,11 +86,14 @@ normalizePost.safeImageProperties = function( maxWidth ) {
 
 import waitForImagesToLoad from './rule-wait-for-images-to-load';
 normalizePost.waitForImagesToLoad = function waitForImagesToLoadAdapter( post, callback ) {
-	waitForImagesToLoad( post ).then( () => {
-		callback();
-	}, err => {
-		callback( err );
-	} );
+	waitForImagesToLoad( post ).then(
+		() => {
+			callback();
+		},
+		err => {
+			callback( err );
+		},
+	);
 };
 
 import keepValidImages from './rule-keep-valid-images';
@@ -122,7 +128,22 @@ normalizePost.content = {
 	detectMedia,
 	disableAutoPlayOnMedia,
 	disableAutoPlayOnEmbeds,
-	detectPolls
+	detectPolls,
 };
 
-module.exports = normalizePost;
+export default normalizePost;
+
+export const {
+	decodeEntities,
+	stripHTML,
+	preventWidows,
+	pickCanonicalImage,
+	makeSiteIDSafeForAPI,
+	pickPrimaryTag,
+	safeImageProperties,
+	waitForImagesToLoad,
+	keepValidImages,
+	createBetterExcerpt,
+	withContentDOM,
+	content,
+} = normalizePost;

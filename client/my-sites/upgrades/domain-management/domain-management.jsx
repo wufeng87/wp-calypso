@@ -1,4 +1,4 @@
-module.exports = {
+const exported = {
 	AddGoogleApps: require( './add-google-apps' ),
 	ContactsPrivacy: require( './contacts-privacy' ),
 	Dns: require( './dns' ),
@@ -14,5 +14,26 @@ module.exports = {
 	TransferOut: require( './transfer/transfer-out' ),
 	TransferToOtherSite: require( './transfer/transfer-to-other-site' ),
 	TransferToOtherUser: require( './transfer/transfer-to-other-user' ),
-	Transfer: require( './transfer' )
+	Transfer: require( './transfer' ),
 };
+
+export default exported;
+
+export const {
+	AddGoogleApps,
+	ContactsPrivacy,
+	Dns,
+	Edit,
+	EditContactInfo,
+	Email,
+	EmailForwarding,
+	List,
+	NameServers,
+	PrimaryDomain,
+	PrivacyProtection,
+	SiteRedirect,
+	TransferOut,
+	TransferToOtherSite,
+	TransferToOtherUser,
+	Transfer,
+} = exported;

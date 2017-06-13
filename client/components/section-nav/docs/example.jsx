@@ -1,19 +1,21 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	PureRenderMixin = require( 'react-pure-render/mixin' ),
-	forEach = require( 'lodash/forEach' ),
-	omit = require( 'lodash/omit' );
+import React from 'react';
+
+import PureRenderMixin from 'react-pure-render/mixin';
+import forEach from 'lodash/forEach';
+import omit from 'lodash/omit';
 
 /**
  * Internal dependencies
  */
-var SectionNav = require( 'components/section-nav' ),
-	NavTabs = require( 'components/section-nav/tabs' ),
-	NavSegmented = require( 'components/section-nav/segmented' ),
-	NavItem = require( 'components/section-nav/item' ),
-	Search = require( 'components/search' );
+import SectionNav from 'components/section-nav';
+
+import NavTabs from 'components/section-nav/tabs';
+import NavSegmented from 'components/section-nav/segmented';
+import NavItem from 'components/section-nav/item';
+import Search from 'components/search';
 
 /**
  * Main
@@ -28,7 +30,7 @@ var SectionNavigation = React.createClass( {
 			basicTabsSelectedIndex: 0,
 			manyTabsSelectedIndex: 0,
 			siblingTabsSelectedIndex: 0,
-			siblingSegmentedSelectedIndex: 0
+			siblingSegmentedSelectedIndex: 0,
 		};
 	},
 
@@ -39,12 +41,12 @@ var SectionNavigation = React.createClass( {
 				'Weeks',
 				{
 					name: 'Months',
-					count: 45
+					count: 45,
 				},
 				{
 					name: 'Years',
-					count: 11
-				}
+					count: 11,
+				},
 			],
 			manyTabs: [
 				'Staff Picks',
@@ -52,54 +54,54 @@ var SectionNavigation = React.createClass( {
 				'Blog',
 				{
 					name: 'Business',
-					count: 8761
+					count: 8761,
 				},
 				'Food',
 				'Music',
 				{
 					name: 'Travel',
-					count: 761
+					count: 761,
 				},
 				'Wedding',
 				'Minimal',
 				'Magazine',
-				'Photography'
+				'Photography',
 			],
 			siblingTabs: [
 				{
 					name: 'Published',
-					count: 8
+					count: 8,
 				},
 				'Scheduled',
 				'Drafts',
-				'Trashed'
+				'Trashed',
 			],
-			siblingSegmented: [
-				'Only Me',
-				'Everyone'
-			]
+			siblingSegmented: [ 'Only Me', 'Everyone' ],
 		};
 	},
 
 	render: function() {
 		var demoSections = {};
 
-		forEach( omit( this.props, 'isolated', 'uniqueInstance' ), function( prop, key ) {
-			demoSections[ key ] = [];
+		forEach(
+			omit( this.props, 'isolated', 'uniqueInstance' ),
+			function( prop, key ) {
+				demoSections[ key ] = [];
 
-			prop.forEach( function( item, index ) {
-				demoSections[ key ].push( (
-					<NavItem
-						key={ key + '-' + index }
-						count={ item.count }
-						selected={ this.state[ key + 'SelectedIndex' ] === index }
-						onClick={ this.handleNavItemClick( key, index ) }
-					>
-						{ 'object' === typeof item ? item.name : item }
-					</NavItem>
-				) );
-			}, this );
-		}.bind( this ) );
+				prop.forEach( function( item, index ) {
+					demoSections[ key ].push(
+						<NavItem
+							key={ key + '-' + index }
+							count={ item.count }
+							selected={ this.state[ key + 'SelectedIndex' ] === index }
+							onClick={ this.handleNavItemClick( key, index ) }
+						>
+							{ 'object' === typeof item ? item.name : item }
+						</NavItem>,
+					);
+				}, this );
+			}.bind( this ),
+		);
 
 		return (
 			<div>
@@ -159,9 +161,7 @@ var SectionNavigation = React.createClass( {
 		var selected = this.state[ section + 'SelectedIndex' ],
 			selectedItem = this.props[ section ][ selected ];
 
-		return 'object' === typeof selectedItem
-			? selectedItem.count || null
-			: null;
+		return 'object' === typeof selectedItem ? selectedItem.count || null : null;
 	},
 
 	getSiblingDemoSelectedText: function() {
@@ -184,7 +184,7 @@ var SectionNavigation = React.createClass( {
 
 	demoSearch: function( keywords ) {
 		console.log( 'Section Nav Search (keywords):', keywords );
-	}
+	},
 } );
 
-module.exports = SectionNavigation;
+export default SectionNavigation;

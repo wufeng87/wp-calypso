@@ -48,16 +48,18 @@ const exported = {
 					basePath,
 					fullAnalyticsPageTitle,
 					analyticsPageTitle,
-					mcKey
+					mcKey,
 				) }
 				onUpdatesShown={ trackUpdatesLoaded.bind( null, mcKey ) }
 			/>,
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 };
 
 export default exported;
+
+export const {} = exported;
 
 export const { listListing } = exported;

@@ -1,16 +1,16 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	PureRenderMixin = require( 'react-pure-render/mixin' );
+import React from 'react';
+
+import PureRenderMixin from 'react-pure-render/mixin';
 
 /**
  * Internal dependencies
  */
-var Gridicon = require( 'gridicons' );
+import Gridicon from 'gridicons';
 
-module.exports = React.createClass( {
-
+export default React.createClass( {
 	displayName: 'PostRelativeTime',
 
 	mixins: [ PureRenderMixin ],
@@ -19,14 +19,14 @@ module.exports = React.createClass( {
 		post: React.PropTypes.object.isRequired,
 		includeNonDraftStatuses: React.PropTypes.bool,
 		link: React.PropTypes.string,
-		target: React.PropTypes.string
+		target: React.PropTypes.string,
 	},
 
 	getDefaultProps: function() {
 		return {
 			includeNonDraftStatuses: false,
 			link: null,
-			target: null
+			target: null,
 		};
 	},
 
@@ -100,17 +100,28 @@ module.exports = React.createClass( {
 	render: function() {
 		var timeText = this.getRelativeTimeText(),
 			statusText = this.getStatusText(),
-			realtiveTimeClass = ( timeText ) ? 'post-relative-time-status' : null,
-			innerText = ( <span>{ timeText }{ statusText }</span> ),
+			realtiveTimeClass = timeText ? 'post-relative-time-status' : null,
+			innerText = <span>{ timeText }{ statusText }</span>,
 			details;
 
 		if ( this.props.link ) {
 			const rel = this.props.target === '_blank' ? 'noopener noreferrer' : null;
-			details = ( <p className={ realtiveTimeClass }><a href={ this.props.link } target={ this.props.target } rel={ rel } onClick={ this.props.onClick }>{ innerText }</a></p> );
+			details = (
+				<p className={ realtiveTimeClass }>
+					<a
+						href={ this.props.link }
+						target={ this.props.target }
+						rel={ rel }
+						onClick={ this.props.onClick }
+					>
+						{ innerText }
+					</a>
+				</p>
+			);
 		} else {
-			details = ( <p className={ realtiveTimeClass }>{ innerText }</p> );
+			details = <p className={ realtiveTimeClass }>{ innerText }</p>;
 		}
 
 		return details;
-	}
+	},
 } );

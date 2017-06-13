@@ -3,7 +3,11 @@
  */
 import sinon from 'sinon';
 
-export default {
+const exported = {
 	togglePluginActivation: sinon.spy(),
-	removePluginsNotices: () => {}
+	removePluginsNotices: () => {},
 };
+
+export default exported;
+
+export const { togglePluginActivation, removePluginsNotices } = exported;

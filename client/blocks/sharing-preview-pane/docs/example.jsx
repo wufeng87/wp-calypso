@@ -18,19 +18,16 @@ import QuerySites from 'components/data/query-sites';
 const SharingPreviewPaneExample = ( { siteId, postId } ) => (
 	<Card>
 		<QuerySites siteId={ siteId } />
-		{ siteId && (
-			<QueryPosts
-				siteId={ siteId }
-				query={ { number: 1, type: 'post' } } />
-		) }
+		{ siteId && <QueryPosts siteId={ siteId } query={ { number: 1, type: 'post' } } /> }
 		<SharingPreviewPane
 			message="Do you have a trip coming up?"
 			postId={ postId }
-			siteId={ siteId } />
+			siteId={ siteId }
+		/>
 	</Card>
 );
 
-const ConnectedSharingPreviewPaneExample = connect( ( state ) => {
+const ConnectedSharingPreviewPaneExample = connect( state => {
 	const user = getCurrentUser( state );
 	const siteId = get( user, 'primary_blog' );
 	const posts = getSitePosts( state, siteId );
@@ -46,3 +43,5 @@ const ConnectedSharingPreviewPaneExample = connect( ( state ) => {
 ConnectedSharingPreviewPaneExample.displayName = 'SharingPreviewPane';
 
 export default ConnectedSharingPreviewPaneExample;
+
+export const { displayName } = ConnectedSharingPreviewPaneExample;

@@ -9,12 +9,16 @@ import React from 'react';
 import { renderWithReduxStore } from 'lib/react-helpers';
 import SecurityMain from 'my-sites/site-settings/settings-security/main';
 
-export default {
+const exported = {
 	security( context ) {
 		renderWithReduxStore(
 			React.createElement( SecurityMain ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 };
+
+export default exported;
+
+export const { security } = exported;

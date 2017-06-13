@@ -1,4 +1,4 @@
-module.exports = {
+const exported = {
 	settings: {
 		paypal: 'foo@bar.com',
 		who_owns: 'person',
@@ -12,6 +12,10 @@ module.exports = {
 		city: 'Anytowne',
 		show_to_logged_in: 'yes',
 		tos: 'signed',
-		optimized_ads: true
-	}
+		optimized_ads: true,
+	},
 };
+
+export default exported;
+
+export const { settings } = exported;

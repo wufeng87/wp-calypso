@@ -1,14 +1,15 @@
 /**
 * External dependencies
 */
-const ReactDom = require( 'react-dom' ),
-	React = require( 'react' );
+import ReactDom from 'react-dom';
+
+import React from 'react';
 import { over } from 'lodash';
 
 /**
 * Internal dependencies
 */
-const Popover = require( 'components/popover' );
+import Popover from 'components/popover';
 
 const PopoverMenu = React.createClass( {
 	propTypes: {
@@ -17,13 +18,13 @@ const PopoverMenu = React.createClass( {
 		onClose: React.PropTypes.func.isRequired,
 		position: React.PropTypes.string,
 		className: React.PropTypes.string,
-		rootClassName: React.PropTypes.string
+		rootClassName: React.PropTypes.string,
 	},
 
 	getDefaultProps: function() {
 		return {
 			autoPosition: true,
-			position: 'top'
+			position: 'top',
 		};
 	},
 
@@ -44,8 +45,15 @@ const PopoverMenu = React.createClass( {
 				onClose={ this._onClose }
 				onShow={ this._onShow }
 				className={ this.props.className }
-				rootClassName={ this.props.rootClassName }>
-				<div ref="menu" role="menu" className="popover__menu" onKeyDown={ this._onKeyDown } tabIndex="-1">
+				rootClassName={ this.props.rootClassName }
+			>
+				<div
+					ref="menu"
+					role="menu"
+					className="popover__menu"
+					onKeyDown={ this._onKeyDown }
+					tabIndex="-1"
+				>
 					{ children }
 				</div>
 			</Popover>
@@ -65,7 +73,7 @@ const PopoverMenu = React.createClass( {
 		}
 
 		return React.cloneElement( child, {
-			onClick: onClick
+			onClick: onClick,
 		} );
 	},
 
@@ -92,8 +100,7 @@ const PopoverMenu = React.createClass( {
 	_getClosestSibling: function( target, isDownwardMotion = true ) {
 		const menu = ReactDom.findDOMNode( this.refs.menu );
 
-		let first = menu.firstChild,
-			last = menu.lastChild;
+		let first = menu.firstChild, last = menu.lastChild;
 
 		if ( ! isDownwardMotion ) {
 			first = menu.lastChild;
@@ -104,8 +111,7 @@ const PopoverMenu = React.createClass( {
 			return first;
 		}
 
-		const closest = target[ isDownwardMotion
-			? 'nextSibling' : 'previousSibling' ];
+		const closest = target[ isDownwardMotion ? 'nextSibling' : 'previousSibling' ];
 
 		const sibling = closest || last;
 
@@ -154,7 +160,7 @@ const PopoverMenu = React.createClass( {
 		if ( this.props.onClose ) {
 			this.props.onClose( action );
 		}
-	}
+	},
 } );
 
-module.exports = PopoverMenu;
+export default PopoverMenu;

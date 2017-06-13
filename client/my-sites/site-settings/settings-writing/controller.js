@@ -10,12 +10,12 @@ import { renderWithReduxStore } from 'lib/react-helpers';
 import WritingMain from 'my-sites/site-settings/settings-writing/main';
 import Taxonomies from 'my-sites/site-settings/taxonomies';
 
-export default {
+const exported = {
 	writing( context ) {
 		renderWithReduxStore(
 			React.createElement( WritingMain ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 
@@ -26,7 +26,11 @@ export default {
 				postType: 'post',
 			} ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 };
+
+export default exported;
+
+export const { writing, taxonomies } = exported;

@@ -19,7 +19,7 @@ function createDomainObjects( dataTransferObject ) {
 		return domains;
 	}
 
-	domains = dataTransferObject.map( ( domain ) => {
+	domains = dataTransferObject.map( domain => {
 		return {
 			autoRenewalMoment: domain.auto_renewal_date && i18n.moment( domain.auto_renewal_date ),
 			currentUserCanManage: domain.current_user_can_manage,
@@ -40,7 +40,7 @@ function createDomainObjects( dataTransferObject ) {
 			registrationMoment: domain.registration_date && i18n.moment( domain.registration_date ),
 			hasZone: domain.has_zone,
 			pointsToWpcom: domain.points_to_wpcom,
-			type: getDomainType( domain )
+			type: getDomainType( domain ),
 		};
 	} );
 
@@ -65,6 +65,9 @@ function ensurePrimaryDomainIsFirst( domains ) {
 	return [ primaryDomain ].concat( without( domains, primaryDomain ) );
 }
 
-module.exports = {
-	createDomainObjects
+const exported = {
+	createDomainObjects,
 };
+
+export default exported;
+export { createDomainObjects };

@@ -1,4 +1,8 @@
-module.exports = {
+const exported = {
 	add: function() {},
-	remove: function() {}
+	remove: function() {},
 };
+
+export default exported;
+
+export const { add, remove } = exported;

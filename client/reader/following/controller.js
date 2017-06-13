@@ -39,11 +39,13 @@ const exported = {
 				userSettings={ userSettings }
 			/>,
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 };
 
 export default exported;
+
+export const {} = exported;
 
 export const { followingEdit, followingManage } = exported;

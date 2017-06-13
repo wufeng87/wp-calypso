@@ -24,15 +24,11 @@ var _WPORG_PLUGINS_LIST = 'https://api.wordpress.org/plugins/info/1.1/?action=qu
 
 const _WPORG_THEMES_ENDPOINT = 'https://api.wordpress.org/themes/info/1.1/';
 
-function getWporgLocaleCode( ) {
-	var currentLocaleCode,
-		wpOrgLocaleCode;
+function getWporgLocaleCode() {
+	var currentLocaleCode, wpOrgLocaleCode;
 
 	currentLocaleCode = i18n.getLocaleSlug();
-	wpOrgLocaleCode = find(
-		config( 'languages' ),
-		{ langSlug: currentLocaleCode }
-	).wpLocale;
+	wpOrgLocaleCode = find( config( 'languages' ), { langSlug: currentLocaleCode } ).wpLocale;
 
 	if ( wpOrgLocaleCode === '' ) {
 		wpOrgLocaleCode = currentLocaleCode;
@@ -41,8 +37,7 @@ function getWporgLocaleCode( ) {
 	return wpOrgLocaleCode;
 }
 
-module.exports = {
-
+const exported = {
 	/**
 	 * If successful, will call the provided callback with an object with plugin details.
 	 * @param {string} pluginSlug The plugin identifier.
@@ -50,7 +45,10 @@ module.exports = {
 	 */
 	fetchPluginInformation: function( pluginSlug, callback ) {
 		var baseUrl,
-			query = { fields: 'icons,banners,compatibility,ratings,-contributors', locale: getWporgLocaleCode() };
+			query = {
+				fields: 'icons,banners,compatibility,ratings,-contributors',
+				locale: getWporgLocaleCode(),
+			};
 
 		pluginSlug = pluginSlug.replace( new RegExp( '.php$' ), '' );
 
@@ -71,6 +69,7 @@ module.exports = {
 			callback( null, data );
 		} );
 	},
+
 	fetchPluginsList: function( options, callback ) {
 		var payload;
 		// default variables;
@@ -79,7 +78,10 @@ module.exports = {
 		options.category = options.category || _DEFAULT_CATEGORY;
 		options.search = options.search;
 
-		payload = 'request[page]=' + options.page + '&request[per_page]=' +
+		payload =
+			'request[page]=' +
+			options.page +
+			'&request[per_page]=' +
 			options.pageSize +
 			'&request[fields][icons]=1&request[fields][banners]=1' +
 			'&request[fields][compatibility]=1&request[fields][tested]=0' +
@@ -98,6 +100,7 @@ module.exports = {
 				callback( err, data.body );
 			} );
 	},
+
 	/**
 	 * Get information about a given theme from the WordPress.org API.
 	 * If provided with a callback, will call that on succes with an object with theme details.
@@ -112,14 +115,15 @@ module.exports = {
 			// Return an `author` object containing `user_nicename` and `display_name` attrs.
 			// This is for consistency with WP.com, which always returns the display name as `author`.
 			'request[fields][extended_author]': true,
-			'request[slug]': themeId
+			'request[slug]': themeId,
 		};
 		return superagent
 			.get( _WPORG_THEMES_ENDPOINT )
 			.set( 'Accept', 'application/json' )
 			.query( query )
-			.then( ( { body } ) => ( body ) );
+			.then( ( { body } ) => body );
 	},
+
 	/**
 	 * Get information about a given theme from the WordPress.org API.
 	 *
@@ -130,7 +134,7 @@ module.exports = {
 	 * @returns {Promise.<Object>}             A promise that returns an object containing a `themes` array and an `info` object
 	 */
 	fetchThemesList: function( options = {} ) {
-		const { search, page, number } = options;
+		const { search, page, number } = options;
 		const query = {
 			action: 'query_themes',
 			// Return an `author` object containing `user_nicename` and `display_name` attrs.
@@ -138,13 +142,22 @@ module.exports = {
 			'request[fields][extended_author]': true,
 			'request[search]': search,
 			'request[page]': page,
-			'request[per_page]:': number
+			'request[per_page]:': number,
 		};
 
 		return superagent
 			.get( _WPORG_THEMES_ENDPOINT )
 			.set( 'Accept', 'application/json' )
 			.query( query )
-			.then( ( { body } ) => ( body ) );
+			.then( ( { body } ) => body );
 	},
 };
+
+export default exported;
+
+export const {
+	fetchPluginInformation,
+	fetchPluginsList,
+	fetchThemeInformation,
+	fetchThemesList,
+} = exported;

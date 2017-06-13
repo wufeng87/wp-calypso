@@ -44,3 +44,5 @@ ReaderFeaturedImage.defaultProps = {
 };
 
 export default ReaderFeaturedImage;
+
+export const { propTypes, defaultProps } = ReaderFeaturedImage;

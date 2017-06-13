@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-var identity = require( 'lodash/identity' );
+import identity from 'lodash/identity';
 
 var fieldMasks = {};
 
@@ -13,8 +13,12 @@ fieldMasks[ 'expiration-date' ] = {
 		}
 
 		// If the user is adding a slash then don't modify it
-		if ( previousValue && previousValue.length === 2 &&
-				nextValue.length === 3 && nextValue[ 2 ] === '/' ) {
+		if (
+			previousValue &&
+			previousValue.length === 2 &&
+			nextValue.length === 3 &&
+			nextValue[ 2 ] === '/'
+		) {
 			return nextValue;
 		}
 
@@ -28,25 +32,27 @@ fieldMasks[ 'expiration-date' ] = {
 		}
 	},
 
-	unmask: identity
+	unmask: identity,
 };
 
 fieldMasks.number = {
 	mask: function( previousValue, nextValue ) {
 		var digits = nextValue.replace( /[^0-9]/g, '' ),
-			string = (
-				digits.slice( 0, 4 ) + ' ' +
-				digits.slice( 4, 8 ) + ' ' +
-				digits.slice( 8, 12 ) + ' ' +
-				digits.slice( 12, 16 )
-			);
+			string =
+				digits.slice( 0, 4 ) +
+				' ' +
+				digits.slice( 4, 8 ) +
+				' ' +
+				digits.slice( 8, 12 ) +
+				' ' +
+				digits.slice( 12, 16 );
 
 		return string.trim();
 	},
 
 	unmask: function( value ) {
 		return value.replace( / /g, '' );
-	}
+	},
 };
 
 fieldMasks.cvv = {
@@ -54,7 +60,7 @@ fieldMasks.cvv = {
 		return nextValue.replace( /[^\d]/g, '' ).substring( 0, 4 );
 	},
 
-	unmask: identity
+	unmask: identity,
 };
 
 function maskField( fieldName, previousValue, nextValue ) {
@@ -75,7 +81,10 @@ function unmaskField( fieldName, previousValue, nextValue ) {
 	return fieldMask.unmask( fieldMask.mask( previousValue, nextValue ) );
 }
 
-module.exports = {
+const exported = {
 	maskField: maskField,
-	unmaskField: unmaskField
+	unmaskField: unmaskField,
 };
+
+export default exported;
+export { maskField, unmaskField };

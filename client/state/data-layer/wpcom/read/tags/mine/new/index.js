@@ -23,7 +23,7 @@ export function requestFollowTag( store, action ) {
 			apiVersion: '1.1',
 			onSuccess: action,
 			onFailure: action,
-		} )
+		} ),
 	);
 }
 
@@ -42,7 +42,7 @@ export function receiveFollowTag( store, action, next, apiResponse ) {
 	store.dispatch(
 		receiveTagsAction( {
 			payload: [ followedTag ],
-		} )
+		} ),
 	);
 }
 
@@ -62,8 +62,10 @@ export function receiveError( store, action, next, error ) {
 	}
 }
 
-export default {
+const exported = {
 	[ READER_FOLLOW_TAG_REQUEST ]: [
 		dispatchRequest( requestFollowTag, receiveFollowTag, receiveError ),
 	],
 };
+
+export default exported;

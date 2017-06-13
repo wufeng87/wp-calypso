@@ -16,7 +16,7 @@ import ThemeSelectionComponent from 'signup/steps/theme-selection';
 import UserSignupComponent from 'signup/steps/user';
 import PlansStepWithoutFreePlan from 'signup/steps/plans-without-free';
 
-export default {
+const exported = {
 	'design-type': DesignTypeComponent,
 	'design-type-with-store': DesignTypeWithStoreComponent,
 	domains: DomainsStepComponent,
@@ -39,3 +39,15 @@ export default {
 	user: UserSignupComponent,
 	'user-social': UserSignupComponent,
 };
+
+export default exported;
+export {
+	DomainsStepComponent as domains,
+	PlansStepComponent as plans,
+	SiteComponent as site,
+	SurveyStepComponent as survey,
+	ThemeSelectionComponent as themes,
+	UserSignupComponent as user,
+};
+
+export const { test } = exported;

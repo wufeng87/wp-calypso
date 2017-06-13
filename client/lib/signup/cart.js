@@ -1,20 +1,26 @@
 /**
  * External dependencies
  */
-var forEach = require( 'lodash/forEach' );
+import forEach from 'lodash/forEach';
 
 /**
  * Internal dependencies
  */
-var wpcom = require( 'lib/wp' ),
-	productsList = require( 'lib/products-list' )(),
-	cartValues = require( 'lib/cart-values' ),
-	cartItems = cartValues.cartItems;
+import wpcom from 'lib/wp';
+
+import productsListFactory from 'lib/products-list';
+const productsList = productsListFactory();
+import cartValues from 'lib/cart-values';
+
+/**
+ * Internal dependencies
+ */
+var cartItems = cartValues.cartItems;
 
 function addProductsToCart( cart, newCartItems ) {
 	forEach( newCartItems, function( cartItem ) {
 		cartItem.extra = Object.assign( cartItem.extra || {}, {
-			context: 'signup'
+			context: 'signup',
 		} );
 		const addFunction = cartItems.add( cartItem );
 
@@ -24,7 +30,7 @@ function addProductsToCart( cart, newCartItems ) {
 	return cart;
 }
 
-module.exports = {
+const exported = {
 	createCart: function( cartKey, newCartItems, callback ) {
 		let newCart = {
 			cart_key: cartKey,
@@ -38,6 +44,7 @@ module.exports = {
 			callback( postError );
 		} );
 	},
+
 	addToCart: function( cartKey, newCartItems, callback ) {
 		wpcom.undocumented().cart( cartKey, function( error, data ) {
 			if ( error ) {
@@ -52,5 +59,9 @@ module.exports = {
 
 			wpcom.undocumented().cart( cartKey, 'POST', newCart, callback );
 		} );
-	}
+	},
 };
+
+export default exported;
+
+export const { createCart, addToCart } = exported;

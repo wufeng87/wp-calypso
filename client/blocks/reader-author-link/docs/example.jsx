@@ -22,3 +22,5 @@ const ReaderAuthorLinkExample = () => {
 ReaderAuthorLinkExample.displayName = 'ReaderAuthorLink';
 
 export default ReaderAuthorLinkExample;
+
+export const { displayName } = ReaderAuthorLinkExample;

@@ -25,7 +25,9 @@ const Shipping = ( { className } ) => {
 };
 
 Shipping.propTypes = {
-	className: PropTypes.string
+	className: PropTypes.string,
 };
 
 export default Shipping;
+
+export const { propTypes } = Shipping;

@@ -1,17 +1,18 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	omit = require( 'lodash/omit' ),
-	classnames = require( 'classnames' ),
-	uniqueId = require( 'lodash/uniqueId' );
+import React from 'react';
+
+import omit from 'lodash/omit';
+import classnames from 'classnames';
+import uniqueId from 'lodash/uniqueId';
 
 /**
  * External dependencies
  */
-var FormRange = require( 'components/forms/form-range' );
+import FormRange from 'components/forms/form-range';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'Range',
 
 	propTypes: {
@@ -20,12 +21,12 @@ module.exports = React.createClass( {
 		min: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ),
 		max: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ),
 		value: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.number ] ),
-		showValueLabel: React.PropTypes.bool
+		showValueLabel: React.PropTypes.bool,
 	},
 
 	getInitialState: function() {
 		return {
-			id: uniqueId( 'range' )
+			id: uniqueId( 'range' ),
 		};
 	},
 
@@ -34,7 +35,7 @@ module.exports = React.createClass( {
 			min: 0,
 			max: 10,
 			value: 0,
-			showValueLabel: false
+			showValueLabel: false,
 		};
 	},
 
@@ -74,7 +75,13 @@ module.exports = React.createClass( {
 
 			return (
 				<span className="range__label" style={ { left: ( left || 0 ) + '%', marginLeft: offset } }>
-					<output className="range__label-inner" htmlFor={ this.state.id } value={ this.props.value }>{ this.props.value }</output>
+					<output
+						className="range__label-inner"
+						htmlFor={ this.state.id }
+						value={ this.props.value }
+					>
+						{ this.props.value }
+					</output>
 				</span>
 			);
 		}
@@ -83,16 +90,20 @@ module.exports = React.createClass( {
 	render: function() {
 		var classes = classnames( this.props.className, 'range', {
 			'has-min-content': !! this.props.minContent,
-			'has-max-content': !! this.props.maxContent
+			'has-max-content': !! this.props.maxContent,
 		} );
 
 		return (
 			<div className={ classes }>
 				{ this.getMinContentElement() }
-				<FormRange id={ this.state.id } className="range__input" { ...omit( this.props, 'minContent', 'maxContent', 'showValueLabel', 'className' ) } />
+				<FormRange
+					id={ this.state.id }
+					className="range__input"
+					{ ...omit( this.props, 'minContent', 'maxContent', 'showValueLabel', 'className' ) }
+				/>
 				{ this.getMaxContentElement() }
 				{ this.getValueLabelElement() }
 			</div>
 		);
-	}
+	},
 } );

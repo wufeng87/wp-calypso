@@ -8,10 +8,11 @@ import { noop, partial } from 'lodash';
 /**
  * Internal dependencies
  */
-var DetailItem = require( './detail-item' ),
-	MediaUtils = require( 'lib/media/utils' ),
-	HeaderCake = require( 'components/header-cake' ),
-	preloadImage = require( '../preload-image' );
+import DetailItem from './detail-item';
+
+import MediaUtils from 'lib/media/utils';
+import HeaderCake from 'components/header-cake';
+import preloadImage from '../preload-image';
 import { ModalViews } from 'state/ui/media-modal/constants';
 import { setEditorMediaModalView } from 'state/ui/editor/actions';
 
@@ -29,7 +30,7 @@ export const EditorMediaModalDetail = React.createClass( {
 	getDefaultProps: function() {
 		return {
 			selectedIndex: 0,
-			onSelectedIndexChange: noop
+			onSelectedIndexChange: noop,
 		};
 	},
 
@@ -44,7 +45,7 @@ export const EditorMediaModalDetail = React.createClass( {
 	preloadImages: function() {
 		MediaUtils.filterItemsByMimePrefix( this.props.items, 'image' ).forEach( function( image ) {
 			var src = MediaUtils.url( image, {
-				photon: this.props.site && ! this.props.site.is_private
+				photon: this.props.site && ! this.props.site.is_private,
 			} );
 
 			preloadImage( src );
@@ -79,13 +80,14 @@ export const EditorMediaModalDetail = React.createClass( {
 					onShowPreviousItem={ this.incrementIndex.bind( this, -1 ) }
 					onShowNextItem={ this.incrementIndex.bind( this, 1 ) }
 					onRestore={ onRestoreItem }
-					onEdit={ onEditItem } />
+					onEdit={ onEditItem }
+				/>
 			</div>
 		);
-	}
+	},
 } );
 
 export default connect( null, {
 	onReturnToList: partial( setEditorMediaModalView, ModalViews.LIST ),
-	onEditItem: partial( setEditorMediaModalView, ModalViews.IMAGE_EDITOR )
+	onEditItem: partial( setEditorMediaModalView, ModalViews.IMAGE_EDITOR ),
 } )( EditorMediaModalDetail );

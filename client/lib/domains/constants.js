@@ -7,14 +7,14 @@ const type = keyMirror( {
 	MAPPED: null,
 	REGISTERED: null,
 	SITE_REDIRECT: null,
-	WPCOM: null
+	WPCOM: null,
 } );
 
 const registrar = {
 	OPENHRS: 'OpenHRS',
 	OPENSRS: 'OpenSRS',
 	WWD: 'WWD',
-	MAINTENANCE: 'Registrar TLD Maintenance'
+	MAINTENANCE: 'Registrar TLD Maintenance',
 };
 
 const tlds = {
@@ -35,7 +35,7 @@ const tlds = {
 	fm: 'dotfm_domain',
 	tv: 'dottv_domain',
 	us: 'dotus_domain',
-	'in': 'dotin_domain',
+	in: 'dotin_domain',
 	wtf: 'dotwtf_domain',
 	coffee: 'dotcoffee_domain',
 	live: 'dotlive_domain',
@@ -70,22 +70,25 @@ const domainAvailability = {
 const dnsTemplates = {
 	G_SUITE: {
 		PROVIDER: 'g-suite',
-		SERVICE: 'G-Suite'
+		SERVICE: 'G-Suite',
 	},
 	MICROSOFT_OFFICE365: {
 		PROVIDER: 'microsoft-office365',
-		SERVICE: 'O365'
+		SERVICE: 'O365',
 	},
 	ZOHO_MAIL: {
 		PROVIDER: 'zoho-mail',
-		SERVICE: 'Zoho'
-	}
+		SERVICE: 'Zoho',
+	},
 };
 
-export default {
+const exported = {
 	dnsTemplates,
 	domainAvailability,
 	registrar,
 	tlds,
 	type,
 };
+
+export default exported;
+export { dnsTemplates, domainAvailability, registrar, tlds, type };

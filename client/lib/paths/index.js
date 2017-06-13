@@ -4,11 +4,10 @@
 import { login } from './login';
 
 function editorPathFromSite( site ) {
-	let path = '',
-		siteSlug;
+	let path = '', siteSlug;
 
 	if ( site ) {
-		siteSlug = ( typeof site === 'object' ) ? site.slug : site;
+		siteSlug = typeof site === 'object' ? site.slug : site;
 		path = '/' + siteSlug;
 	} else if ( site && typeof site === 'object' ) {
 		path = '/' + site.ID + '/new';
@@ -76,10 +75,13 @@ function jetpackModules( site, module ) {
 	return url;
 }
 
-export default {
+const exported = {
 	jetpackModules,
 	login,
 	newPost,
 	newPage,
 	publicizeConnections,
 };
+
+export default exported;
+export { jetpackModules, login, newPost, newPage, publicizeConnections };

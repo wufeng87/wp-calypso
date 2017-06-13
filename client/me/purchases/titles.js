@@ -3,7 +3,7 @@
  */
 import i18n from 'i18n-calypso';
 
-export default {
+const exported = {
 	addCreditCard: i18n.translate( 'Add Credit Card' ),
 	cancelPrivacyProtection: i18n.translate( 'Cancel Privacy Protection' ),
 	cancelPurchase: i18n.translate( 'Cancel Purchase' ),
@@ -14,3 +14,17 @@ export default {
 	managePurchase: i18n.translate( 'Manage Purchase' ),
 	purchases: i18n.translate( 'Purchases' ),
 };
+
+export default exported;
+
+export const {
+	addCreditCard,
+	cancelPrivacyProtection,
+	cancelPurchase,
+	confirmCancelDomain,
+	editCardDetails,
+	addCardDetails,
+	editPaymentMethod,
+	managePurchase,
+	purchases,
+} = exported;

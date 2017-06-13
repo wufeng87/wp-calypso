@@ -35,3 +35,5 @@ ReaderExcerpt.propTypes = {
 };
 
 export default ReaderExcerpt;
+
+export const { propTypes } = ReaderExcerpt;

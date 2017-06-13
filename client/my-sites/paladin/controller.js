@@ -9,13 +9,16 @@ import React from 'react';
 import { renderWithReduxStore } from 'lib/react-helpers';
 import PaladinComponent from './main';
 
-module.exports = {
+const exported = {
 	activate: function( context ) {
 		renderWithReduxStore(
 			React.createElement( PaladinComponent ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
-	}
+	},
 };
 
+export default exported;
+
+export const { activate } = exported;

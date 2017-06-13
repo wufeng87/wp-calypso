@@ -11,21 +11,25 @@ import {
 
 export const handleValidateRequest = ( { dispatch }, action ) => {
 	const { userData, method, key } = action;
-	wpcom.req.post( {
-		body: {
-			...userData,
-			method,
-			key,
-		},
-		apiNamespace: 'wpcom/v2',
-		path: '/account-recovery/validate',
-	} ).then( () => {
-		dispatch( validateRequestSuccess() );
-		dispatch( setValidationKey( key ) );
-	} )
-	.catch( ( error ) => dispatch( validateRequestError( error ) ) );
+	wpcom.req
+		.post( {
+			body: {
+				...userData,
+				method,
+				key,
+			},
+			apiNamespace: 'wpcom/v2',
+			path: '/account-recovery/validate',
+		} )
+		.then( () => {
+			dispatch( validateRequestSuccess() );
+			dispatch( setValidationKey( key ) );
+		} )
+		.catch( error => dispatch( validateRequestError( error ) ) );
 };
 
-export default {
+const exported = {
 	[ ACCOUNT_RECOVERY_RESET_VALIDATE_REQUEST ]: [ handleValidateRequest ],
 };
+
+export default exported;

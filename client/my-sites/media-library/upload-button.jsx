@@ -16,7 +16,7 @@ import MediaUtils from 'lib/media/utils';
 import uniq from 'lodash/uniq';
 import { VideoPressFileTypes } from 'lib/media/constants';
 
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'MediaLibraryUploadButton',
 
 	propTypes: {
@@ -65,7 +65,9 @@ module.exports = React.createClass( {
 		}
 		const allowedFileTypesForSite = MediaUtils.getAllowedFileTypesForSite( this.props.site );
 
-		return uniq( allowedFileTypesForSite.concat( VideoPressFileTypes ) ).map( ( type ) => `.${type}` ).join();
+		return uniq( allowedFileTypesForSite.concat( VideoPressFileTypes ) )
+			.map( type => `.${ type }` )
+			.join();
 	},
 
 	render: function() {
@@ -80,8 +82,9 @@ module.exports = React.createClass( {
 					multiple
 					onChange={ this.uploadFiles }
 					onClick={ this.onClick }
-					className="media-library__upload-button-input" />
+					className="media-library__upload-button-input"
+				/>
 			</form>
 		);
-	}
+	},
 } );

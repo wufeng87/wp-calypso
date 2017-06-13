@@ -41,3 +41,5 @@ const ReaderFeaturedVideo = () => (
 ReaderFeaturedVideo.displayName = 'ReaderFeaturedVideo';
 
 export default ReaderFeaturedVideo;
+
+export const { displayName } = ReaderFeaturedVideo;

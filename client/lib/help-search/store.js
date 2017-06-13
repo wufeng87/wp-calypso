@@ -1,13 +1,16 @@
 /**
  * External dependencies
  */
-var debug = require( 'debug' )( 'calypso:help-search:store' );
+import debugFactory from 'debug';
+
+const debug = debugFactory( 'calypso:help-search:store' );
 
 /**
  * Internal dependencies
  */
-var createReducerStore = require( 'lib/store' ).createReducerStore,
-	ActionTypes = require( './constants' ).action;
+import { createReducerStore } from 'lib/store';
+
+import { action as ActionTypes } from './constants';
 
 /**
  * Module variables
@@ -15,8 +18,7 @@ var createReducerStore = require( 'lib/store' ).createReducerStore,
 var initialState = [];
 
 var HelpSearchStore = createReducerStore( function( state, payload ) {
-	var action = payload.action,
-		newState;
+	var action = payload.action, newState;
 	debug( 'register event Type', action.type, payload );
 
 	switch ( action.type ) {
@@ -34,4 +36,6 @@ HelpSearchStore.getHelpLinks = function() {
 	return HelpSearchStore.get();
 };
 
-module.exports = HelpSearchStore;
+export default HelpSearchStore;
+
+export const { getHelpLinks } = HelpSearchStore;

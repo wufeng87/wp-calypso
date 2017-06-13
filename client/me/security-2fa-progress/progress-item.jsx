@@ -1,12 +1,13 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	debug = require( 'debug' )( 'calypso:me:security:2fa-progress' ),
-	classNames = require( 'classnames' );
+import React from 'react';
 
-module.exports = React.createClass( {
+import debugFactory from 'debug';
+const debug = debugFactory( 'calypso:me:security:2fa-progress' );
+import classNames from 'classnames';
 
+export default React.createClass( {
 	displayName: 'Security2faProgressItem',
 
 	componentDidMount: function() {
@@ -26,7 +27,7 @@ module.exports = React.createClass( {
 		return classNames( {
 			'security-2fa-progress__item': true,
 			'is-highlighted': this.props.step.isHighlighted,
-			'is-completed': this.props.step.isCompleted
+			'is-completed': this.props.step.isCompleted,
 		} );
 	},
 
@@ -34,10 +35,10 @@ module.exports = React.createClass( {
 		return (
 			<div className={ this.highlight() }>
 
-				<span className={ this.noticon() }></span>
+				<span className={ this.noticon() } />
 				<label>{ this.props.label } </label>
 
 			</div>
 		);
-	}
+	},
 } );

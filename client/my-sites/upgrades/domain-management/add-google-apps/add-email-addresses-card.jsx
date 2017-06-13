@@ -1,33 +1,38 @@
 /**
  * External dependencies
  */
-const React = require( 'react' ),
-	update = require( 'react-addons-update' ),
-	groupBy = require( 'lodash/groupBy' ),
-	mapValues = require( 'lodash/mapValues' ),
-	map = require( 'lodash/map' ),
-	page = require( 'page' ),
-	find = require( 'lodash/find' ),
-	isEmpty = require( 'lodash/isEmpty' );
+import React from 'react';
+
+import update from 'react-addons-update';
+import groupBy from 'lodash/groupBy';
+import mapValues from 'lodash/mapValues';
+import map from 'lodash/map';
+import page from 'page';
+import find from 'lodash/find';
+import isEmpty from 'lodash/isEmpty';
 
 /**
  * Internal dependencies
  */
-const analyticsMixin = require( 'lib/mixins/analytics' ),
-	Card = require( 'components/card/compact' ),
-	FormButton = require( 'components/forms/form-button' ),
-	FormFooter = require( 'my-sites/upgrades/domain-management/components/form-footer' ),
-	FormLabel = require( 'components/forms/form-label' ),
-	FormTextInputWithAffixes = require( 'components/forms/form-text-input-with-affixes' ),
-	cartItems = require( 'lib/cart-values' ).cartItems,
-	paths = require( 'my-sites/upgrades/paths' ),
-	ValidationErrorList = require( 'notices/validation-error-list' ),
-	upgradesActions = require( 'lib/upgrades/actions' ),
-	{ hasGoogleApps, getGoogleAppsSupportedDomains } = require( 'lib/domains' ),
-	googleAppsLibrary = require( 'lib/domains/google-apps-users' ),
-	validateUsers = googleAppsLibrary.validate,
-	filterUsers = googleAppsLibrary.filter,
-	DomainsSelect = require( './domains-select' );
+import analyticsMixin from 'lib/mixins/analytics';
+
+import Card from 'components/card/compact';
+import FormButton from 'components/forms/form-button';
+import FormFooter from 'my-sites/upgrades/domain-management/components/form-footer';
+import FormLabel from 'components/forms/form-label';
+import FormTextInputWithAffixes from 'components/forms/form-text-input-with-affixes';
+import { cartItems } from 'lib/cart-values';
+import paths from 'my-sites/upgrades/paths';
+import ValidationErrorList from 'notices/validation-error-list';
+import upgradesActions from 'lib/upgrades/actions';
+import { hasGoogleApps, getGoogleAppsSupportedDomains } from 'lib/domains';
+import googleAppsLibrary from 'lib/domains/google-apps-users';
+import DomainsSelect from './domains-select';
+
+/**
+ * Internal dependencies
+ */
+const validateUsers = googleAppsLibrary.validate, filterUsers = googleAppsLibrary.filter;
 
 import Notice from 'components/notice';
 
@@ -36,13 +41,13 @@ const AddEmailAddressesCard = React.createClass( {
 
 	propTypes: {
 		domains: React.PropTypes.object.isRequired,
-		selectedDomainName: React.PropTypes.string
+		selectedDomainName: React.PropTypes.string,
 	},
 
 	getInitialState() {
 		return {
 			fieldsets: [ this.getNewFieldset() ],
-			validationErrors: null
+			validationErrors: null,
 		};
 	},
 
@@ -59,7 +64,7 @@ const AddEmailAddressesCard = React.createClass( {
 
 		return {
 			username: { value: '' },
-			domain: { value: domain }
+			domain: { value: domain },
 		};
 	},
 
@@ -98,9 +103,9 @@ const AddEmailAddressesCard = React.createClass( {
 
 	setDomainFieldsToFirstDomainName() {
 		const firstDomainName = this.getFirstDomainName(),
-			nextFieldsets = this.state.fieldsets.map( ( fieldset ) => {
+			nextFieldsets = this.state.fieldsets.map( fieldset => {
 				return update( fieldset, {
-					domain: { value: { $set: firstDomainName } }
+					domain: { value: { $set: firstDomainName } },
 				} );
 			} );
 
@@ -135,7 +140,13 @@ const AddEmailAddressesCard = React.createClass( {
 
 	emailAddressFieldset( index ) {
 		const field = this.state.fieldsets[ index ],
-			contactText = this.translate( 'contact', { context: 'part of e-mail address', comment: 'As it would be part of an e-mail address contact@example.com' } );
+			contactText = this.translate(
+				'contact',
+				{
+					context: 'part of e-mail address',
+					comment: 'As it would be part of an e-mail address contact@example.com',
+				},
+			);
 		let suffix, select;
 
 		if ( this.props.selectedDomainName ) {
@@ -146,7 +157,8 @@ const AddEmailAddressesCard = React.createClass( {
 					domains={ this.props.domains }
 					value={ this.state.fieldsets[ index ].domain.value }
 					onChange={ this.handleFieldChange.bind( this, 'domain', index ) }
-					onFocus={ this.handleFieldFocus.bind( this, 'Domain', index ) } />
+					onFocus={ this.handleFieldFocus.bind( this, 'Domain', index ) }
+				/>
 			);
 		}
 
@@ -158,7 +170,8 @@ const AddEmailAddressesCard = React.createClass( {
 					placeholder={ this.translate( 'e.g. %(example)s', { args: { example: contactText } } ) }
 					suffix={ suffix }
 					type="text"
-					value={ field.username.value } />
+					value={ field.username.value }
+				/>
 
 				{ select }
 			</div>
@@ -185,9 +198,11 @@ const AddEmailAddressesCard = React.createClass( {
 
 	addAnotherEmailAddressLink() {
 		return (
-			<a className="add-email-addresses-card__add-another-email-address-link"
+			<a
+				className="add-email-addresses-card__add-another-email-address-link"
 				href="#"
-				onClick={ this.handleAddAnotherEmailAddress }>
+				onClick={ this.handleAddAnotherEmailAddress }
+			>
 				{ this.translate( '+ Add another email address' ) }
 			</a>
 		);
@@ -197,7 +212,7 @@ const AddEmailAddressesCard = React.createClass( {
 		event.preventDefault();
 
 		this.setState( {
-			fieldsets: this.state.fieldsets.concat( [ this.getNewFieldset() ] )
+			fieldsets: this.state.fieldsets.concat( [ this.getNewFieldset() ] ),
 		} );
 
 		this.recordEvent( 'addAnotherEmailAddressClick', this.props.selectedDomainName );
@@ -208,7 +223,8 @@ const AddEmailAddressesCard = React.createClass( {
 			<FormFooter className="add-email-addresses-card__footer">
 				<FormButton
 					onClick={ this.handleContinue }
-					disabled={ ! this.props.domains.hasLoadedFromServer }>
+					disabled={ ! this.props.domains.hasLoadedFromServer }
+				>
 					{ this.translate( 'Continue' ) }
 				</FormButton>
 
@@ -216,7 +232,8 @@ const AddEmailAddressesCard = React.createClass( {
 					type="button"
 					isPrimary={ false }
 					onClick={ this.handleCancel }
-					disabled={ ! this.props.domains.hasLoadedFromServer }>
+					disabled={ ! this.props.domains.hasLoadedFromServer }
+				>
 					{ this.translate( 'Cancel' ) }
 				</FormButton>
 			</FormFooter>
@@ -232,13 +249,13 @@ const AddEmailAddressesCard = React.createClass( {
 
 		const validation = validateUsers( {
 			users: this.state.fieldsets,
-			fields: this.getFields()
+			fields: this.getFields(),
 		} );
 
 		if ( ! isEmpty( validation.errors ) ) {
 			this.setState( {
 				validationErrors: validation.errors,
-				fieldsets: validation.users
+				fieldsets: validation.users,
 			} );
 		}
 
@@ -246,7 +263,7 @@ const AddEmailAddressesCard = React.createClass( {
 			'continueClick',
 			this.props.selectedDomainName,
 			isEmpty( validation.errors ),
-			validation.users.length
+			validation.users.length,
 		);
 
 		if ( isEmpty( validation.errors ) ) {
@@ -261,8 +278,8 @@ const AddEmailAddressesCard = React.createClass( {
 			domains: this.props.domains,
 			fieldsets: filterUsers( {
 				users: this.state.fieldsets,
-				fields: this.getFields()
-			} )
+				fields: this.getFields(),
+			} ),
 		} );
 		googleAppsCartItems.forEach( upgradesActions.addItem );
 
@@ -274,8 +291,10 @@ const AddEmailAddressesCard = React.createClass( {
 
 		this.recordEvent( 'cancelClick', this.props.selectedDomainName );
 
-		page( paths.domainManagementEmail( this.props.selectedSite.slug, this.props.selectedDomainName ) );
-	}
+		page(
+			paths.domainManagementEmail( this.props.selectedSite.slug, this.props.selectedDomainName ),
+		);
+	},
 } );
 
 function getGoogleAppsCartItems( { domains, fieldsets } ) {
@@ -286,7 +305,7 @@ function getGoogleAppsCartItems( { domains, fieldsets } ) {
 	groups = mapValues( groups, function( group ) {
 		return map( group, function( fieldset ) {
 			return {
-				email: `${ fieldset.username.value }@${ fieldset.domain.value }`.toLowerCase()
+				email: `${ fieldset.username.value }@${ fieldset.domain.value }`.toLowerCase(),
 			};
 		} );
 	} );
@@ -305,4 +324,4 @@ function getGoogleAppsCartItems( { domains, fieldsets } ) {
 	} );
 }
 
-module.exports = AddEmailAddressesCard;
+export default AddEmailAddressesCard;

@@ -1,9 +1,9 @@
 /**
  * Internal dependencies
  */
-var analytics = require( 'lib/analytics' );
+import analytics from 'lib/analytics';
 
-module.exports = {
+const exported = {
 	recordEvent: function( eventAction ) {
 		analytics.ga.recordEvent( 'Me', eventAction );
 	},
@@ -61,5 +61,16 @@ module.exports = {
 				callback( event );
 			}
 		};
-	}
+	},
 };
+
+export default exported;
+
+export const {
+	recordEvent,
+	recordEventClosure,
+	recordClickEvent,
+	recordFocusEvent,
+	recordCheckboxEvent,
+	recordRadioEvent,
+} = exported;

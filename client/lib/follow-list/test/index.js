@@ -1,7 +1,7 @@
-var assert = require( 'chai' ).assert,
-	sinon = require( 'sinon' ),
-	useFilesystemMocks = require( 'test/helpers/use-filesystem-mocks' ),
-	useFakeDom = require( 'test/helpers/use-fake-dom' );
+import { assert } from 'chai';
+import sinon from 'sinon';
+import useFilesystemMocks from 'test/helpers/use-filesystem-mocks';
+import useFakeDom from 'test/helpers/use-fake-dom';
 
 describe( 'index', function() {
 	var FollowList, FollowListSite, followList, site;

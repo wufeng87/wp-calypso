@@ -13,6 +13,8 @@ const exported = {
 
 export default exported;
 
+export const {} = exported;
+
 export const {
 	IN_STREAM_RECOMMENDATION,
 	EMPTY_SEARCH_RECOMMENDATIONS,

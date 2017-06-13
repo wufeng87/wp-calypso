@@ -1,4 +1,4 @@
-module.exports = {
+const exported = {
 	ID: 91234567890,
 	URL: 'http://example.com',
 	canUpdateFiles: true,
@@ -27,5 +27,39 @@ module.exports = {
 	jp_version: '3.6',
 	user_can_manage: true,
 	visible: true,
-	wpcom_url: 'example.com'
+	wpcom_url: 'example.com',
 };
+
+export default exported;
+
+export const {
+	ID,
+	URL,
+	canUpdateFiles,
+	capabilities,
+	description,
+	domain,
+	hasJetpackProtect,
+	hasMinimumJetpackVersion,
+	icon,
+	is_following,
+	is_private,
+	jetpack,
+	lang,
+	logo,
+	meta,
+	name,
+	options,
+	plan,
+	plugins,
+	post_count,
+	single_user_site,
+	slug,
+	subscribers_count,
+	title,
+	update,
+	jp_version,
+	user_can_manage,
+	visible,
+	wpcom_url,
+} = exported;

@@ -8,11 +8,13 @@ import * as domainManagement from './domain-management';
 import * as domainSearch from './domain-search';
 import * as purchases from './purchases';
 
-export default {
+const exported = {
 	...cart,
 	...checkout,
 	...freeTrials,
 	...domainManagement,
 	...domainSearch,
-	...purchases
+	...purchases,
 };
+
+export default exported;

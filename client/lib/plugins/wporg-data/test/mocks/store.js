@@ -1,4 +1,8 @@
-module.exports = {
+const exported = {
 	get: function() {},
-	set: function() {}
+	set: function() {},
 };
+
+export default exported;
+
+export const { get, set } = exported;

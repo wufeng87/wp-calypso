@@ -153,3 +153,5 @@ PostPhoto.defaultProps = {
 };
 
 export default PostPhoto;
+
+export const { propTypes, defaultProps } = PostPhoto;

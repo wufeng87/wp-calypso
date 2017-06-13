@@ -1,12 +1,12 @@
 /**
  * External dependencies
  */
-var React = require( 'react' );
+import React from 'react';
 
 /**
  * Internal dependencies
  */
-var Theme = require( '../' );
+import Theme from '../';
 
 /**
  * Component
@@ -24,22 +24,29 @@ var ThemeExample = React.createClass( {
 		return (
 			<div>
 				<Theme
-				theme={ theme }
-				buttonContents={ {
-					action1: {
-						label: 'Menu Item 1',
-						action: function() { console.log( 'Menu Item 1 selected' ); }
-					},
-					action2: {
-						label: 'Menu Item 2',
-						action: function() { console.log( 'Menu Item 2 selected' ); }
-					}
-				} }
-				actionLabel="Click Action"
-				onScreenshotClick={ function() { console.log( 'onScreenshotClick triggered' ); } } />
+					theme={ theme }
+					buttonContents={ {
+						action1: {
+							label: 'Menu Item 1',
+							action: function() {
+								console.log( 'Menu Item 1 selected' );
+							},
+						},
+						action2: {
+							label: 'Menu Item 2',
+							action: function() {
+								console.log( 'Menu Item 2 selected' );
+							},
+						},
+					} }
+					actionLabel="Click Action"
+					onScreenshotClick={ function() {
+						console.log( 'onScreenshotClick triggered' );
+					} }
+				/>
 			</div>
 		);
-	}
+	},
 } );
 
-module.exports = ThemeExample;
+export default ThemeExample;

@@ -30,8 +30,8 @@ const exported = {
 		return classNames(
 			assign(
 				{ selected: selected, 'is-action-button-selected': isActionButtonSelected },
-				additionalClasses
-			)
+				additionalClasses,
+			),
 		);
 	},
 
@@ -48,5 +48,7 @@ const exported = {
 };
 
 export default exported;
+
+export const {} = exported;
 
 export const { itemLinkClass, itemLinkClassStartsWithOneOf, pathStartsWithOneOf } = exported;

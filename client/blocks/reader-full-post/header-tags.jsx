@@ -29,3 +29,5 @@ ReaderFullPostHeaderTags.propTypes = {
 };
 
 export default ReaderFullPostHeaderTags;
+
+export const { propTypes } = ReaderFullPostHeaderTags;

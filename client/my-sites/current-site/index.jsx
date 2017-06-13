@@ -10,15 +10,16 @@ import { localize } from 'i18n-calypso';
 /**
  * Internal dependencies
  */
-const AllSites = require( 'my-sites/all-sites' ),
-	analytics = require( 'lib/analytics' ),
-	Button = require( 'components/button' ),
-	Card = require( 'components/card' ),
-	Site = require( 'blocks/site' ),
-	Gridicon = require( 'gridicons' ),
-	UpgradesActions = require( 'lib/upgrades/actions' ),
-	DomainsStore = require( 'lib/domains/store' ),
-	DomainWarnings = require( 'my-sites/upgrades/components/domain-warnings' );
+import AllSites from 'my-sites/all-sites';
+
+import analytics from 'lib/analytics';
+import Button from 'components/button';
+import Card from 'components/card';
+import Site from 'blocks/site';
+import Gridicon from 'gridicons';
+import UpgradesActions from 'lib/upgrades/actions';
+import DomainsStore from 'lib/domains/store';
+import DomainWarnings from 'my-sites/upgrades/components/domain-warnings';
 
 import SiteNotice from './notice';
 import { setLayoutFocus } from 'state/ui/layout-focus/actions';
@@ -36,11 +37,11 @@ class CurrentSite extends Component {
 		selectedSiteId: React.PropTypes.number,
 		selectedSite: React.PropTypes.object,
 		translate: React.PropTypes.func.isRequired,
-		anySiteSelected: React.PropTypes.array
+		anySiteSelected: React.PropTypes.array,
 	};
 
 	state = {
-		domainsStore: DomainsStore
+		domainsStore: DomainsStore,
 	};
 
 	componentWillMount() {
@@ -65,15 +66,15 @@ class CurrentSite extends Component {
 
 	handleStoreChange = () => {
 		this.setState( { domainsStore: DomainsStore } );
-	}
+	};
 
-	switchSites = ( event ) => {
+	switchSites = event => {
 		event.preventDefault();
 		event.stopPropagation();
 		this.props.setLayoutFocus( 'sites' );
 
 		analytics.ga.recordEvent( 'Sidebar', 'Clicked Switch Site' );
-	}
+	};
 
 	getDomainWarnings() {
 		const { selectedSiteId, selectedSite: site } = this.props;
@@ -83,7 +84,7 @@ class CurrentSite extends Component {
 		}
 
 		const domainStore = this.state.domainsStore.getBySite( selectedSiteId );
-		const domains = domainStore && domainStore.list || [];
+		const domains = ( domainStore && domainStore.list ) || [];
 
 		return (
 			<DomainWarnings
@@ -98,28 +99,22 @@ class CurrentSite extends Component {
 					'expiredDomainsCannotManage',
 					'expiringDomainsCannotManage',
 					'wrongNSMappedDomains',
-					'pendingGappsTosAcceptanceDomains'
+					'pendingGappsTosAcceptanceDomains',
 				] }
 			/>
 		);
 	}
 
-	previewSite = ( event ) => this.props.onClick && this.props.onClick( event );
+	previewSite = event => this.props.onClick && this.props.onClick( event );
 
 	renderSiteViewLink() {
-		const {
-			isPreviewShowing,
-			selectedSite,
-			translate,
-		} = this.props;
+		const { isPreviewShowing, selectedSite, translate } = this.props;
 
 		const viewText = selectedSite.is_previewable
 			? translate( 'Site Preview' )
 			: translate( 'View site' );
 
-		const viewIcon = selectedSite.is_previewable
-			? 'computer'
-			: 'external';
+		const viewIcon = selectedSite.is_previewable ? 'computer' : 'external';
 
 		return (
 			<a
@@ -145,9 +140,7 @@ class CurrentSite extends Component {
 		if ( ! anySiteSelected.length ) {
 			return (
 				<Card className="current-site is-loading">
-					{ this.props.siteCount > 1 &&
-						<span className="current-site__switch-sites">&nbsp;</span>
-					}
+					{ this.props.siteCount > 1 && <span className="current-site__switch-sites">&nbsp;</span> }
 					<div className="site">
 						<a className="site__content">
 							<div className="site-icon" />
@@ -168,15 +161,13 @@ class CurrentSite extends Component {
 							<Gridicon icon="arrow-left" size={ 18 } />
 							{ translate( 'Switch Site' ) }
 						</Button>
-					</span>
-				}
+					</span> }
 				{ selectedSite
 					? <div>
-						<Site site={ selectedSite } />
-						{ this.renderSiteViewLink() }
-					</div>
-					: <AllSites />
-				}
+							<Site site={ selectedSite } />
+							{ this.renderSiteViewLink() }
+						</div>
+					: <AllSites /> }
 				{ ! isJetpack && this.getDomainWarnings() }
 				<SiteNotice site={ selectedSite } allSitesPath={ this.props.allSitesPath } />
 			</Card>
@@ -185,7 +176,7 @@ class CurrentSite extends Component {
 }
 
 export default connect(
-	( state ) => {
+	state => {
 		const selectedSiteId = getSelectedSiteId( state );
 		const user = getCurrentUser( state );
 

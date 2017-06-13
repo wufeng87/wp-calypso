@@ -1,44 +1,36 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	ReactCSSTransitionGroup = require( 'react-addons-css-transition-group' ),
-	i18n = require( 'i18n-calypso' ),
-	page = require( 'page' );
+import React from 'react';
+
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
+import i18n from 'i18n-calypso';
+import page from 'page';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-	get,
-	includes,
-} from 'lodash';
+import { get, includes } from 'lodash';
 
 /**
  * Internal dependencies
  */
-var updatePostStatus = require( 'lib/mixins/update-post-status' ),
-	CompactCard = require( 'components/card/compact' ),
-	Gridicon = require( 'gridicons' ),
-	PopoverMenu = require( 'components/popover/menu' ),
-	PopoverMenuItem = require( 'components/popover/menu-item' ),
-	SiteIcon = require( 'blocks/site-icon' ),
-	helpers = require( './helpers' ),
-	analytics = require( 'lib/analytics' ),
-	utils = require( 'lib/posts/utils' ),
-	classNames = require( 'classnames' );
+import updatePostStatus from 'lib/mixins/update-post-status';
+
+import CompactCard from 'components/card/compact';
+import Gridicon from 'gridicons';
+import PopoverMenu from 'components/popover/menu';
+import PopoverMenuItem from 'components/popover/menu-item';
+import SiteIcon from 'blocks/site-icon';
+import helpers from './helpers';
+import analytics from 'lib/analytics';
+import utils from 'lib/posts/utils';
+import classNames from 'classnames';
 
 import MenuSeparator from 'components/popover/menu-separator';
 import PageCardInfo from './page-card-info';
-import {
-	getSite,
-	hasStaticFrontPage,
-	isSitePreviewable,
-} from 'state/sites/selectors';
+import { getSite, hasStaticFrontPage, isSitePreviewable } from 'state/sites/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
-import {
-	isFrontPage,
-	isPostsPage,
-} from 'state/pages/selectors';
+import { isFrontPage, isPostsPage } from 'state/pages/selectors';
 import { setPreviewUrl } from 'state/ui/preview/actions';
 import { setLayoutFocus } from 'state/ui/layout-focus/actions';
 import { getPreviewURL } from 'lib/posts/utils';
@@ -49,19 +41,18 @@ function recordEvent( eventAction ) {
 
 function getReadableStatus( status ) {
 	var humanReadableStatus = {
-		'publish': i18n.translate( 'Published' ),
-		'draft': i18n.translate( 'Draft' ),
-		'pending': i18n.translate( 'Pending' ),
-		'future': i18n.translate( 'Future' ),
-		'private': i18n.translate( 'Private' ),
-		'trash': i18n.translate( 'Trashed' )
+		publish: i18n.translate( 'Published' ),
+		draft: i18n.translate( 'Draft' ),
+		pending: i18n.translate( 'Pending' ),
+		future: i18n.translate( 'Future' ),
+		private: i18n.translate( 'Private' ),
+		trash: i18n.translate( 'Trashed' ),
 	};
 
-	return humanReadableStatus [ status ] || status;
+	return humanReadableStatus[ status ] || status;
 }
 
 const Page = React.createClass( {
-
 	displayName: 'Page',
 
 	mixins: [ updatePostStatus ],
@@ -81,12 +72,12 @@ const Page = React.createClass( {
 		},
 		statsPage: function() {
 			recordEvent( 'Clicked Stats Page' );
-		}
+		},
 	},
 
 	getInitialState: function() {
 		return {
-			showPageActions: false
+			showPageActions: false,
 		};
 	},
 
@@ -103,7 +94,7 @@ const Page = React.createClass( {
 			updating: this.translate( 'Updating Page' ),
 			error: this.translate( 'Error' ),
 			updated: this.translate( 'Updated' ),
-			deleteWarning: this.translate( 'Delete this page permanently?' )
+			deleteWarning: this.translate( 'Delete this page permanently?' ),
 		};
 	},
 
@@ -163,9 +154,7 @@ const Page = React.createClass( {
 	},
 
 	childPageInfo: function() {
-		var page = this.props.page,
-			site = this.props.site,
-			parentTitle, parentHref, parentLink;
+		var page = this.props.page, site = this.props.site, parentTitle, parentHref, parentLink;
 
 		// If we're in hierarchical view, we don't show child info in the context menu, as it's redudant.
 		if ( this.props.hierarchical || ! page.parent ) {
@@ -176,16 +165,20 @@ const Page = React.createClass( {
 
 		// This is technically if you can edit the current page, not the parent.
 		// Capabilities are not exposed on the parent page.
-		parentHref = utils.userCan( 'edit_post', this.props.page ) ? helpers.editLinkForPage( page.parent, site ) : page.parent.URL;
+		parentHref = utils.userCan( 'edit_post', this.props.page )
+			? helpers.editLinkForPage( page.parent, site )
+			: page.parent.URL;
 		parentLink = <a href={ parentHref }>{ parentTitle }</a>;
 
-		return ( <div className="page__popover-more-info">{
-			this.translate( "Child of {{PageTitle/}}", {
-				components: {
-					PageTitle: parentLink
-				}
-			} )
-		}</div> );
+		return (
+			<div className="page__popover-more-info">
+				{ this.translate( 'Child of {{PageTitle/}}', {
+					components: {
+						PageTitle: parentLink,
+					},
+				} ) }
+			</div>
+		);
 	},
 
 	frontPageInfo: function() {
@@ -193,13 +186,19 @@ const Page = React.createClass( {
 			return null;
 		}
 
-		return ( <div className="page__popover-more-info">{
-			this.translate( 'This page is set as your site\'s homepage' )
-		}</div> );
+		return (
+			<div className="page__popover-more-info">
+				{ this.translate( "This page is set as your site's homepage" ) }
+			</div>
+		);
 	},
 
 	getPublishItem: function() {
-		if ( this.props.page.status === 'publish' || ! utils.userCan( 'publish_post', this.props.page ) || this.props.page.status === 'trash' ) {
+		if (
+			this.props.page.status === 'publish' ||
+			! utils.userCan( 'publish_post', this.props.page ) ||
+			this.props.page.status === 'trash'
+		) {
 			return null;
 		}
 
@@ -261,10 +260,7 @@ const Page = React.createClass( {
 	},
 
 	getCopyItem: function() {
-		const {
-			page: post,
-			siteSlugOrId,
-		} = this.props;
+		const { page: post, siteSlugOrId } = this.props;
 		if (
 			! includes( [ 'draft', 'future', 'pending', 'private', 'publish' ], post.status ) ||
 			! utils.userCan( 'edit_post', post )
@@ -272,7 +268,10 @@ const Page = React.createClass( {
 			return null;
 		}
 		return (
-			<PopoverMenuItem onClick={ this.copyPage } href={ `/page/${ siteSlugOrId }?copy=${ post.ID }` }>
+			<PopoverMenuItem
+				onClick={ this.copyPage }
+				href={ `/page/${ siteSlugOrId }?copy=${ post.ID }` }
+			>
 				<Gridicon icon="clipboard" size={ 18 } />
 				{ this.translate( 'Copy' ) }
 			</PopoverMenuItem>
@@ -320,7 +319,9 @@ const Page = React.createClass( {
 			return null;
 		}
 
-		return <div className="page__popover-more-info">{ getReadableStatus( this.props.page.status ) }</div>;
+		return (
+			<div className="page__popover-more-info">{ getReadableStatus( this.props.page.status ) }</div>
+		);
 	},
 
 	popoverMoreInfo: function() {
@@ -361,37 +362,42 @@ const Page = React.createClass( {
 		const copyItem = this.getCopyItem();
 		const statsItem = this.getStatsItem();
 		const moreInfoItem = this.popoverMoreInfo();
-		const hasMenuItems = (
-			viewItem || publishItem || editItem || statsItem ||
-			restoreItem || sendToTrashItem || moreInfoItem
-		);
-		const popoverMenu = hasMenuItems ? (
-			<PopoverMenu
-				isVisible={ this.state.showPageActions }
-				onClose={ this.togglePageActions }
-				position={ 'bottom left' }
-				context={ this.refs && this.refs.popoverMenuButton }
-			>
-				{ editItem }
-				{ publishItem }
-				{ viewItem }
-				{ statsItem }
-				{ copyItem }
-				{ restoreItem }
-				{ sendToTrashItem }
-				{ moreInfoItem }
-			</PopoverMenu>
-		) : null;
-		const ellipsisGridicon = hasMenuItems ? (
-			<Gridicon
-			icon="ellipsis"
-			className={ classNames( {
-				'page__actions-toggle': true,
-				'is-active': this.state.showPageActions
-			} ) }
-			onClick={ this.togglePageActions }
-			ref="popoverMenuButton" />
-		) : null;
+		const hasMenuItems =
+			viewItem ||
+			publishItem ||
+			editItem ||
+			statsItem ||
+			restoreItem ||
+			sendToTrashItem ||
+			moreInfoItem;
+		const popoverMenu = hasMenuItems
+			? <PopoverMenu
+					isVisible={ this.state.showPageActions }
+					onClose={ this.togglePageActions }
+					position={ 'bottom left' }
+					context={ this.refs && this.refs.popoverMenuButton }
+				>
+					{ editItem }
+					{ publishItem }
+					{ viewItem }
+					{ statsItem }
+					{ copyItem }
+					{ restoreItem }
+					{ sendToTrashItem }
+					{ moreInfoItem }
+				</PopoverMenu>
+			: null;
+		const ellipsisGridicon = hasMenuItems
+			? <Gridicon
+					icon="ellipsis"
+					className={ classNames( {
+						'page__actions-toggle': true,
+						'is-active': this.state.showPageActions,
+					} ) }
+					onClick={ this.togglePageActions }
+					ref="popoverMenuButton"
+				/>
+			: null;
 
 		const cardClasses = {
 			page: true,
@@ -408,22 +414,30 @@ const Page = React.createClass( {
 			hierarchyIndentClasses[ 'is-indented-level-' + this.props.hierarchyLevel ] = true;
 		}
 
-		const hierarchyIndent = cardClasses[ 'is-indented' ] && (
-			<div className={ classNames( hierarchyIndentClasses ) } ></div>
-		);
+		const hierarchyIndent =
+			cardClasses[ 'is-indented' ] && <div className={ classNames( hierarchyIndentClasses ) } />;
 
 		return (
-			<CompactCard className={ classNames( cardClasses ) } >
+			<CompactCard className={ classNames( cardClasses ) }>
 				{ hierarchyIndent }
 				{ this.props.multisite ? <SiteIcon siteId={ page.site_ID } size={ 34 } /> : null }
 				<div className="page__main">
-					<a className="page__title"
+					<a
+						className="page__title"
 						href={ canEdit ? helpers.editLinkForPage( page, site ) : page.URL }
-						title={ canEdit ?
-							this.translate( 'Edit %(title)s', { textOnly: true, args: { title: page.title } } ) :
-							this.translate( 'View %(title)s', { textOnly: true, args: { title: page.title } } ) }
+						title={
+							canEdit
+								? this.translate(
+										'Edit %(title)s',
+										{ textOnly: true, args: { title: page.title } },
+									)
+								: this.translate(
+										'View %(title)s',
+										{ textOnly: true, args: { title: page.title } },
+									)
+						}
 						onClick={ this.analyticsEvents.pageTitle }
-						>
+					>
 						{ depthIndicator }
 						{ title }
 					</a>
@@ -438,11 +452,11 @@ const Page = React.createClass( {
 				<ReactCSSTransitionGroup
 					transitionName="updated-trans"
 					transitionEnterTimeout={ 300 }
-					transitionLeaveTimeout={ 300 }>
+					transitionLeaveTimeout={ 300 }
+				>
 					{ this.buildUpdateTemplate() }
 				</ReactCSSTransitionGroup>
 			</CompactCard>
-
 		);
 	},
 
@@ -482,7 +496,8 @@ export default connect(
 		const selectedSiteId = getSelectedSiteId( state );
 		const isPreviewable =
 			false !== isSitePreviewable( state, props.page.site_ID ) &&
-			site && site.ID === selectedSiteId;
+			site &&
+			site.ID === selectedSiteId;
 
 		return {
 			hasStaticFrontPage: hasStaticFrontPage( state, props.page.site_ID ),
@@ -494,8 +509,12 @@ export default connect(
 			siteSlugOrId,
 		};
 	},
-	( dispatch ) => bindActionCreators( {
-		setPreviewUrl,
-		setLayoutFocus
-	}, dispatch )
+	dispatch =>
+		bindActionCreators(
+			{
+				setPreviewUrl,
+				setLayoutFocus,
+			},
+			dispatch,
+		),
 )( Page );

@@ -19,3 +19,5 @@ const ReaderExportButton = () => (
 ReaderExportButton.displayName = 'ReaderExportButton';
 
 export default ReaderExportButton;
+
+export const { displayName } = ReaderExportButton;

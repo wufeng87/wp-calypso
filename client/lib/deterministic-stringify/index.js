@@ -1,6 +1,5 @@
 function deterministStringify( source ) {
-	var namespace = [],
-		keys;
+	var namespace = [], keys;
 	if ( typeof source !== 'object' ) {
 		if ( typeof source === 'undefined' ) {
 			return 'undefined';
@@ -29,4 +28,4 @@ function deterministStringify( source ) {
 	return namespace.join( '&' );
 }
 
-module.exports = deterministStringify;
+export default deterministStringify;

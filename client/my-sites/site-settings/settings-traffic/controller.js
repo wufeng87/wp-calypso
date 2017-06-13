@@ -9,12 +9,16 @@ import React from 'react';
 import { renderWithReduxStore } from 'lib/react-helpers';
 import TrafficMain from 'my-sites/site-settings/settings-traffic/main';
 
-export default {
+const exported = {
 	traffic( context ) {
 		renderWithReduxStore(
 			React.createElement( TrafficMain ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
-	}
+	},
 };
+
+export default exported;
+
+export const { traffic } = exported;

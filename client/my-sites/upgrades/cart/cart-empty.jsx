@@ -1,11 +1,12 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	page = require( 'page' ),
-	startsWith = require( 'lodash/startsWith' );
+import React from 'react';
 
-var CartEmpty = React.createClass({
+import page from 'page';
+import startsWith from 'lodash/startsWith';
+
+var CartEmpty = React.createClass( {
 	render: function() {
 		return (
 			<div>
@@ -13,9 +14,10 @@ var CartEmpty = React.createClass({
 					{ this.translate( 'There are no items in your cart.' ) }
 				</div>
 				<div className="cart-buttons">
-					<button className="cart-checkout-button button is-primary"
-							onClick={ this.handleClick }>
-							{ this.shouldShowPlanButton() ? this.translate( 'Add a Plan' ) : this.translate( 'Add a Domain' ) }
+					<button className="cart-checkout-button button is-primary" onClick={ this.handleClick }>
+						{ this.shouldShowPlanButton()
+							? this.translate( 'Add a Plan' )
+							: this.translate( 'Add a Domain' ) }
 					</button>
 				</div>
 			</div>
@@ -32,8 +34,10 @@ var CartEmpty = React.createClass({
 	handleClick: function( event ) {
 		event.preventDefault();
 
-		page( ( this.shouldShowPlanButton() ? '/plans/' : '/domains/add/' ) + this.props.selectedSite.slug );
-	}
-});
+		page(
+			( this.shouldShowPlanButton() ? '/plans/' : '/domains/add/' ) + this.props.selectedSite.slug,
+		);
+	},
+} );
 
-module.exports = CartEmpty;
+export default CartEmpty;

@@ -16,3 +16,5 @@ HrWithText.propTypes = {
 };
 
 export default HrWithText;
+
+export const { propTypes } = HrWithText;

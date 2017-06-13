@@ -1,33 +1,41 @@
 /**
  * External dependencies
  */
-const React = require( 'react' ),
-	ReactDom = require( 'react-dom' ),
-	store = require( 'store' ),
-	startsWith = require( 'lodash/startsWith' ),
-	debug = require( 'debug' )( 'calypso' ),
-	page = require( 'page' ),
-	includes = require( 'lodash/includes' );
+import React from 'react';
+
+import ReactDom from 'react-dom';
+import store from 'store';
+import startsWith from 'lodash/startsWith';
+import debugFactory from 'debug';
+const debug = debugFactory( 'calypso' );
+import page from 'page';
+import includes from 'lodash/includes';
 
 /**
  * Internal dependencies
  */
-const config = require( 'config' ),
-	abtestModule = require( 'lib/abtest' ), // used by error logger
-	getSavedVariations = abtestModule.getSavedVariations, // used by logger
-	initializeHappychat = require( 'state/happychat/actions' ).initialize,
-	analytics = require( 'lib/analytics' ),
-	route = require( 'lib/route' ),
-	normalize = require( 'lib/route/normalize' ),
-	{ isLegacyRoute } = require( 'lib/route/legacy-routes' ),
-	superProps = require( 'lib/analytics/super-props' ),
-	translatorJumpstart = require( 'lib/translator-jumpstart' ),
-	nuxWelcome = require( 'layout/nux-welcome' ),
-	emailVerification = require( 'components/email-verification' ),
-	viewport = require( 'lib/viewport' ),
-	pushNotificationsInit = require( 'state/push-notifications/actions' ).init,
-	syncHandler = require( 'lib/wp/sync-handler' ),
-	supportUser = require( 'lib/user/support-user-interop' );
+import config from 'config';
+
+import abtestModule from 'lib/abtest'; // used by error logger
+import { initialize as initializeHappychat } from 'state/happychat/actions';
+import analytics from 'lib/analytics';
+import route from 'lib/route';
+import normalize from 'lib/route/normalize';
+import { isLegacyRoute } from 'lib/route/legacy-routes';
+import superProps from 'lib/analytics/super-props';
+import translatorJumpstart from 'lib/translator-jumpstart';
+import nuxWelcome from 'layout/nux-welcome';
+import emailVerification from 'components/email-verification';
+import viewport from 'lib/viewport';
+import { init as pushNotificationsInit } from 'state/push-notifications/actions';
+import syncHandler from 'lib/wp/sync-handler';
+import supportUser from 'lib/user/support-user-interop';
+
+/**
+ * Internal dependencies
+ */
+const // used by logger
+getSavedVariations = abtestModule.getSavedVariations;
 
 import { getSelectedSiteId, getSectionName } from 'state/ui/selectors';
 import { setNextLayoutFocus, activateNextLayoutFocus } from 'state/ui/layout-focus/actions';
@@ -36,13 +44,10 @@ function renderLayout( reduxStore ) {
 	const Layout = require( 'controller' ).ReduxWrappedLayout;
 
 	const layoutElement = React.createElement( Layout, {
-		store: reduxStore
+		store: reduxStore,
 	} );
 
-	ReactDom.render(
-		layoutElement,
-		document.getElementById( 'wpcom' )
-	);
+	ReactDom.render( layoutElement, document.getElementById( 'wpcom' ) );
 
 	debug( 'Main layout rendered.' );
 }
@@ -95,22 +100,28 @@ export function setupMiddlewares( currentUser, reduxStore ) {
 			//Save data to JS error logger
 			errorLogger.saveDiagnosticData( {
 				user_id: currentUser.get().ID,
-				calypso_env: config( 'env_id' )
+				calypso_env: config( 'env_id' ),
 			} );
 			errorLogger.saveDiagnosticReducer( function() {
 				const state = reduxStore.getState();
 				return {
 					blog_id: getSelectedSiteId( state ),
-					calypso_section: getSectionName( state )
+					calypso_section: getSectionName( state ),
 				};
 			} );
 			errorLogger.saveDiagnosticReducer( () => ( { tests: getSavedVariations() } ) );
 			analytics.on(
 				'record-event',
-				( eventName, eventProperties ) => errorLogger.saveExtraData( { lastTracksEvent: eventProperties } )
+				( eventName, eventProperties ) =>
+					errorLogger.saveExtraData( { lastTracksEvent: eventProperties } ),
 			);
 			page( '*', function( context, next ) {
-				errorLogger.saveNewPath( context.canonicalPath.replace( route.getSiteFragment( context.canonicalPath ), ':siteId' ) );
+				errorLogger.saveNewPath(
+					context.canonicalPath.replace(
+						route.getSiteFragment( context.canonicalPath ),
+						':siteId',
+					),
+				);
 				next();
 			} );
 		}
@@ -120,7 +131,7 @@ export function setupMiddlewares( currentUser, reduxStore ) {
 	// This can be removed when the legacy version is retired.
 	page( '*', function( context, next ) {
 		if ( [ 'sb', 'sp' ].indexOf( context.querystring ) !== -1 ) {
-			const layoutSection = ( context.querystring === 'sb' ) ? 'sidebar' : 'sites';
+			const layoutSection = context.querystring === 'sb' ? 'sidebar' : 'sites';
 			reduxStore.dispatch( setNextLayoutFocus( layoutSection ) );
 			page.replace( context.pathname );
 		}
@@ -153,7 +164,11 @@ export function setupMiddlewares( currentUser, reduxStore ) {
 		}
 
 		// If `?welcome` is present, and `?tour` isn't, show the welcome message
-		if ( ! context.query.tour && context.querystring === 'welcome' && context.pathname.indexOf( '/me/next' ) === -1 ) {
+		if (
+			! context.query.tour &&
+			context.querystring === 'welcome' &&
+			context.pathname.indexOf( '/me/next' ) === -1
+		) {
 			// show welcome message, persistent for full sized screens
 			nuxWelcome.setWelcome( viewport.isDesktop() );
 		} else {
@@ -188,7 +203,8 @@ export function setupMiddlewares( currentUser, reduxStore ) {
 			if ( '/plans' === context.pathname ) {
 				const queryFor = context.query && context.query.for;
 				if ( queryFor && 'jetpack' === queryFor ) {
-					window.location = 'https://wordpress.com/wp-login.php?redirect_to=https%3A%2F%2Fwordpress.com%2Fplans';
+					window.location =
+						'https://wordpress.com/wp-login.php?redirect_to=https%3A%2F%2Fwordpress.com%2Fplans';
 				} else {
 					// pricing page is outside of Calypso, needs a full page load
 					window.location = 'https://wordpress.com/pricing';
@@ -217,13 +233,15 @@ export function setupMiddlewares( currentUser, reduxStore ) {
 	}
 
 	if ( config.isEnabled( 'rubberband-scroll-disable' ) ) {
-		asyncRequire( 'lib/rubberband-scroll-disable', ( disableRubberbandScroll ) => {
+		asyncRequire( 'lib/rubberband-scroll-disable', disableRubberbandScroll => {
 			disableRubberbandScroll( document.body );
 		} );
 	}
 
-	if ( config.isEnabled( 'dev/test-helper' ) && document.querySelector( '.environment.is-tests' ) ) {
-		asyncRequire( 'lib/abtest/test-helper', ( testHelper ) => {
+	if (
+		config.isEnabled( 'dev/test-helper' ) && document.querySelector( '.environment.is-tests' )
+	) {
+		asyncRequire( 'lib/abtest/test-helper', testHelper => {
 			testHelper( document.querySelector( '.environment.is-tests' ) );
 		} );
 	}
@@ -236,11 +254,17 @@ export function setupMiddlewares( currentUser, reduxStore ) {
 	 * make this unnecessary.
 	 */
 	page( '*', function( context, next ) {
-		const previousLayoutIsSingleTree = !! (
-			document.getElementsByClassName( 'wp-singletree-layout' ).length
-		);
+		const previousLayoutIsSingleTree = !! document.getElementsByClassName( 'wp-singletree-layout' )
+			.length;
 
-		const singleTreeSections = [ 'account-recovery', 'login', 'posts-custom', 'theme', 'themes', 'preview' ];
+		const singleTreeSections = [
+			'account-recovery',
+			'login',
+			'posts-custom',
+			'theme',
+			'themes',
+			'preview',
+		];
 		const sectionName = getSectionName( context.store.getState() );
 		const isMultiTreeLayout = ! includes( singleTreeSections, sectionName );
 

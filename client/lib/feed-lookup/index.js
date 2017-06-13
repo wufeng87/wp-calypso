@@ -23,9 +23,7 @@ function discover( feedUrl ) {
 		return cache.get( feedUrl );
 	}
 
-	return wpcom.undocumented().discoverFeed(
-		{ url: feedUrl }
-	);
+	return wpcom.undocumented().discoverFeed( { url: feedUrl } );
 }
 
 function feedLookup( feedUrl ) {
@@ -50,4 +48,4 @@ function feedLookup( feedUrl ) {
 	return promiseForFeedId;
 }
 
-module.exports = feedLookup;
+export default feedLookup;

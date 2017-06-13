@@ -87,3 +87,5 @@ ReaderFullPostHeader.propTypes = {
 };
 
 export default ReaderFullPostHeader;
+
+export const { propTypes } = ReaderFullPostHeader;

@@ -8,14 +8,14 @@ import React from 'react';
  */
 import { renderWithReduxStore } from 'lib/react-helpers';
 
-export default {
+const exported = {
 	billingHistory( context ) {
 		const BillingHistoryComponent = require( './main' );
 
 		renderWithReduxStore(
 			React.createElement( BillingHistoryComponent ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	},
 
@@ -27,8 +27,12 @@ export default {
 			renderWithReduxStore(
 				React.createElement( Receipt, { transactionId: receiptId } ),
 				document.getElementById( 'primary' ),
-				context.store
+				context.store,
 			);
 		}
-	}
+	},
 };
+
+export default exported;
+
+export const { billingHistory, transaction } = exported;

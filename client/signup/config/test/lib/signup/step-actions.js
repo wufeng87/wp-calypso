@@ -1,2 +1,4 @@
 // step-actions stub
-export default {};
+const exported = {};
+
+export default exported;

@@ -1,38 +1,41 @@
 /**
  * External Dependencies
  */
-var React = require( 'react' ),
-	classNames = require( 'classnames' ),
-	noop = require( 'lodash/noop' );
+import React from 'react';
+
+import classNames from 'classnames';
+import noop from 'lodash/noop';
 
 /**
  * Internal Dependencies
  */
-var Card = require( 'components/card' ),
-	CompactCard = require( 'components/card/compact' ),
-	Gridicon = require( 'gridicons' );
+import Card from 'components/card';
+
+import CompactCard from 'components/card/compact';
+import Gridicon from 'gridicons';
 
 var FoldableCard = React.createClass( {
-
 	propTypes: {
 		actionButton: React.PropTypes.element,
 		actionButtonExpanded: React.PropTypes.element,
 		cardKey: React.PropTypes.string,
 		compact: React.PropTypes.bool,
 		disabled: React.PropTypes.bool,
-		expandedSummary: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.element ] ),
+		expandedSummary: React.PropTypes.oneOfType(
+			[ React.PropTypes.string, React.PropTypes.element ],
+		),
 		expanded: React.PropTypes.bool,
 		icon: React.PropTypes.string,
 		onClick: React.PropTypes.func,
 		onClose: React.PropTypes.func,
 		onOpen: React.PropTypes.func,
 		screenReaderText: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.bool ] ),
-		summary: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.element ] )
+		summary: React.PropTypes.oneOfType( [ React.PropTypes.string, React.PropTypes.element ] ),
 	},
 
 	getInitialState: function() {
 		return {
-			expanded: this.props.expanded
+			expanded: this.props.expanded,
 		};
 	},
 
@@ -82,7 +85,7 @@ var FoldableCard = React.createClass( {
 		if ( this.props.actionButton ) {
 			return (
 				<div className="foldable-card__action" onClick={ clickAction }>
-				{ this.getActionButton() }
+					{ this.getActionButton() }
 				</div>
 			);
 		}
@@ -94,7 +97,8 @@ var FoldableCard = React.createClass( {
 					disabled={ this.props.disabled }
 					type="button"
 					className="foldable-card__action foldable-card__expand"
-					onClick={ clickAction }>
+					onClick={ clickAction }
+				>
 					<span className="screen-reader-text">{ screenReaderText }</span>
 					<Gridicon icon={ this.props.icon } size={ iconSize } />
 				</button>
@@ -111,12 +115,16 @@ var FoldableCard = React.createClass( {
 	},
 
 	renderHeader: function() {
-		var summary = this.props.summary ? <span className="foldable-card__summary">{ this.props.summary } </span> : null,
-			expandedSummary = this.props.expandedSummary ? <span className="foldable-card__summary_expanded">{ this.props.expandedSummary } </span> : null,
+		var summary = this.props.summary
+			? <span className="foldable-card__summary">{ this.props.summary } </span>
+			: null,
+			expandedSummary = this.props.expandedSummary
+				? <span className="foldable-card__summary_expanded">{ this.props.expandedSummary } </span>
+				: null,
 			headerClickAction = this.props.clickableHeader ? this.getClickAction() : null,
 			headerClasses = classNames( 'foldable-card__header', {
 				'is-clickable': !! this.props.clickableHeader,
-				'has-border': !! this.props.summary
+				'has-border': !! this.props.summary,
 			} );
 		return (
 			<div className={ headerClasses } onClick={ headerClickAction }>
@@ -132,15 +140,11 @@ var FoldableCard = React.createClass( {
 
 	render: function() {
 		var Container = this.props.compact ? CompactCard : Card,
-			itemSiteClasses = classNames(
-				'foldable-card',
-				this.props.className,
-				{
-					'is-disabled': !! this.props.disabled,
-					'is-expanded': !! this.state.expanded,
-					'has-expanded-summary': !! this.props.expandedSummary
-				}
-			);
+			itemSiteClasses = classNames( 'foldable-card', this.props.className, {
+				'is-disabled': !! this.props.disabled,
+				'is-expanded': !! this.state.expanded,
+				'has-expanded-summary': !! this.props.expandedSummary,
+			} );
 
 		return (
 			<Container className={ itemSiteClasses }>
@@ -148,7 +152,7 @@ var FoldableCard = React.createClass( {
 				{ this.state.expanded && this.renderContent() }
 			</Container>
 		);
-	}
+	},
 } );
 
-module.exports = FoldableCard;
+export default FoldableCard;

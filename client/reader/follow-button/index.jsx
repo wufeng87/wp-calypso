@@ -42,3 +42,5 @@ ReaderFollowButton.propTypes = {
 };
 
 export default ReaderFollowButton;
+
+export const { propTypes } = ReaderFollowButton;

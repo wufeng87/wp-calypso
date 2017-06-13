@@ -2,7 +2,7 @@
  * Local variables
  */
 var defaults = {
-	localeSlug: 'de'
+	localeSlug: 'de',
 };
 
 /**
@@ -24,4 +24,4 @@ User.prototype.fetchSettings = function() {};
  * direct method to enable community translator
  */
 
-module.exports = User;
+export default User;

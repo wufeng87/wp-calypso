@@ -1,5 +1,5 @@
-var clone = require( 'lodash/clone' ),
-	noop = require( 'lodash/noop' );
+import clone from 'lodash/clone';
+import noop from 'lodash/noop';
 
 function fakeNormalize( post, transforms, callback ) {
 	callback( null, clone( post ) );
@@ -19,4 +19,7 @@ fakeNormalize.content = {};
 	fakeNormalize.content[ prop ] = noopFactory;
 } );
 
-module.exports = fakeNormalize;
+export default fakeNormalize;
+export { noopFactory as prop };
+
+export const { content } = fakeNormalize;

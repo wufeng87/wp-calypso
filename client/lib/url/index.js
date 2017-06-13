@@ -30,7 +30,9 @@ function isExternal( url ) {
 	// the url passed in might be of form `en.support.wordpress.com`
 	// so for this function we'll append double-slashes to fake it
 	// if it is a relative URL the hostname will still be empty from parseURL
-	if ( ! startsWith( url, 'http://' ) && ! startsWith( url, 'https://' ) && ! startsWith( url, '//' ) ) {
+	if (
+		! startsWith( url, 'http://' ) && ! startsWith( url, 'https://' ) && ! startsWith( url, '//' )
+	) {
 		url = '//' + url;
 	}
 
@@ -130,7 +132,7 @@ function resemblesUrl( query ) {
 	}
 
 	// Check for a valid-looking TLD
-	if ( parsedUrl.hostname.lastIndexOf( '.' ) > ( parsedUrl.hostname.length - 3 ) ) {
+	if ( parsedUrl.hostname.lastIndexOf( '.' ) > parsedUrl.hostname.length - 3 ) {
 		return false;
 	}
 
@@ -143,7 +145,7 @@ function resemblesUrl( query ) {
 	return true;
 }
 
-export default {
+const exported = {
 	isOutsideCalypso,
 	isExternal,
 	isHttps,
@@ -151,7 +153,22 @@ export default {
 	addSchemeIfMissing,
 	setUrlScheme,
 	urlToSlug,
+
 	// [TODO]: Move lib/route/add-query-args contents here
+	addQueryArgs,
+
+	resemblesUrl,
+};
+
+export default exported;
+export {
+	isOutsideCalypso,
+	isExternal,
+	isHttps,
+	withoutHttp,
+	addSchemeIfMissing,
+	setUrlScheme,
+	urlToSlug,
 	addQueryArgs,
 	resemblesUrl,
 };

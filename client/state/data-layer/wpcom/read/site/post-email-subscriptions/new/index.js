@@ -26,7 +26,7 @@ export function requestPostEmailSubscription( { dispatch }, action ) {
 			apiVersion: '1.2',
 			onSuccess: action,
 			onFailure: action,
-		} )
+		} ),
 	);
 }
 
@@ -42,8 +42,8 @@ export function receivePostEmailSubscription( store, action, next, response ) {
 	next(
 		updateNewPostEmailSubscription(
 			action.payload.blogId,
-			get( response, [ 'subscription', 'delivery_frequency' ] )
-		)
+			get( response, [ 'subscription', 'delivery_frequency' ] ),
+		),
 	);
 }
 
@@ -52,12 +52,16 @@ export function receivePostEmailSubscriptionError( { dispatch }, action, next ) 
 	next( unsubscribeToNewPostEmail( action.payload.blogId ) );
 }
 
-export default {
+const exported = {
 	[ READER_SUBSCRIBE_TO_NEW_POST_EMAIL ]: [
 		dispatchRequest(
 			requestPostEmailSubscription,
 			receivePostEmailSubscription,
-			receivePostEmailSubscriptionError
+			receivePostEmailSubscriptionError,
 		),
 	],
 };
+
+export default exported;
+
+export { READER_SUBSCRIBE_TO_NEW_POST_EMAIL };

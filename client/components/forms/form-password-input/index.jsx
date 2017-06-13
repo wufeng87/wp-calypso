@@ -1,19 +1,20 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	Gridicon = require( 'gridicons' ),
-	classNames = require( 'classnames' ),
-	omit = require( 'lodash/omit' );
+import React from 'react';
+
+import Gridicon from 'gridicons';
+import classNames from 'classnames';
+import omit from 'lodash/omit';
 
 /**
  * Internal dependencies
  */
-var FormTextInput = require( 'components/forms/form-text-input' ),
-	viewport = require( 'lib/viewport' );
+import FormTextInput from 'components/forms/form-text-input';
 
-module.exports = React.createClass( {
+import viewport from 'lib/viewport';
 
+export default React.createClass( {
 	displayName: 'FormPasswordInput',
 
 	getInitialState: function() {
@@ -42,27 +43,24 @@ module.exports = React.createClass( {
 	},
 
 	render: function() {
-
 		var toggleVisibilityClasses = classNames( {
 			'form-password-input__toggle': true,
-			'form-password-input__toggle-visibility': ! this.props.hideToggle
+			'form-password-input__toggle-visibility': ! this.props.hideToggle,
 		} );
 
 		return (
 			<div className="form-password-input">
-				<FormTextInput { ...omit( this.props, 'hideToggle', 'submitting' ) }
+				<FormTextInput
+					{ ...omit( this.props, 'hideToggle', 'submitting' ) }
 					autoComplete="off"
 					ref="textField"
-					type={ this.hidden() ? 'password' : 'text' } />
+					type={ this.hidden() ? 'password' : 'text' }
+				/>
 
 				<span className={ toggleVisibilityClasses } onClick={ this.togglePasswordVisibility }>
-				{ this.hidden() ?
-					<Gridicon icon="not-visible" />
-				:
-					<Gridicon icon="visible" />
-				}
+					{ this.hidden() ? <Gridicon icon="not-visible" /> : <Gridicon icon="visible" /> }
 				</span>
 			</div>
 		);
-	}
+	},
 } );

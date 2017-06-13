@@ -6,17 +6,31 @@ function returnSelf() {
 	return this;
 }
 
-module.exports = {
+const exported = {
 	site: returnSelf,
 	post: returnSelf,
 	undocumented: returnSelf,
 	readFeedPost: returnSelf,
+
 	batch: function() {
 		return {
 			add: returnSelf,
-			run: returnSelf
+			run: returnSelf,
 		};
 	},
+
 	me: returnSelf,
-	dismissSite: returnSelf
+	dismissSite: returnSelf,
 };
+
+export default exported;
+export {
+	returnSelf as site,
+	returnSelf as post,
+	returnSelf as undocumented,
+	returnSelf as readFeedPost,
+	returnSelf as me,
+	returnSelf as dismissSite,
+};
+
+export const { batch } = exported;

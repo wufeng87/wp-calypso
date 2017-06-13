@@ -1,20 +1,22 @@
 /**
  * External dependencies
  */
-var React = require( 'react' ),
-	i18n = require( 'i18n-calypso' ),
-	find = require( 'lodash/find' );
+import React from 'react';
+
+import i18n from 'i18n-calypso';
+import find from 'lodash/find';
 
 /**
  * Internal dependencies
  */
-var SectionNav = require( 'components/section-nav' ),
-	NavTabs = require( 'components/section-nav/tabs' ),
-	NavItem = require( 'components/section-nav/item' );
+import SectionNav from 'components/section-nav';
 
-module.exports = React.createClass( {
+import NavTabs from 'components/section-nav/tabs';
+import NavItem from 'components/section-nav/item';
+
+export default React.createClass( {
 	propTypes: {
-		path: React.PropTypes.string.isRequired
+		path: React.PropTypes.string.isRequired,
 	},
 
 	getNavtabs: function() {
@@ -42,7 +44,7 @@ module.exports = React.createClass( {
 
 	getFilteredPath: function() {
 		var paramIndex = this.props.path.indexOf( '?' );
-		return ( paramIndex < 0 ) ? this.props.path : this.props.path.substring( 0, paramIndex );
+		return paramIndex < 0 ? this.props.path : this.props.path.substring( 0, paramIndex );
 	},
 
 	getSelectedText: function() {
@@ -80,5 +82,5 @@ module.exports = React.createClass( {
 				</NavTabs>
 			</SectionNav>
 		);
-	}
+	},
 } );

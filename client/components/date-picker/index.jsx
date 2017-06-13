@@ -13,7 +13,7 @@ import DayItem from 'components/date-picker/day';
 
 /* Internal dependencies
  */
-module.exports = React.createClass( {
+export default React.createClass( {
 	displayName: 'DatePicker',
 
 	propTypes: {
@@ -26,7 +26,7 @@ module.exports = React.createClass( {
 		timeReference: React.PropTypes.object,
 
 		onMonthChange: React.PropTypes.func,
-		onSelectDay: React.PropTypes.func
+		onSelectDay: React.PropTypes.func,
 	},
 
 	getDefaultProps: function() {
@@ -35,7 +35,7 @@ module.exports = React.createClass( {
 			calendarViewDate: new Date(),
 			selectedDay: null,
 			onMonthChange: noop,
-			onSelectDay: noop
+			onSelectDay: noop,
 		};
 	},
 
@@ -85,7 +85,7 @@ module.exports = React.createClass( {
 
 				getFirstDayOfWeek: function() {
 					return Number( localeData.firstDayOfWeek() );
-				}
+				},
 			};
 
 		return merge( locale, this.props.locale );
@@ -97,7 +97,7 @@ module.exports = React.createClass( {
 		let modifiers = {
 			year: clickedDay.year(),
 			month: clickedDay.month(),
-			date: clickedDay.date()
+			date: clickedDay.date(),
 		};
 
 		let date = ( this.props.timeReference || clickedDay ).set( modifiers );
@@ -111,15 +111,10 @@ module.exports = React.createClass( {
 	},
 
 	renderDay: function( day ) {
-		var isSelected = this.props.selectedDay &&
-			this.isSameDay( this.props.selectedDay, day );
+		var isSelected = this.props.selectedDay && this.isSameDay( this.props.selectedDay, day );
 
 		return (
-			<DayItem
-				selected={ isSelected }
-				events={ this.filterEventsByDay( day ) }
-				date={ day }
-			/>
+			<DayItem selected={ isSelected } events={ this.filterEventsByDay( day ) } date={ day } />
 		);
 	},
 
@@ -135,9 +130,9 @@ module.exports = React.createClass( {
 					onDayClick={ this.setCalendarDay }
 					onMonthChange={ this.props.onMonthChange }
 					enableOutsideDays={ this.props.enableOutsideDays }
-					onCaptionClick={ this.handleCaptionClick }>
-				</DayPicker>
+					onCaptionClick={ this.handleCaptionClick }
+				/>
 			</div>
 		);
-	}
+	},
 } );

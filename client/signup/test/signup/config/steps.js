@@ -1,5 +1,9 @@
 // steps.js stub
-export default {
+const exported = {
 	'theme-selection': { stepName: 'theme-selection' },
-	user: { stepName: 'user' }
+	user: { stepName: 'user' },
 };
+
+export default exported;
+
+export const { user } = exported;

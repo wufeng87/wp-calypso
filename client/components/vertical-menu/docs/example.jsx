@@ -27,3 +27,5 @@ export const VerticalMenuExample = () => (
 VerticalMenuExample.displayName = 'VerticalMenu';
 
 export default VerticalMenuExample;
+
+export const { displayName } = VerticalMenuExample;

@@ -38,3 +38,5 @@ const EmptyContentExample = () => {
 EmptyContentExample.displayName = 'EmptyContent';
 
 export default EmptyContentExample;
+
+export const { displayName } = EmptyContentExample;

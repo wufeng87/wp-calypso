@@ -9,11 +9,11 @@ import i18n from 'i18n-calypso';
  * Internal Dependencies
  */
 import analytics from 'lib/analytics';
-import DnsData from 'components/data/domain-management/dns' ;
+import DnsData from 'components/data/domain-management/dns';
 import DomainManagement from './domain-management';
 import DomainManagementData from 'components/data/domain-management';
-import EmailData from 'components/data/domain-management/email' ;
-import EmailForwardingData from 'components/data/domain-management/email-forwarding' ;
+import EmailData from 'components/data/domain-management/email';
+import EmailForwardingData from 'components/data/domain-management/email-forwarding';
 import NameserversData from 'components/data/domain-management/nameservers';
 import paths from 'my-sites/upgrades/paths';
 import ProductsList from 'lib/products-list';
@@ -31,17 +31,11 @@ const setTitle = function( title, pageContext ) {
 	pageContext.store.dispatch( setDocumentHeadTitle( title ) );
 };
 
-export default {
+const exported = {
 	domainManagementList( pageContext ) {
-		setTitle(
-			i18n.translate( 'Domain Management' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Domain Management' ), pageContext );
 
-		analytics.pageView.record(
-			paths.domainManagementList( ':site' ),
-			'Domain Management'
-		);
+		analytics.pageView.record( paths.domainManagementList( ':site' ), 'Domain Management' );
 
 		renderWithReduxStore(
 			<DomainManagementData
@@ -50,21 +44,21 @@ export default {
 				productsList={ productsList }
 			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementEdit( pageContext ) {
 		setTitle(
 			i18n.translate( 'Edit %(domain)s', {
-				args: { domain: pageContext.params.domain }
+				args: { domain: pageContext.params.domain },
 			} ),
-			pageContext
+			pageContext,
 		);
 
 		analytics.pageView.record(
 			paths.domainManagementEdit( ':site', ':domain' ),
-			'Domain Management › Edit'
+			'Domain Management › Edit',
 		);
 
 		renderWithReduxStore(
@@ -75,81 +69,69 @@ export default {
 				selectedDomainName={ pageContext.params.domain }
 			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementPrimaryDomain: function( pageContext ) {
-		setTitle(
-			i18n.translate( 'Set Primary Domain' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Set Primary Domain' ), pageContext );
 
 		analytics.pageView.record(
 			paths.domainManagementPrimaryDomain( ':site', ':domain' ),
-			'Domain Management › Set Primary Domain'
+			'Domain Management › Set Primary Domain',
 		);
 
 		renderWithReduxStore(
-			<DomainManagement.PrimaryDomain
-				selectedDomainName={ pageContext.params.domain }
-			/>,
+			<DomainManagement.PrimaryDomain selectedDomainName={ pageContext.params.domain } />,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementContactsPrivacy( pageContext ) {
-		setTitle(
-			i18n.translate( 'Contacts and Privacy' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Contacts and Privacy' ), pageContext );
 
 		analytics.pageView.record(
 			paths.domainManagementContactsPrivacy( ':site', ':domain' ),
-			'Domain Management › Contacts and Privacy'
+			'Domain Management › Contacts and Privacy',
 		);
 
 		renderWithReduxStore(
 			<WhoisData
 				component={ DomainManagement.ContactsPrivacy }
 				context={ pageContext }
-				selectedDomainName={ pageContext.params.domain } />,
+				selectedDomainName={ pageContext.params.domain }
+			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementEditContactInfo( pageContext ) {
-		setTitle(
-			i18n.translate( 'Edit Contact Info' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Edit Contact Info' ), pageContext );
 
 		analytics.pageView.record(
 			paths.domainManagementEditContactInfo( ':site', ':domain' ),
-			'Domain Management › Contacts and Privacy › Edit Contact Info'
+			'Domain Management › Contacts and Privacy › Edit Contact Info',
 		);
 
 		renderWithReduxStore(
 			<WhoisData
 				component={ DomainManagement.EditContactInfo }
 				context={ pageContext }
-				selectedDomainName={ pageContext.params.domain } />,
+				selectedDomainName={ pageContext.params.domain }
+			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementEmail( pageContext ) {
-		setTitle(
-			i18n.translate( 'Email' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Email' ), pageContext );
 
 		analytics.pageView.record(
 			paths.domainManagementEmail( ':site', pageContext.params.domain ? ':domain' : undefined ),
-			'Domain Management › Email'
+			'Domain Management › Email',
 		);
 
 		renderWithReduxStore(
@@ -160,19 +142,16 @@ export default {
 				context={ pageContext }
 			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementEmailForwarding( pageContext ) {
-		setTitle(
-			i18n.translate( 'Email Forwarding' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Email Forwarding' ), pageContext );
 
 		analytics.pageView.record(
 			paths.domainManagementEmailForwarding( ':site', ':domain' ),
-			'Domain Management › Email › Email Forwarding'
+			'Domain Management › Email › Email Forwarding',
 		);
 
 		renderWithReduxStore(
@@ -181,19 +160,16 @@ export default {
 				selectedDomainName={ pageContext.params.domain }
 			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementDns( pageContext ) {
-		setTitle(
-			i18n.translate( 'DNS Records' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'DNS Records' ), pageContext );
 
 		analytics.pageView.record(
 			paths.domainManagementDns( ':site', ':domain' ),
-			'Domain Management › Name Servers and DNS › DNS Records'
+			'Domain Management › Name Servers and DNS › DNS Records',
 		);
 
 		renderWithReduxStore(
@@ -202,18 +178,16 @@ export default {
 				selectedDomainName={ pageContext.params.domain }
 			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
+
 	domainManagementNameServers( pageContext ) {
-		setTitle(
-			i18n.translate( 'Name Servers and DNS' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Name Servers and DNS' ), pageContext );
 
 		analytics.pageView.record(
 			paths.domainManagementNameServers( ':site', ':domain' ),
-			'Domain Management › Name Servers and DNS'
+			'Domain Management › Name Servers and DNS',
 		);
 
 		renderWithReduxStore(
@@ -222,40 +196,38 @@ export default {
 				selectedDomainName={ pageContext.params.domain }
 			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementPrivacyProtection( pageContext ) {
-		setTitle(
-			i18n.translate( 'Privacy Protection' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Privacy Protection' ), pageContext );
 
 		analytics.pageView.record(
 			paths.domainManagementPrivacyProtection( ':site', ':domain' ),
-			'Domain Management › Contacts and Privacy › Privacy Protection'
+			'Domain Management › Contacts and Privacy › Privacy Protection',
 		);
 
 		renderWithReduxStore(
 			<WhoisData
 				component={ DomainManagement.PrivacyProtection }
 				context={ pageContext }
-				selectedDomainName={ pageContext.params.domain } />,
+				selectedDomainName={ pageContext.params.domain }
+			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementAddGoogleApps( pageContext ) {
-		setTitle(
-			i18n.translate( 'Add G Suite' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Add G Suite' ), pageContext );
 
 		analytics.pageView.record(
-			paths.domainManagementAddGoogleApps( ':site', pageContext.params.domain ? ':domain' : undefined ),
-			'Domain Management › Add Google Apps'
+			paths.domainManagementAddGoogleApps(
+				':site',
+				pageContext.params.domain ? ':domain' : undefined,
+			),
+			'Domain Management › Add Google Apps',
 		);
 
 		renderWithReduxStore(
@@ -266,27 +238,25 @@ export default {
 				selectedDomainName={ pageContext.params.domain }
 			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementRedirectSettings( pageContext ) {
-		setTitle(
-			i18n.translate( 'Redirect Settings' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Redirect Settings' ), pageContext );
 
 		analytics.pageView.record(
 			paths.domainManagementRedirectSettings( ':site', ':domain' ),
-			'Domain Management › Redirect Settings'
+			'Domain Management › Redirect Settings',
 		);
 
 		renderWithReduxStore(
 			<SiteRedirectData
 				component={ DomainManagement.SiteRedirect }
-				selectedDomainName={ pageContext.params.domain } />,
+				selectedDomainName={ pageContext.params.domain }
+			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
@@ -298,17 +268,15 @@ export default {
 	},
 
 	domainManagementTransfer( pageContext ) {
-		setTitle(
-			i18n.translate( 'Transfer Domain' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Transfer Domain' ), pageContext );
 
 		renderWithReduxStore(
 			<TransferData
 				component={ DomainManagement.Transfer }
-				selectedDomainName={ pageContext.params.domain } />,
+				selectedDomainName={ pageContext.params.domain }
+			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
@@ -322,17 +290,15 @@ export default {
 			return;
 		}
 
-		setTitle(
-			i18n.translate( 'Transfer Domain' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Transfer Domain' ), pageContext );
 
 		renderWithReduxStore(
 			<TransferData
 				component={ DomainManagement.TransferToOtherSite }
-				selectedDomainName={ pageContext.params.domain } />,
+				selectedDomainName={ pageContext.params.domain }
+			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
@@ -346,32 +312,50 @@ export default {
 			return;
 		}
 
-		setTitle(
-			i18n.translate( 'Transfer Domain' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Transfer Domain' ), pageContext );
 
 		renderWithReduxStore(
 			<TransferData
 				component={ DomainManagement.TransferToOtherUser }
-				selectedDomainName={ pageContext.params.domain } />,
+				selectedDomainName={ pageContext.params.domain }
+			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
 	},
 
 	domainManagementTransferOut( pageContext ) {
-		setTitle(
-			i18n.translate( 'Transfer Domain' ),
-			pageContext
-		);
+		setTitle( i18n.translate( 'Transfer Domain' ), pageContext );
 
 		renderWithReduxStore(
 			<TransferData
 				component={ DomainManagement.TransferOut }
-				selectedDomainName={ pageContext.params.domain } />,
+				selectedDomainName={ pageContext.params.domain }
+			/>,
 			document.getElementById( 'primary' ),
-			pageContext.store
+			pageContext.store,
 		);
-	}
+	},
 };
+
+export default exported;
+
+export const {
+	domainManagementList,
+	domainManagementEdit,
+	domainManagementPrimaryDomain,
+	domainManagementContactsPrivacy,
+	domainManagementEditContactInfo,
+	domainManagementEmail,
+	domainManagementEmailForwarding,
+	domainManagementDns,
+	domainManagementNameServers,
+	domainManagementPrivacyProtection,
+	domainManagementAddGoogleApps,
+	domainManagementRedirectSettings,
+	domainManagementIndex,
+	domainManagementTransfer,
+	domainManagementTransferToOtherSite,
+	domainManagementTransferToOtherUser,
+	domainManagementTransferOut,
+} = exported;

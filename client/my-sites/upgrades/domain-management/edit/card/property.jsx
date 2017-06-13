@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-const React = require( 'react' );
+import React from 'react';
 
 const Property = React.createClass( {
 	render() {
@@ -15,7 +15,7 @@ const Property = React.createClass( {
 				</span>
 			</div>
 		);
-	}
+	},
 } );
 
-module.exports = Property;
+export default Property;

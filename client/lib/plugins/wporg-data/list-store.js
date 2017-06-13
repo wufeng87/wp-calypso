@@ -1,17 +1,22 @@
 /**
  * External dependencies
  */
-var clone = require( 'lodash/clone' );
+import clone from 'lodash/clone';
 
 /**
  * Internal dependencies
  */
-var Dispatcher = require( 'dispatcher' ),
-	emitter = require( 'lib/mixins/emitter' ),
-	PluginsDataActions = require( './actions' ),
-	localStore = require( 'store' ),
-	PluginsListsStore,
-	config = require( 'config' );
+import Dispatcher from 'dispatcher';
+
+import emitter from 'lib/mixins/emitter';
+import PluginsDataActions from './actions';
+import localStore from 'store';
+import config from 'config';
+
+/**
+ * Internal dependencies
+ */
+var PluginsListsStore;
 
 var _shortLists = {},
 	_fullLists = {},
@@ -44,7 +49,7 @@ function storePluginsList( category, pluginsList ) {
 		let storedLists = localStore.get( _STORAGE_LIST_NAME ) || {};
 		storedLists[ category ] = {
 			list: pluginsList,
-			fetched: Date.now()
+			fetched: Date.now(),
 		};
 		localStore.set( _STORAGE_LIST_NAME, storedLists );
 	}
@@ -60,7 +65,7 @@ function getPluginsListFromStorage( category ) {
 }
 
 function isCachedListStillValid( storedList ) {
-	return ( Date.now() - storedList.fetched < _CACHE_TIME_TO_LIVE );
+	return Date.now() - storedList.fetched < _CACHE_TIME_TO_LIVE;
 }
 
 PluginsListsStore = {
@@ -79,7 +84,7 @@ PluginsListsStore = {
 		}
 		return {
 			fetching: !! _fetching[ category ],
-			list: _shortLists[ category ] || []
+			list: _shortLists[ category ] || [],
 		};
 	},
 
@@ -89,7 +94,7 @@ PluginsListsStore = {
 		}
 		return {
 			fetching: _fetching[ category ] !== false,
-			list: _fullLists[ category ] || []
+			list: _fullLists[ category ] || [],
 		};
 	},
 
@@ -108,13 +113,13 @@ PluginsListsStore = {
 		}
 		return {
 			fetching: isSearching,
-			list: _fullLists.search || []
+			list: _fullLists.search || [],
 		};
 	},
 
 	emitChange: function() {
 		this.emit( 'change' );
-	}
+	},
 };
 
 PluginsListsStore.dispatchToken = Dispatcher.register( function( payload ) {
@@ -152,4 +157,12 @@ PluginsListsStore.dispatchToken = Dispatcher.register( function( payload ) {
 // Add the Store to the emitter so we can emit change events.
 emitter( PluginsListsStore );
 
-module.exports = PluginsListsStore;
+export default PluginsListsStore;
+
+export const {
+	getShortList,
+	getFullList,
+	getSearchList,
+	emitChange,
+	dispatchToken,
+} = PluginsListsStore;

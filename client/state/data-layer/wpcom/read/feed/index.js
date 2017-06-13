@@ -58,8 +58,10 @@ export function receiveError( store, action, next, error ) {
 	store.dispatch( errorNotice( errorText ) );
 }
 
-export default {
+const exported = {
 	[ READER_FEED_SEARCH_REQUEST ]: [
 		dispatchRequest( initiateFeedSearch, receiveFeeds, receiveError ),
 	],
 };
+
+export default exported;

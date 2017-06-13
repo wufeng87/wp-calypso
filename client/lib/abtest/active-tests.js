@@ -1,13 +1,14 @@
-module.exports = {
+const exported = {
 	multiDomainRegistrationV1: {
 		datestamp: '20200721',
 		variations: {
 			singlePurchaseFlow: 10,
 			popupCart: 45,
-			keepSearchingInGapps: 45
+			keepSearchingInGapps: 45,
 		},
-		defaultVariation: 'singlePurchaseFlow'
+		defaultVariation: 'singlePurchaseFlow',
 	},
+
 	signupSurveyStep: {
 		datestamp: '20170329',
 		variations: {
@@ -16,6 +17,7 @@ module.exports = {
 		},
 		defaultVariation: 'hideSurveyStep',
 	},
+
 	businessPlanDescriptionAT: {
 		datestamp: '20170605',
 		variations: {
@@ -24,15 +26,17 @@ module.exports = {
 		},
 		defaultVariation: 'original',
 	},
+
 	presaleChatButton: {
 		datestamp: '20170328',
 		variations: {
 			showChatButton: 20,
-			original: 80
+			original: 80,
 		},
 		defaultVariation: 'original',
 		localeTargets: 'any',
 	},
+
 	newSiteWithJetpack: {
 		datestamp: '20170419',
 		variations: {
@@ -41,6 +45,7 @@ module.exports = {
 		},
 		defaultVariation: 'onlyDotComSites',
 	},
+
 	chatOfferOnCancel: {
 		datestamp: '20170421',
 		variations: {
@@ -50,6 +55,7 @@ module.exports = {
 		defaultVariation: 'show',
 		allowExistingUsers: true,
 	},
+
 	domainToPaidPlanUpsellNudge: {
 		datestamp: '20170607',
 		variations: {
@@ -59,6 +65,7 @@ module.exports = {
 		defaultVariation: 'skip',
 		allowExistingUsers: true,
 	},
+
 	ATPromptOnCancel: {
 		datestamp: '20170515',
 		variations: {
@@ -68,6 +75,7 @@ module.exports = {
 		defaultVariation: 'hide',
 		allowExistingUsers: true,
 	},
+
 	ATUpgradeOnCancel: {
 		datestamp: '20170515',
 		variations: {
@@ -77,6 +85,7 @@ module.exports = {
 		defaultVariation: 'hide',
 		allowExistingUsers: true,
 	},
+
 	reduceThemesInSignupTest: {
 		datestamp: '20170518',
 		variations: {
@@ -85,6 +94,7 @@ module.exports = {
 		},
 		defaultVariation: 'original',
 	},
+
 	savingsInCheckoutSummary: {
 		datestamp: '20170516',
 		variations: {
@@ -93,6 +103,7 @@ module.exports = {
 		},
 		defaultVariation: 'show',
 	},
+
 	siteCreationStepOne: {
 		datestamp: '20170524',
 		variations: {
@@ -101,6 +112,7 @@ module.exports = {
 		},
 		defaultVariation: 'original',
 	},
+
 	pulsingCartTestingAB: {
 		datestamp: '20170601',
 		variations: {
@@ -111,6 +123,7 @@ module.exports = {
 		allowExistingUsers: true,
 		localeTargets: 'any',
 	},
+
 	signupProgressIndicator: {
 		datestamp: '20170612',
 		variations: {
@@ -120,3 +133,22 @@ module.exports = {
 		defaultVariation: 'original',
 	},
 };
+
+export default exported;
+
+export const {
+	multiDomainRegistrationV1,
+	signupSurveyStep,
+	businessPlanDescriptionAT,
+	presaleChatButton,
+	newSiteWithJetpack,
+	chatOfferOnCancel,
+	domainToPaidPlanUpsellNudge,
+	ATPromptOnCancel,
+	ATUpgradeOnCancel,
+	reduceThemesInSignupTest,
+	savingsInCheckoutSummary,
+	siteCreationStepOne,
+	pulsingCartTestingAB,
+	signupProgressIndicator,
+} = exported;

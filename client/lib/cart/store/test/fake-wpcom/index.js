@@ -1,4 +1,4 @@
-var toArray = require( 'lodash/toArray' );
+import toArray from 'lodash/toArray';
 
 function FakeWPCOM() {
 	if ( ! ( this instanceof FakeWPCOM ) ) {
@@ -9,21 +9,20 @@ function FakeWPCOM() {
 }
 
 FakeWPCOM.prototype.cart = function() {
-	var arrayArguments = toArray( arguments ),
-		method = arrayArguments[ 1 ];
+	var arrayArguments = toArray( arguments ), method = arrayArguments[ 1 ];
 
 	if ( method === 'POST' ) {
 		this._requests.push( {
 			isResolved: false,
 			method: method,
 			cart: arrayArguments[ 2 ],
-			callback: arrayArguments[ 3 ]
+			callback: arrayArguments[ 3 ],
 		} );
 	} else {
 		this._requests.push( {
 			isResolved: false,
 			method: method,
-			callback: arrayArguments[ 2 ]
+			callback: arrayArguments[ 2 ],
 		} );
 	}
 };
@@ -47,4 +46,4 @@ FakeWPCOM.prototype.getRequest = function( index ) {
 	return this._requests[ index ];
 };
 
-module.exports = FakeWPCOM;
+export default FakeWPCOM;
