@@ -4,7 +4,7 @@
 import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
-import { get, find } from 'lodash';
+import { get, find, map } from 'lodash';
 
 /**
  * Internal dependencies
@@ -44,15 +44,24 @@ class SharingPreviewPane extends PureComponent {
 		site: PropTypes.object,
 		post: PropTypes.object,
 		seoTitle: PropTypes.string,
+		selectedService: PropTypes.string,
 	};
 
 	static defaultProps = {
-		services: Object.keys( serviceNames )
+		services: Object.keys( serviceNames ),
 	};
 
-	state = {
-		selectedService: 'facebook'
-	};
+	constructor( props ) {
+		super( props );
+
+		const connectedServices = map( props.connections, 'service' );
+		const firstConnectedService = find( props.services, ( service ) => {
+			return find( connectedServices, connectedService => service === connectedService );
+		} );
+
+		const selectedService = props.selectedService || firstConnectedService;
+		this.state = { selectedService };
+	}
 
 	selectPreview = ( selectedService ) => {
 		this.setState( { selectedService } );
