@@ -126,6 +126,7 @@ class SharingPreviewPane extends PureComponent {
 
 	render() {
 		const { translate, services } = this.props;
+		const initialMenuItemIndex = services.indexOf( this.state.selectedService );
 
 		return (
 			<div className="sharing-preview-pane">
@@ -141,7 +142,7 @@ class SharingPreviewPane extends PureComponent {
 								'the networks below' ) }
 						</p>
 					</div>
-					<VerticalMenu onClick={ this.selectPreview }>
+					<VerticalMenu onClick={ this.selectPreview } initialItemIndex={ initialMenuItemIndex } >
 						{ services.map( service => <SocialItem { ...{ key: service, service } } /> ) }
 					</VerticalMenu>
 				</div>
