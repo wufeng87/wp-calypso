@@ -18,6 +18,8 @@ import {
 	normalizeForDisplay,
 	normalizeForEditing
 } from 'state/selectors/utils/revisions';
+import { getSelectedSiteId } from 'state/ui/selectors';
+import { getEditorPostId } from 'state/ui/editor/selectors';
 import viewport from 'lib/viewport';
 
 class EditorRevisionsList extends PureComponent {
@@ -88,19 +90,25 @@ EditorRevisionsList.propTypes = {
 };
 
 export default connect(
-	( state, ownProps ) => ( {
-		revisions: orderBy(
-			map(
-				getPostRevisions( state, ownProps.siteId, ownProps.postId ),
-				normalizeForDisplay
+	( state, ownProps ) => {
+		const siteId = getSelectedSiteId( state );
+		const postId = getEditorPostId( state );
+		return {
+			postId,
+			revisions: orderBy(
+				map(
+					getPostRevisions( state, siteId, postId ),
+					normalizeForDisplay
+				),
+				'date',
+				'desc'
 			),
-			'date',
-			'desc'
-		),
-		selectedRevision: normalizeForEditing(
-			getPostRevision(
-				state, ownProps.siteId, ownProps.postId, ownProps.selectedRevisionId
-			)
-		),
-	} ),
+			selectedRevision: normalizeForEditing(
+				getPostRevision(
+					state, siteId, postId, ownProps.selectedRevisionId
+				)
+			),
+			siteId,
+		};
+	},
 )( EditorRevisionsList );

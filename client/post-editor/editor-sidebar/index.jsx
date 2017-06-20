@@ -73,10 +73,8 @@ const EditorSidebar = ( {
 					nestedSidebar === NESTED_SIDEBAR_REVISIONS
 						? <EditorRevisionsList
 							loadRevision={ loadRevision }
-							postId={ post.ID }
 							selectedRevisionId={ selectedRevisionId }
 							selectRevision={ selectRevision }
-							siteId={ site.ID }
 						/>
 						: null
 				}
