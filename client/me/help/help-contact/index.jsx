@@ -408,6 +408,12 @@ const HelpContact = React.createClass( {
 			return false;
 		}
 
+		if ( true ) {
+			// Temporarily always allow happychat. BTW This is just for debugging
+			// purposes and should never be merged
+			return true;
+		}
+
 		// if the happychat connection is able to accept chats, use it
 		return this.props.isHappychatAvailable && olark.isUserEligible;
 	},
