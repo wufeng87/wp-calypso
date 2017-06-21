@@ -8,7 +8,6 @@ import React, { PureComponent, PropTypes } from 'react';
 /**
  * Internal dependencies
  */
-import Button from 'components/button';
 import PostTime from 'reader/post-time';
 
 class EditorRevisionsListItem extends PureComponent {
@@ -19,10 +18,11 @@ class EditorRevisionsListItem extends PureComponent {
 
 	render() {
 		return (
-			<Button
-				borderless
+			<button
+				className="editor-revisions-list__button"
 				data-revision-id={ this.props.revision.id }
 				onClick={ this.selectRevision }
+				type="button"
 			>
 				<span className="editor-revisions-list__date">
 					<PostTime date={ this.props.revision.date } />
@@ -71,7 +71,7 @@ class EditorRevisionsListItem extends PureComponent {
 						</span>
 					) }
 				</div>
-			</Button>
+			</button>
 		);
 	}
 }
