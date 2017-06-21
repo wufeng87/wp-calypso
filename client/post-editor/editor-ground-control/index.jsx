@@ -25,6 +25,7 @@ import Button from 'components/button';
 import EditorPostType from 'post-editor/editor-post-type';
 import config from 'config';
 import classNames from 'classnames';
+import { NESTED_SIDEBAR_REVISIONS, NestedSidebarPropType } from 'post-editor/editor-sidebar/util';
 
 export default React.createClass( {
 	displayName: 'EditorGroundControl',
@@ -35,6 +36,7 @@ export default React.createClass( {
 		isSaveBlocked: React.PropTypes.bool,
 		isPublishing: React.PropTypes.bool,
 		isSaving: React.PropTypes.bool,
+		nestedSidebar: NestedSidebarPropType,
 		onPreview: React.PropTypes.func,
 		onPublish: React.PropTypes.func,
 		onSave: React.PropTypes.func,
@@ -307,7 +309,8 @@ export default React.createClass( {
 				className="editor-ground-control__toggle-sidebar"
 				onClick={ this.props.toggleSidebar }
 			>
-				<Gridicon icon="cog" /> <span className="editor-ground-control__button-label"><EditorPostType isSettings /></span>
+				<Gridicon icon={ this.props.nestedSidebar === NESTED_SIDEBAR_REVISIONS ? 'history' : 'cog' } />
+				<span className="editor-ground-control__button-label"> <EditorPostType isSettings /></span>
 			</Button>
 			<div className={ publishComboClasses }>
 				<EditorPublishButton
