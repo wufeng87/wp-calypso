@@ -7,12 +7,15 @@ import { connect } from 'react-redux';
 /**
  * Internal dependencies
  */
-import { isRequestingContactDetailsCache } from 'state/selectors';
+import {
+	isContactDetailsCacheLoaded,
+	isRequestingContactDetailsCache
+} from 'state/selectors';
 import { requestContactDetailsCache } from 'state/domains/management/actions';
 
 class QueryContactDetailsCache extends Component {
 	componentWillMount() {
-		if ( this.props.isRequesting ) {
+		if ( this.props.isRequesting || this.props.isLoaded ) {
 			return;
 		}
 		this.props.requestContactDetailsCache();
@@ -29,6 +32,9 @@ QueryContactDetailsCache.propTypes = {
 };
 
 export default connect(
-	( state ) => ( { isRequesting: isRequestingContactDetailsCache( state ) } ),
+	( state ) => ( {
+		isLoaded: isContactDetailsCacheLoaded( state ),
+		isRequesting: isRequestingContactDetailsCache( state )
+	} ),
 	{ requestContactDetailsCache }
 )( QueryContactDetailsCache );
