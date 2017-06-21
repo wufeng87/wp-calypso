@@ -34,6 +34,7 @@
 }
 
 .editor-revisions-list__changes {
+	padding-top: 5px;
 	font-size: 11px;
 }
 
@@ -46,7 +47,7 @@
 }
 
 .editor-revisions-list__minor-changes {
-	color: $gray;
+	color: $gray-text-min;
 }
 
 .editor-revisions-list__list,
