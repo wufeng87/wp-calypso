@@ -11,5 +11,5 @@ import { isEmpty } from 'lodash';
  * @return {Boolean} If the request is in progress
  */
 export default function isContactDetailsCacheLoaded( state ) {
-	return isEmpty( state.domains.management.items._contactDetailsCache );
+	return ! isEmpty( state.domains.management.items._contactDetailsCache );
 }
