@@ -2,6 +2,11 @@
 	font-weight: bold;
 }
 
+.editor-revisions-list__date,
+.editor-revisions-list__author {
+	color: $gray-dark;
+}
+
 .editor-revisions-list__changes {
 	font-size: 11px;
 }
