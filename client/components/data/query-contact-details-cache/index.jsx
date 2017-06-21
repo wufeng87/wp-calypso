@@ -3,19 +3,20 @@
  */
 import { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { isEmpty } from 'lodash';
 
 /**
  * Internal dependencies
  */
 import {
-	isContactDetailsCacheLoaded,
-	isRequestingContactDetailsCache
+	getContactDetailsCache,
+	isRequestingContactDetailsCache,
 } from 'state/selectors';
 import { requestContactDetailsCache } from 'state/domains/management/actions';
 
 class QueryContactDetailsCache extends Component {
 	componentWillMount() {
-		if ( this.props.isRequesting || this.props.isLoaded ) {
+		if ( this.props.isRequesting || ! isEmpty( this.props.contactDetailsCache ) ) {
 			return;
 		}
 		this.props.requestContactDetailsCache();
@@ -33,8 +34,8 @@ QueryContactDetailsCache.propTypes = {
 
 export default connect(
 	( state ) => ( {
-		isLoaded: isContactDetailsCacheLoaded( state ),
-		isRequesting: isRequestingContactDetailsCache( state )
+		contactDetailsCache: getContactDetailsCache( state ),
+		isRequesting: isRequestingContactDetailsCache( state ),
 	} ),
 	{ requestContactDetailsCache }
 )( QueryContactDetailsCache );
