@@ -556,7 +556,21 @@ export class DomainDetailsForm extends PureComponent {
 					title={ title }>
 					{ this.renderCurrentForm() }
 				</PaymentBox>
-			<QueryContactDetailsCache />
+			</div>
+		);
+	}
+}
+
+export class DomainDetailsFormContainer extends PureComponent {
+	render() {
+		return (
+			<div>
+				<QueryContactDetailsCache />
+				{
+					this.props.contactDetails && false
+						? <DomainDetailsForm { ...this.props } />
+						: <div className="checkout__domain-details is-placeholder" />
+				}
 			</div>
 		);
 	}
@@ -565,4 +579,4 @@ export class DomainDetailsForm extends PureComponent {
 export default connect(
 	state => ( { contactDetails: getContactDetailsCache( state ) } ),
 	{ updateContactDetailsCache }
-)( localize( DomainDetailsForm ) );
+)( localize( DomainDetailsFormContainer ) );
