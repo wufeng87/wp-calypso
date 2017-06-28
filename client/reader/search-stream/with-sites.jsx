@@ -22,7 +22,7 @@ import PostResults from './post-results';
 import ReaderMain from 'components/reader-main';
 import { addQueryArgs } from 'lib/url';
 import SearchStreamHeader, { POSTS } from './search-stream-header';
-import withWidth from 'lib/with-width';
+import withDimensions from 'lib/with-dimensions';
 
 const WIDE_DISPLAY_CUTOFF = 660;
 
@@ -183,4 +183,4 @@ const wrapWithMain = Component => props => (
 );
 /* eslint-enable */
 
-export default localize( wrapWithMain( withWidth( SearchStream ) ) );
+export default localize( wrapWithMain( withDimensions( SearchStream ) ) );
