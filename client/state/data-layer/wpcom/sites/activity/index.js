@@ -1,7 +1,11 @@
 /**
  * External dependencies
  */
-import { pick } from 'lodash';
+import {
+	map,
+	omit,
+	pick,
+} from 'lodash';
 
 /**
  * Internal dependencies
@@ -23,9 +27,6 @@ const activityLogRequest = ( { dispatch }, action ) => {
 	}, action ) );
 };
 
-// FIXME: Implement fromApi
-const fromApi = ( { activities } ) => activities;
-
 export const receiveActivityLog = ( { dispatch }, { siteId }, next, data ) => {
 	dispatch( activityLogUpdate( siteId, fromApi( data ) ) );
 };
@@ -44,3 +45,12 @@ export default {
 		receiveActivityLogError
 	) ],
 };
+
+// TODO: Complete fromApi
+function fromApi( { activities } ) {
+	return map( activities, activityFromApi );
+}
+
+function activityFromApi( activity ) {
+	return omit( activity, [ 'ts_site' ] );
+}
