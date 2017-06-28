@@ -143,7 +143,8 @@ function getDefaultContext( request ) {
 		isFluidWidth: !! config.isEnabled( 'fluid-width' ),
 		abTestHelper: !! config.isEnabled( 'dev/test-helper' ),
 		devDocsURL: '/devdocs',
-		store: createReduxStore( initialServerState )
+		store: createReduxStore( initialServerState ),
+		oauth: 'woo',
 	} );
 
 	context.app = {

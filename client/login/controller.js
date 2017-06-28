@@ -12,10 +12,10 @@ import HandleEmailedLinkForm from './magic-login/handle-emailed-link-form';
 
 export default {
 	login( context, next ) {
-		const { lang, path, params } = context;
+		const { lang, path, params, query } = context;
 
 		context.primary = (
-			<WPLogin locale={ lang } path={ path } twoFactorAuthType={ params.twoFactorAuthType } />
+			<WPLogin locale={ lang } path={ path } twoFactorAuthType={ params.twoFactorAuthType } clientId={ query.clientId } />
 		);
 		next();
 	},

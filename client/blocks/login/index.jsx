@@ -161,12 +161,12 @@ class Login extends Component {
 	}
 
 	render() {
-		const { translate, twoStepNonce } = this.props;
+		const { title, translate, twoStepNonce } = this.props;
 
 		return (
 			<div>
 				<div className="login__form-header">
-					{ twoStepNonce ? translate( 'Two-Step Authentication' ) : translate( 'Log in to your account.' ) }
+					{ twoStepNonce ? translate( 'Two-Step Authentication' ) : title }
 				</div>
 
 				{ this.renderError() }

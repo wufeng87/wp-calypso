@@ -70,10 +70,11 @@ export class Login extends React.Component {
 	}
 
 	render() {
-		const { translate, twoFactorAuthType } = this.props;
+		const { translate, twoFactorAuthType, clientId } = this.props;
+		const title = clientId ? translate( 'Howdy! Log in to ' + clientId + ' with your WordPress.com account.' ) : translate( 'Log in to your account.' );
 
 		return (
-			<div>
+			<div className="woo">
 				<Main className="wp-login__main">
 					{ this.renderLocaleSuggestions() }
 
@@ -85,7 +86,7 @@ export class Login extends React.Component {
 						<div className="wp-login__container">
 							<LoginBlock
 								twoFactorAuthType={ twoFactorAuthType }
-								title={ translate( 'Log in to your account.' ) }
+								title={ title }
 							/>
 						</div>
 
