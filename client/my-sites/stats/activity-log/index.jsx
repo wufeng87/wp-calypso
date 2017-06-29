@@ -191,7 +191,14 @@ class ActivityLog extends Component {
 			siteId,
 			slug,
 			startDate,
+			translate,
 		} = this.props;
+
+		if ( logs === null ) {
+			return (
+				<div>{ translate( 'Loading…' ) }</div>
+			);
+		}
 
 		const startOfMonth = moment( startDate ).startOf( 'month' ),
 			startOfMonthMs = startOfMonth.valueOf(),
