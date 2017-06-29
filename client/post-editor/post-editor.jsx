@@ -59,7 +59,7 @@ import { editedPostHasContent } from 'state/selectors';
 import EditorGroundControl from 'post-editor/editor-ground-control';
 import { isMobile } from 'lib/viewport';
 import { isSitePreviewable } from 'state/sites/selectors';
-import { NESTED_SIDEBAR_NONE } from 'post-editor/editor-sidebar/util';
+import { NESTED_SIDEBAR_NONE } from 'post-editor/editor-sidebar/constants';
 
 export const PostEditor = React.createClass( {
 	propTypes: {

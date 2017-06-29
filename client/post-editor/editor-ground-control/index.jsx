@@ -25,7 +25,7 @@ import Button from 'components/button';
 import EditorPostType from 'post-editor/editor-post-type';
 import config from 'config';
 import classNames from 'classnames';
-import { NESTED_SIDEBAR_REVISIONS, NestedSidebarPropType } from 'post-editor/editor-sidebar/util';
+import { NESTED_SIDEBAR_REVISIONS, NestedSidebarPropType } from 'post-editor/editor-sidebar/constants';
 
 export default React.createClass( {
 	displayName: 'EditorGroundControl',
