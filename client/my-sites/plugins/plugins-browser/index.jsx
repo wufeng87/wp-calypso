@@ -27,8 +27,9 @@ import JetpackManageErrorPage from 'my-sites/jetpack-manage-error-page';
 import FeatureExample from 'components/feature-example';
 import { hasTouch } from 'lib/touch-detect';
 import { recordTracksEvent } from 'state/analytics/actions';
-import { getSelectedSite } from 'state/ui/selectors';
+import { getSelectedSite, getSelectedSiteSlug } from 'state/ui/selectors';
 import { isJetpackSite, canJetpackSiteManage } from 'state/sites/selectors';
+import { getSelectedOrAllSitesJetpackCanManage } from 'state/selectors';
 
 const PluginsBrowser = React.createClass( {
 	_SHORT_LIST_LENGTH: 6,
@@ -39,7 +40,6 @@ const PluginsBrowser = React.createClass( {
 
 	componentDidMount() {
 		PluginsListStore.on( 'change', this.refreshLists );
-		this.props.sites.on( 'change', this.refreshLists );
 
 		if ( this.props.search && this.props.searchTitle ) {
 			this.props.recordTracksEvent( 'calypso_plugins_search_noresults_recommendations_show', {
@@ -54,7 +54,6 @@ const PluginsBrowser = React.createClass( {
 
 	componentWillUnmount() {
 		PluginsListStore.removeListener( 'change', this.refreshLists );
-		this.props.sites.removeListener( 'change', this.refreshLists );
 	},
 
 	componentWillReceiveProps( newProps ) {
@@ -134,9 +133,9 @@ const PluginsBrowser = React.createClass( {
 				plugins={ this.getPluginsFullList( category ) }
 				listName={ category }
 				title={ this.translateCategory( category ) }
-				site={ this.props.site }
+				site={ this.props.selectedSite }
 				showPlaceholders={ isFetching }
-				currentSites={ this.props.sites.getSelectedOrAllJetpackCanManage() } />;
+				currentSites={ this.props.sites } />;
 		}
 	},
 
@@ -153,9 +152,9 @@ const PluginsBrowser = React.createClass( {
 				plugins={ this.getPluginsFullList( 'search' ) }
 				listName={ searchTerm }
 				title={ searchTitle }
-				site={ this.props.site }
+				site={ this.props.siteSlug }
 				showPlaceholders={ isFetching }
-				currentSites={ this.props.sites.getSelectedOrAllJetpackCanManage() } />;
+				currentSites={ this.props.sites } />;
 		}
 		return (
 			<NoResults
@@ -174,11 +173,11 @@ const PluginsBrowser = React.createClass( {
 			plugins={ this.getPluginsShortList( category ) }
 			listName={ category }
 			title={ this.translateCategory( category ) }
-			site={ this.props.site }
+			site={ this.props.siteSlug }
 			expandedListLink={ this.getPluginsFullList( category ).length > this._SHORT_LIST_LENGTH ? listLink : false }
 			size={ this._SHORT_LIST_LENGTH }
 			showPlaceholders={ this.state.fullLists[ category ].fetching !== false }
-			currentSites={ this.props.sites.getSelectedOrAllJetpackCanManage() } />;
+			currentSites={ this.props.sites } />;
 	},
 
 	getShortListsView() {
@@ -217,7 +216,7 @@ const PluginsBrowser = React.createClass( {
 	},
 
 	getNavigationBar() {
-		const site = this.props.site ? '/' + this.props.site : '';
+		const site = this.props.siteSlug ? '/' + this.props.siteSlug : '';
 		return <SectionNav selectedText={ this.translate( 'Category', { context: 'Category of plugins to be filtered by' } ) }>
 			<NavTabs label="Category">
 				<NavItem
@@ -333,14 +332,13 @@ const PluginsBrowser = React.createClass( {
 } );
 
 export default connect(
-	state => {
-		const selectedSite = getSelectedSite( state );
-		return {
-			selectedSite,
-			isJetpackSite: siteId => isJetpackSite( state, siteId ),
-			canJetpackSiteManage: siteId => canJetpackSiteManage( state, siteId ),
-		};
-	},
+	state => ( {
+		selectedSite: getSelectedSite( state ),
+		siteSlug: getSelectedSiteSlug( state ),
+		isJetpackSite: siteId => isJetpackSite( state, siteId ),
+		canJetpackSiteManage: siteId => canJetpackSiteManage( state, siteId ),
+		sites: getSelectedOrAllSitesJetpackCanManage( state )
+	} ),
 	{
 		recordTracksEvent
 	}
