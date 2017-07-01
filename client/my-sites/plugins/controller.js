@@ -12,7 +12,6 @@ import capitalize from 'lodash/capitalize';
  */
 import route from 'lib/route';
 import notices from 'notices';
-import sitesFactory from 'lib/sites-list';
 import analytics from 'lib/analytics';
 import PlanSetup from './jetpack-plugins-setup';
 import PluginEligibility from './plugin-eligibility';
@@ -22,12 +21,15 @@ import PluginBrowser from './plugins-browser';
 import { renderWithReduxStore } from 'lib/react-helpers';
 import { setSection } from 'state/ui/actions';
 import { getSelectedSite, getSection } from 'state/ui/selectors';
+import {
+	hasJetpackSites,
+	getSelectedOrAllSitesWithPlugins,
+} from 'state/selectors';
 
 /**
  * Module variables
  */
 const allowedCategoryNames = [ 'new', 'popular', 'featured' ];
-const sites = sitesFactory();
 
 let lastPluginsListVisited,
 	lastPluginsQuerystring;
@@ -63,7 +65,6 @@ function renderSinglePlugin( context, siteUrl ) {
 			path: context.path,
 			prevQuerystring: lastPluginsQuerystring,
 			prevPath,
-			sites,
 			pluginSlug,
 			siteUrl,
 		} ),
@@ -93,7 +94,6 @@ function renderPluginList( context, basePath ) {
 			context,
 			filter: context.params.pluginFilter,
 			category: context.params.category,
-			sites,
 			search
 		} ),
 		'primary',
@@ -146,10 +146,8 @@ function renderPluginsBrowser( context ) {
 
 	renderWithReduxStore(
 		React.createElement( PluginBrowser, {
-			site: site ? site.slug : null,
 			path: context.path,
 			category,
-			sites,
 			search: searchTerm
 		} ),
 		document.getElementById( 'primary' ),
@@ -200,7 +198,7 @@ const controller = {
 		const basePath = route.sectionify( context.path ).replace( '/' + filter, '' );
 
 		// bail if no site is selected and the user has no Jetpack sites.
-		if ( ! siteUrl && sites.getJetpack().length === 0 ) {
+		if ( ! siteUrl && ! hasJetpackSites( context.store.getState() ) ) {
 			return next();
 		}
 
@@ -230,11 +228,11 @@ const controller = {
 	},
 
 	jetpackCanUpdate( filter, context, next ) {
-		const selectedSites = sites.getSelectedOrAllWithPlugins();
+		const selectedSites = getSelectedOrAllSitesWithPlugins( context.store.getState() );
 		let redirectToPlugins = false;
 
 		if ( 'updates' === filter && selectedSites.length ) {
-			redirectToPlugins = ! some( sites.getSelectedOrAllWithPlugins(), function( site ) {
+			redirectToPlugins = ! some( selectedSites, function( site ) {
 				return site && site.jetpack && site.canUpdateFiles;
 			} );
 
