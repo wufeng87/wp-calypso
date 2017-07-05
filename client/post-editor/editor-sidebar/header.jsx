@@ -50,7 +50,7 @@ const EditorSidebarHeader = ( { nestedSidebar = NESTED_SIDEBAR_NONE, toggleSideb
 );
 
 EditorSidebarHeader.propTypes = {
-	translate: PropTypes.func,
+	translate: PropTypes.func.isRequired,
 	toggleSidebar: PropTypes.func,
 	nestedSidebar: NestedSidebarPropType
 };
