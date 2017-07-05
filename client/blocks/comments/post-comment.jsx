@@ -168,10 +168,19 @@ class PostComment extends Component {
 						: <Gravatar user={ comment.author } /> }
 
 					{ authorUrl
-						? <a href={ authorUrl } className="comments__comment-username" onClick={ this.handleAuthorClick }>
+						? <a
+							href={ authorUrl }
+							className="comments__comment-username"
+							onClick={ this.handleAuthorClick }
+							name={ `comment-${ this.props.commentId }` }
+							>
 								{ comment.author.name }
 							</a>
-						: <strong className="comments__comment-username">{ comment.author.name }</strong> }
+						: <strong
+							className="comments__comment-username"
+							>
+								{ comment.author.name }
+							</strong> }
 					<div className="comments__comment-timestamp">
 						<a href={ comment.URL }>
 							<PostTime date={ comment.date } />
