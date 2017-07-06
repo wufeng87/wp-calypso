@@ -28,14 +28,20 @@ import previousStep from 'components/marketing-survey/cancel-purchase-form/previ
 import { INITIAL_STEP, FINAL_STEP } from 'components/marketing-survey/cancel-purchase-form/steps';
 import { getIncludedDomain, getName, hasIncludedDomain, isRemovable } from 'lib/purchases';
 import { getPurchase, isDataLoading } from '../utils';
-import { isDomainRegistration, isPlan, isGoogleApps, isJetpackPlan } from 'lib/products-values';
+import {
+	isDomainRegistration,
+	isPlan,
+	isBusiness,
+	isGoogleApps,
+	isJetpackPlan,
+} from 'lib/products-values';
 import notices from 'notices';
 import purchasePaths from '../paths';
 import { removePurchase } from 'state/purchases/actions';
 import { isHappychatAvailable, hasActiveHappychatSession } from 'state/happychat/selectors';
 import FormSectionHeading from 'components/forms/form-section-heading';
 import userFactory from 'lib/user';
-import { isDomainOnlySite as isDomainOnly } from 'state/selectors';
+import { isDomainOnlySite as isDomainOnly, isSiteAutomatedTransfer } from 'state/selectors';
 import { receiveDeletedSite as receiveDeletedSiteDeprecated } from 'lib/sites-list/actions';
 import { receiveDeletedSite } from 'state/sites/actions';
 import { setAllSitesSelected } from 'state/ui/actions';
@@ -411,6 +417,47 @@ class RemovePurchase extends Component {
 		);
 	};
 
+	renderAutomatedTransferDialog( purchase ) {
+		const { translate } = this.props;
+		const buttons = [
+			this.getChatButton(),
+			{
+				action: 'cancel',
+				disabled: this.state.isRemoving,
+				isPrimary: true,
+				label: translate( "I'll Keep It" ),
+			},
+		];
+		const productName = getName( purchase );
+
+		return (
+			<Dialog
+				buttons={ buttons }
+				className="remove-purchase__dialog"
+				isVisible={ this.state.isDialogVisible }
+				onClose={ this.closeDialog }
+			>
+				<FormSectionHeading>
+					{ translate( 'Remove %(productName)s', { args: { productName } } ) }
+				</FormSectionHeading>
+				<p>
+					{ translate( 'One does not simply remove %(productName)s.', { args: { productName } } ) }
+				</p>
+			</Dialog>
+		);
+	}
+
+	renderDialog( purchase ) {
+		if (
+			this.props.isAutomatedTransferSite &&
+			( isDomainRegistration( purchase ) || isBusiness( purchase ) )
+		) {
+			return this.renderAutomatedTransferDialog( purchase );
+		}
+
+		return isDomainRegistration( purchase ) ? this.renderDomainDialog() : this.renderPlanDialogs();
+	}
+
 	render() {
 		if ( isDataLoading( this.props ) || ! this.props.selectedSite ) {
 			return null;
@@ -424,7 +471,7 @@ class RemovePurchase extends Component {
 		return (
 			<span>
 				{ this.renderCard() }
-				{ isDomainRegistration( purchase ) ? this.renderDomainDialog() : this.renderPlanDialogs() }
+				{ this.renderDialog( purchase ) }
 			</span>
 		);
 	}
@@ -433,6 +480,7 @@ class RemovePurchase extends Component {
 export default connect(
 	( state, { selectedSite } ) => ( {
 		isDomainOnlySite: isDomainOnly( state, selectedSite && selectedSite.ID ),
+		isAutomatedTransferSite: isSiteAutomatedTransfer( state, selectedSite && selectedSite.ID ),
 		isChatAvailable: isHappychatAvailable( state ),
 		isChatActive: hasActiveHappychatSession( state ),
 	} ),
