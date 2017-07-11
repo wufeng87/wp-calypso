@@ -1,7 +1,7 @@
 /**
  * External dependencies
  */
-import { get, map, uniq } from 'lodash';
+import { map } from 'lodash';
 import React, { PureComponent, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
@@ -16,12 +16,14 @@ import QueryUsers from 'components/data/query-users';
 import { getEditedPostValue } from 'state/posts/selectors';
 import getPostRevision from 'state/selectors/get-post-revision';
 import getPostRevisions from 'state/selectors/get-post-revisions';
+import getPostRevisionsAuthorsId from 'state/selectors/get-post-revisions-authors-id';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import { getEditorPostId } from 'state/ui/editor/selectors';
 import viewport from 'lib/viewport';
 
 class EditorRevisionsList extends PureComponent {
 	static propTypes = {
+		authorsId: PropTypes.array.isRequired,
 		loadRevision: PropTypes.func.isRequired,
 		postId: PropTypes.number,
 		revisions: PropTypes.array.isRequired,
@@ -60,10 +62,6 @@ class EditorRevisionsList extends PureComponent {
 	}
 
 	render() {
-		// NOTE: This supports revisions that have been hydrated with author
-		// info (`author` is an object) and the ones that haven't (author is a
-		// string, containing just the ID ).
-		const usersId = uniq( map( this.props.revisions, r => get( r, 'author.ID', r.author ) ) );
 		return (
 			<div>
 				<QueryPostRevisions
@@ -73,7 +71,7 @@ class EditorRevisionsList extends PureComponent {
 				/>
 				<QueryUsers
 					siteId={ this.props.siteId }
-					usersId={ usersId }
+					usersId={ this.props.authorsId }
 				/>
 				<EditorRevisionsListHeader
 					loadRevision={ this.loadRevision }
@@ -106,6 +104,7 @@ export default connect(
 		const postId = getEditorPostId( state );
 		const type = getEditedPostValue( state, siteId, postId, 'type' );
 		return {
+			authorsId: getPostRevisionsAuthorsId( state, siteId, postId ),
 			postId,
 			revisions: getPostRevisions( state, siteId, postId, 'display' ),
 			selectedRevision: getPostRevision(

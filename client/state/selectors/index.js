@@ -68,6 +68,7 @@ export getPosterUploadProgress from './get-poster-upload-progress';
 export getPosterUrl from './get-poster-url';
 export getPostRevision from './get-post-revision';
 export getPostRevisions from './get-post-revisions';
+export getPostRevisionsAuthorsId from './get-post-revisions-authors-id';
 export getPostRevisionChanges from './get-post-revision-changes';
 export getPublicizeConnection from './get-publicize-connection';
 export getPostLikes from './get-post-likes';
