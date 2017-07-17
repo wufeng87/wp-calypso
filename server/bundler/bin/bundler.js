@@ -13,7 +13,7 @@ var webpack = require( 'webpack' ),
 /**
  * Internal dependencies
  */
-var webpackConfig = require( process.cwd() + '/webpack.config' ),
+var webpackConfig = require( process.cwd() + '/webpack.config.babel' ),
 	utils = require( '../utils' ),
 	config = require( '../../config' );
 

@@ -1,9 +1,7 @@
-/***** WARNING: No ES6 modules here. Not transpiled! *****/
-
 /**
  * External dependencies
  */
-const _ = require( 'lodash' );
+import * as _ from 'lodash';
 const CopyWebpackPlugin = require( 'copy-webpack-plugin' );
 const DashboardPlugin = require( 'webpack-dashboard/plugin' );
 const fs = require( 'fs' );

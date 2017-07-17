@@ -1,5 +1,32 @@
 #!/usr/bin/env node
 
+require( 'babel-register' )( {
+	babelrc: false,
+	presets: [
+		[ "es2015" ],
+		"stage-2"
+	],
+	plugins: [
+		"transform-runtime",
+		"transform-class-properties",
+		"transform-export-extensions",
+		"add-module-exports",
+		"syntax-jsx",
+		"transform-react-jsx",
+		"transform-react-display-name",
+		"lodash",
+		[
+			"transform-imports",
+			{
+				"state/selectors": {
+					"transform": "state/selectors/${member}",
+					"kebabCase": true
+				}
+			}
+		]
+	]
+} );
+
 /**
  * This script generates a usage counts for the dependecies of a list of modules.
  * It accepts a newline-delimited list of .js and|or .jsx files

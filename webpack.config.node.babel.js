@@ -1,15 +1,13 @@
-/***** WARNING: No ES6 modules here. Not transpiled! *****/
-
 /**
  * External dependencies
  */
-const fs = require( 'fs' );
-const HappyPack = require( 'happypack' );
-const HardSourceWebpackPlugin = require( 'hard-source-webpack-plugin' );
-const os = require( 'os' );
-const path = require( 'path' );
-const webpack = require( 'webpack' );
-const _ = require( 'lodash' );
+import * as fs from 'fs';
+import * as HappyPack from 'happypack';
+import * as HardSourceWebpackPlugin from 'hard-source-webpack-plugin';
+import * as os from 'os';
+import * as path from 'path';
+import * as webpack from 'webpack';
+import * as _ from 'lodash';
 
 /**
  * Internal dependencies
@@ -17,6 +15,7 @@ const _ = require( 'lodash' );
 const cacheIdentifier = require( './server/bundler/babel/babel-loader-cache-identifier' );
 const config = require( 'config' );
 const isWindows = os.type() === 'Windows_NT';
+console.error ( config );
 
 /**
  * This lists modules that must use commonJS `require()`s

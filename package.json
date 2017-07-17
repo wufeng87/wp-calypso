@@ -185,7 +185,7 @@
     "prebuild-docker": "npm run -s distclean && ( touch env-config.sh || type nul >> env-config.sh )",
     "build-docker": "docker build -t wp-calypso .",
     "prebuild-server": "mkdirp build",
-    "build-server": "npm run -s env -- webpack --display-error-details --config webpack.config.node.js",
+    "build-server": "npm run -s env -- webpack --display-error-details --config webpack.config.node.babel.js",
     "bundle": "npm run -s env -- cross-env node $NODE_ARGS server/bundler/bin/bundler.js",
     "clean": "npm run -s clean:build && npm run -s clean:devdocs && npm run -s clean:public",
     "clean:build": "npm run -s rm -- build && npm run -s rm -- server/bundler .json && npm run -s rm -- .babel-cache",
