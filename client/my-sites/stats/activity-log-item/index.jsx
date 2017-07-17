@@ -219,7 +219,7 @@ class ActivityLogItem extends Component {
 						}
 					} ) }
 				</div>
-				<div className="activity-log-item__id">ID { ts_utc }</div>
+				<div className="activity-log-item__id">{ ts_utc }</div>
 			</div>
 		);
 	}
