@@ -1,7 +1,8 @@
 /**
  * External dependencies
  */
-import React from 'react';
+import React, { Component } from 'react';
+import { localize } from 'i18n-calypso';
 
 /**
  * Internal dependencies
@@ -10,59 +11,56 @@ import EmptyContent from 'components/empty-content';
 import UploadButton from './upload-button';
 import { userCan } from 'lib/site/utils';
 
-export default React.createClass( {
-	displayName: 'MediaLibraryListNoContent',
-
-	propTypes: {
-		site: React.PropTypes.object,
-		filter: React.PropTypes.string,
-		source: React.PropTypes.string,
-	},
-
+class MediaLibraryListNoContent extends Component {
 	getLabel() {
+		const { translate } = this.props;
+
 		switch ( this.props.filter ) {
 			case 'images':
-				return this.translate( 'You don\'t have any images.', {
+				return translate( 'You don\'t have any images.', {
 					textOnly: true,
 					context: 'Media no results'
 				} );
 
 			case 'videos':
-				return this.translate( 'You don\'t have any videos.', {
+				return translate( 'You don\'t have any videos.', {
 					textOnly: true,
 					context: 'Media no results'
 				} );
 
 			case 'audio':
-				return this.translate( 'You don\'t have any audio files.', {
+				return translate( 'You don\'t have any audio files.', {
 					textOnly: true,
 					context: 'Media no results'
 				} );
 
 			case 'documents':
-				return this.translate( 'You don\'t have any documents.', {
+				return translate( 'You don\'t have any documents.', {
 					textOnly: true,
 					context: 'Media no results'
 				} );
 
 			default:
-				return this.translate( 'You don\'t have any media.', {
+				return translate( 'You don\'t have any media.', {
 					textOnly: true,
 					context: 'Media no results'
 				} );
 		}
-	},
+	}
 
 	render() {
+		const { translate } = this.props;
 		let line = '', action = '';
 
 		if ( userCan( 'upload_files', this.props.site ) && ! this.props.source ) {
-			line = this.translate( 'Would you like to upload something?' );
+			line = translate( 'Would you like to upload something?' );
+			/* eslint-disable wpcalypso/jsx-classname-namespace */
 			action = (
 				<UploadButton className="button is-primary" site={ this.props.site }>
-					{ this.translate( 'Upload Media' ) }
+					{ translate( 'Upload Media' ) }
 				</UploadButton>
 			);
+			/* eslint-enable wpcalypso/jsx-classname-namespace */
 		}
 
 		return (
@@ -75,4 +73,12 @@ export default React.createClass( {
 			/>
 		);
 	}
-} );
+}
+
+MediaLibraryListNoContent.propTypes = {
+	site: React.PropTypes.object,
+	filter: React.PropTypes.string,
+	source: React.PropTypes.string,
+};
+
+export default localize( MediaLibraryListNoContent );
