@@ -14,12 +14,13 @@ import SegmentedControl from 'components/segmented-control';
 import { UNITS } from 'woocommerce/app/store-stats/constants';
 
 const StoreStatsNavigation = props => {
-	const { translate, slug, type, unit } = props;
+	const { querystring, translate, slug, type, unit } = props;
 	return (
 		<div className="store-stats-navigation">
 			<SectionNav selectedText={ UNITS[ unit ].title }>
 				<StoreStatsNavigationTabs
 					label={ 'Stats' }
+					querystring={ querystring }
 					slug={ slug }
 					type={ type }
 					unit={ unit }
@@ -39,7 +40,8 @@ const StoreStatsNavigation = props => {
 };
 
 StoreStatsNavigation.propTypes = {
-	slug: PropTypes.string
+	slug: PropTypes.string,
+	querystring: PropTypes.string
 };
 
 export default localize( StoreStatsNavigation );

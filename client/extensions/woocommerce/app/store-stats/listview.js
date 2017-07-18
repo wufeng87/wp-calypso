@@ -57,7 +57,7 @@ class StoreStatsListView extends Component {
 	};
 
 	render() {
-		const { isWooConnect, siteId, slug, selectedDate, type, unit } = this.props;
+		const { isWooConnect, querystring, siteId, slug, selectedDate, type, unit } = this.props;
 		// TODO: this is to handle users switching sites while on store stats
 		// unfortunately, we can't access the path when changing sites
 		if ( ! isWooConnect ) {
@@ -92,6 +92,7 @@ class StoreStatsListView extends Component {
 				<SectionNav className="store-stats__list-view-navigation" selectedText={ UNITS[ unit ].title }>
 					<StoreStatsNavigationTabs
 						label={ 'Stats' }
+						querystring={ querystring }
 						slug={ slug }
 						type={ type }
 						unit={ unit }

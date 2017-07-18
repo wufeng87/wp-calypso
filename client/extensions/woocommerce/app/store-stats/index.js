@@ -90,7 +90,7 @@ class StoreStats extends Component {
 		return (
 			<Main className="store-stats woocommerce" wideLayout={ true }>
 				<div className="store-stats__sidebar-nav"><SidebarNavigation /></div>
-				<Navigation unit={ unit } type="orders" slug={ slug } />
+				<Navigation unit={ unit } querystring={ querystring } type="orders" slug={ slug } />
 				<Chart
 					path={ path }
 					query={ Object.assign( {}, ordersQuery, { date: unitQueryDate } ) }

@@ -10,13 +10,14 @@ import NavItem from 'components/section-nav/item';
 import NavTabs from 'components/section-nav/tabs';
 
 const StoreStatsNavigationTabs = props => {
-	const { label, slug, type, unit, units } = props;
+	const { label, querystring, slug, type, unit, units } = props;
+	const urlQuery = `${ querystring ? '?' : '' }${ querystring || '' }`;
 	return (
 		<NavTabs label={ label }>
 			{ Object.keys( units ).map( key => (
 				<NavItem
 					key={ key }
-					path={ `/store/stats/${ type }/${ key }/${ slug }` }
+					path={ `/store/stats/${ type }/${ key }/${ slug }${ urlQuery }` }
 					selected={ unit === key }
 				>
 					{ units[ key ].title }
@@ -28,6 +29,7 @@ const StoreStatsNavigationTabs = props => {
 
 StoreStatsNavigationTabs.propTypes = {
 	label: PropTypes.string,
+	querystring: PropTypes.string,
 	slug: PropTypes.string,
 	type: PropTypes.string,
 	unit: PropTypes.string,
