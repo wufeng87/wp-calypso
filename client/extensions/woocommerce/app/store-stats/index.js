@@ -66,7 +66,7 @@ class StoreStats extends Component {
 			limit: 10,
 		};
 		const topWidgets = [ topProducts, topCategories, topCoupons ];
-		const widgetPath = `/${ unit }/${ slug }${ querystring ? '?' : '' }${ querystring || '' }`;
+		const widgetPath = `/${ unit }/${ slug }${ querystring }`;
 
 		const widgetList1 = (
 			<WidgetList

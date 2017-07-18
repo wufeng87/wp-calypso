@@ -11,13 +11,12 @@ import NavTabs from 'components/section-nav/tabs';
 
 const StoreStatsNavigationTabs = props => {
 	const { label, querystring, slug, type, unit, units } = props;
-	const urlQuery = `${ querystring ? '?' : '' }${ querystring || '' }`;
 	return (
 		<NavTabs label={ label }>
 			{ Object.keys( units ).map( key => (
 				<NavItem
 					key={ key }
-					path={ `/store/stats/${ type }/${ key }/${ slug }${ urlQuery }` }
+					path={ `/store/stats/${ type }/${ key }/${ slug }${ querystring }` }
 					selected={ unit === key }
 				>
 					{ units[ key ].title }

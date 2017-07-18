@@ -46,8 +46,8 @@ class StoreStatsListView extends Component {
 	};
 
 	goBack = () => {
-		const pathParts = this.props.path.split( '/' );
-		const queryString = this.props.querystring ? '?' + this.props.querystring : '';
+		const { path, queryString } = this.props;
+		const pathParts = path.split( '/' );
 		const pathExtra = `${ pathParts[ pathParts.length - 2 ] }/${ pathParts[ pathParts.length - 1 ] }${ queryString }`;
 		const defaultBack = `/store/stats/orders/${ pathExtra }`;
 
