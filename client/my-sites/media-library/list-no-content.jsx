@@ -61,6 +61,8 @@ class MediaLibraryListNoContent extends Component {
 				</UploadButton>
 			);
 			/* eslint-enable wpcalypso/jsx-classname-namespace */
+		} else if ( this.props.source ) {
+			line = translate( 'New photos may take a few minutes to appear.' );
 		}
 
 		return (
