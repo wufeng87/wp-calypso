@@ -20,7 +20,7 @@ import {
 	handleProductRequest,
 	handleProductsRequest,
 	handleProductsRequestSuccess,
-} from '../';
+} from '../handlers';
 import {
 	WOOCOMMERCE_API_REQUEST,
 } from 'woocommerce/state/action-types';
