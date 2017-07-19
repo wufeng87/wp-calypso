@@ -13,6 +13,7 @@ const os = require( 'os' );
 const path = require( 'path' );
 const webpack = require( 'webpack' );
 const NameAllModulesPlugin = require( 'name-all-modules-plugin' );
+const AssetsPlugin = require( 'assets-webpack-plugin' );
 
 /**
  * Internal dependencies
@@ -160,6 +161,10 @@ const webpackConfig = {
 			return chunk.modules.map( m => path.relative( m.context, m.request ) ).join( '_' );
 		} ),
 		new NameAllModulesPlugin(),
+		new AssetsPlugin( {
+			filename: 'assets.json',
+			path: path.join( __dirname, 'server', 'bundler' )
+		} ),
 	] ),
 	externals: [ 'electron' ]
 };

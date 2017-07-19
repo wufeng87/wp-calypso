@@ -8,7 +8,7 @@ import qs from 'qs';
 import { execSync } from 'child_process';
 import cookieParser from 'cookie-parser';
 import debugFactory from 'debug';
-import { get, isEmpty, pick } from 'lodash';
+import { get, isEmpty, pick, forEach } from 'lodash';
 
 /**
  * Internal dependencies
@@ -94,9 +94,8 @@ function generateStaticUrls( request ) {
 
 	const assets = request.app.get( 'assets' );
 
-	assets.forEach( function( asset ) {
-		const name = asset.name;
-		urls[ name ] = asset.url;
+	forEach( assets, function( asset, name ) {
+		urls[ name ] = asset.js;
 		if ( config( 'env' ) !== 'development' ) {
 			urls[ name + '-min' ] = asset.url.replace( '.js', '.min.js' );
 		}

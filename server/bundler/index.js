@@ -6,8 +6,7 @@ var webpackMiddleware = require( 'webpack-dev-middleware' ),
 	chalk = require( 'chalk' );
 const hotMiddleware = require( 'webpack-hot-middleware' );
 
-var utils = require( './utils' ),
-	webpackConfig = require( 'webpack.config' );
+const webpackConfig = require( 'webpack.config' );
 
 function middleware( app ) {
 	var compiler = webpack( webpackConfig ),
@@ -24,9 +23,9 @@ function middleware( app ) {
 		profile: true,
 	} ) );
 
-	compiler.plugin( 'done', function( stats ) {
+	compiler.plugin( 'done', function() {
 		built = true;
-		assets = utils.getAssets( stats.toJson() );
+		assets = require( './assets.json' );
 		app.set( 'assets', assets );
 
 		// Dequeue and call request handlers
