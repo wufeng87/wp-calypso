@@ -257,7 +257,7 @@ if ( process.env.DASHBOARD ) {
 	webpackConfig.plugins.unshift( new DashboardPlugin() );
 }
 
-if ( process.env.WEBPACK_OUTPUT_JSON ) {
+if ( process.env.WEBPACK_OUTPUT_JSON || process.env.NODE_ENV === 'production' ) {
 	webpackConfig.devtool = 'cheap-module-source-map';
 	webpackConfig.plugins.push( new webpack.optimize.UglifyJsPlugin( {
 		minimize: true,
