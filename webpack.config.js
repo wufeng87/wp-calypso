@@ -14,6 +14,7 @@ const path = require( 'path' );
 const webpack = require( 'webpack' );
 const NameAllModulesPlugin = require( 'name-all-modules-plugin' );
 const AssetsPlugin = require( 'assets-webpack-plugin' );
+const UglifyJsPlugin = require( 'uglifyjs-webpack-plugin' );
 
 /**
  * Internal dependencies
@@ -259,7 +260,7 @@ if ( process.env.DASHBOARD ) {
 
 if ( process.env.WEBPACK_OUTPUT_JSON || process.env.NODE_ENV === 'production' ) {
 	webpackConfig.devtool = 'cheap-module-source-map';
-	webpackConfig.plugins.push( new webpack.optimize.UglifyJsPlugin( {
+	webpackConfig.plugins.push( new UglifyJsPlugin( {
 		minimize: true,
 		compress: {
 			warnings: false,
@@ -274,7 +275,8 @@ if ( process.env.WEBPACK_OUTPUT_JSON || process.env.NODE_ENV === 'production' ) 
 			negate_iife: false,
 			screw_ie8: true
 		},
-		sourceMap: true
+		sourceMap: true,
+		parallel: true,
 	} ) );
 }
 
