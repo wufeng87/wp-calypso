@@ -12,8 +12,7 @@ function middleware( app ) {
 	var compiler = webpack( webpackConfig ),
 		callbacks = [],
 		built = false,
-		beforeFirstCompile = true,
-		assets;
+		beforeFirstCompile = true;
 
 	app.use( hotMiddleware( compiler ) );
 
@@ -25,8 +24,6 @@ function middleware( app ) {
 
 	compiler.plugin( 'done', function() {
 		built = true;
-		assets = require( './assets.json' );
-		app.set( 'assets', assets );
 
 		// Dequeue and call request handlers
 		while( callbacks.length > 0 ) {

@@ -16,7 +16,6 @@ var path = require( 'path' ),
 function setup() {
 
 	var app = express(),
-		assets,
 		devdocs,
 		api,
 		bundler;
@@ -40,9 +39,6 @@ function setup() {
 		// setup logger
 		app.use( morgan( 'dev' ) );
 	} else {
-		assets = require( 'bundler/assets' );
-		assets( app );
-
 		// setup logger
 		app.use( morgan( 'combined' ) );
 	}

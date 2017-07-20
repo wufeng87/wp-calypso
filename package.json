@@ -11,6 +11,7 @@
   "main": "index.js",
   "dependencies": {
     "ajv": "5.2.1",
+    "assets-webpack-plugin": "3.5.1",
     "async": "0.9.0",
     "autoprefixer": "6.3.5",
     "autosize": "3.0.15",
@@ -144,6 +145,7 @@
     "tracekit": "0.4.3",
     "tween.js": "16.3.1",
     "twemoji": "2.3",
+    "uglifyjs-webpack-plugin": "1.0.0-beta.1",
     "uuid": "2.0.1",
     "valid-url": "1.0.9",
     "walk": "2.3.4",
@@ -165,8 +167,7 @@
     "analyze-bundles": "webpack-bundle-analyzer stats.json public -p 9898",
     "autoprefixer": "postcss -r --use autoprefixer --autoprefixer.browsers \"last 2 versions, > 1%, Safari >= 8, iOS >= 8, Firefox ESR, Opera 12.1\"",
     "prebuild": "npm run -s install-if-deps-outdated",
-    "build": "run-p -s build-devdocs:* build-server build-css",
-    "postbuild": "node -e \"process.env.NODE_ENV === 'production' && process.exit(1)\" || npm run -s build-client",
+    "build": "run-p -s build-devdocs:* build-server build-client-if-prod build-css",
     "build-css": "run-p -s build-css:*",
     "build-css:debug": "node-sass --include-path client --source-map \"public/style-debug.css.map\" assets/stylesheets/style.scss public/style-debug.css && npm run -s autoprefixer -- public/style-debug.css",
     "build-css:directly": "node-sass --include-path client assets/stylesheets/directly.scss public/directly.css && npm run -s autoprefixer -- public/directly.css",
@@ -186,6 +187,7 @@
     "prebuild-server": "mkdirp build",
     "build-server": "npm run -s env -- webpack --display-error-details --config webpack.config.node.js",
     "build-client": "npm run -s env -- webpack --display-error-details --config webpack.config.js",
+    "build-client-if-prod": "node -e \"process.env.NODE_ENV === 'production' && process.exit(1)\" || npm run -s build-client",
     "clean": "npm run -s clean:build && npm run -s clean:devdocs && npm run -s clean:public",
     "clean:build": "npm run -s rm -- build && npm run -s rm -- server/bundler .json && npm run -s rm -- .babel-cache",
     "clean:devdocs": "npm run -s rm -- server/devdocs/search-index.js && npm run -s rm -- server/devdocs/proptypes-index.json && npm run -s rm -- server/devdocs/components-usage-stats.json",
@@ -226,7 +228,6 @@
   },
   "devDependencies": {
     "5to6-codemod": "5to6/5to6-codemod#v1.7.0",
-    "assets-webpack-plugin": "3.5.1",
     "babel-eslint": "6.1.2",
     "cash-touch": "0.2.0",
     "chai": "3.5.0",
@@ -266,7 +267,6 @@
     "socket.io": "1.4.5",
     "stylelint": "6.9.0",
     "supertest": "2.0.0",
-    "uglifyjs-webpack-plugin": "1.0.0-beta.1",
     "webpack-bundle-analyzer": "2.8.2"
   },
   "optionalDependencies": {

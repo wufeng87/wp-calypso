@@ -3,6 +3,7 @@
  */
 import express from 'express';
 import fs from 'fs';
+import path from 'path';
 import crypto from 'crypto';
 import qs from 'qs';
 import { execSync } from 'child_process';
@@ -70,13 +71,14 @@ function hashFile( path ) {
 	return hash;
 }
 
+let assets;
 /**
  * Generate an object that maps asset names name to a server-relative urls.
  * Assets in request and static files are included.
  * @param {Object} request A request to check for assets
  * @returns {Object} Map of asset names to urls
  **/
-function generateStaticUrls( request ) {
+function generateStaticUrls() {
 	const urls = {};
 
 	function getUrl( filename, hash ) {
@@ -92,7 +94,21 @@ function generateStaticUrls( request ) {
 		urls[ file.path ] = getUrl( file.path, file.hash );
 	} );
 
-	const assets = request.app.get( 'assets' );
+	// in production, only load assets file the first go around
+	if ( ! assets || process.env.NODE_ENV === 'development' ) {
+		fs.readFile(
+			path.join( __dirname, '../', 'bundler', 'assets.json' ),
+			'utf8',
+			( err, data ) => {
+				console.error( data, JSON.parse( data ) );
+				if ( err ) {
+					console.error( err );
+					return;
+				}
+				assets = JSON.parse( data );
+			}
+		);
+	}
 
 	forEach( assets, function( asset, name ) {
 		urls[ name ] = asset.js;
