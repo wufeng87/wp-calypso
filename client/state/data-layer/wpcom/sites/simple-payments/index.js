@@ -48,9 +48,9 @@ export function customPostToProduct( product ) {
 		{
 			ID: product.ID,
 			description: product.content,
-			title: product.title
+			title: product.title,
 		},
-		product.metadata.reduce( reduceMetadata, {} )
+		product.metadata.reduce( reduceMetadata, {} ),
 	);
 }
 
@@ -65,7 +65,7 @@ export function productToCustomPost( product ) {
 			if ( metadataSchema[ current ] ) {
 				payload.metadata.push( {
 					key: metadataSchema[ current ].metaKey,
-					value: product[ current ]
+					value: product[ current ],
 				} );
 			}
 			return payload;
@@ -75,7 +75,7 @@ export function productToCustomPost( product ) {
 			metadata: [],
 			title: product.title,
 			content: product.description,
-		}
+		},
 	);
 }
 
@@ -88,10 +88,15 @@ export function productToCustomPost( product ) {
 export function requestSimplePaymentsProduct( { dispatch }, action ) {
 	const { siteId, productId } = action;
 
-	dispatch( http( {
-		method: 'GET',
-		path: `/sites/${ siteId }/posts/${ productId }`,
-	}, action ) );
+	dispatch(
+		http(
+			{
+				method: 'GET',
+				path: `/sites/${ siteId }/posts/${ productId }`,
+			},
+			action,
+		),
+	);
 }
 
 /**
@@ -103,14 +108,19 @@ export function requestSimplePaymentsProduct( { dispatch }, action ) {
 export function requestSimplePaymentsProducts( { dispatch }, action ) {
 	const { siteId } = action;
 
-	dispatch( http( {
-		method: 'GET',
-		path: `/sites/${ siteId }/posts`,
-		query: {
-			type: SIMPLE_PAYMENTS_PRODUCT_POST_TYPE,
-			status: 'publish'
-		},
-	}, action ) );
+	dispatch(
+		http(
+			{
+				method: 'GET',
+				path: `/sites/${ siteId }/posts`,
+				query: {
+					type: SIMPLE_PAYMENTS_PRODUCT_POST_TYPE,
+					status: 'publish',
+				},
+			},
+			action,
+		),
+	);
 }
 
 /**
@@ -121,11 +131,16 @@ export function requestSimplePaymentsProducts( { dispatch }, action ) {
 export function requestSimplePaymentsProductAdd( { dispatch }, action ) {
 	const { siteId, product } = action;
 
-	dispatch( http( {
-		method: 'POST',
-		path: `/sites/${ siteId }/posts/new`,
-		body: productToCustomPost( product ),
-	}, action ) );
+	dispatch(
+		http(
+			{
+				method: 'POST',
+				path: `/sites/${ siteId }/posts/new`,
+				body: productToCustomPost( product ),
+			},
+			action,
+		),
+	);
 }
 
 /**
@@ -136,11 +151,16 @@ export function requestSimplePaymentsProductAdd( { dispatch }, action ) {
 export function requestSimplePaymentsProductEdit( { dispatch }, action ) {
 	const { siteId, product, productId } = action;
 
-	dispatch( http( {
-		method: 'POST',
-		path: `/sites/${ siteId }/posts/${ productId }`,
-		body: productToCustomPost( product ),
-	}, action ) );
+	dispatch(
+		http(
+			{
+				method: 'POST',
+				path: `/sites/${ siteId }/posts/${ productId }`,
+				body: productToCustomPost( product ),
+			},
+			action,
+		),
+	);
 }
 
 /**
@@ -151,10 +171,15 @@ export function requestSimplePaymentsProductEdit( { dispatch }, action ) {
 export function requestSimplePaymentsProductDelete( { dispatch }, action ) {
 	const { siteId, productId } = action;
 
-	dispatch( http( {
-		method: 'POST',
-		path: `/sites/${ siteId }/posts/${ productId }/delete`,
-	}, action ) );
+	dispatch(
+		http(
+			{
+				method: 'POST',
+				path: `/sites/${ siteId }/posts/${ productId }/delete`,
+			},
+			action,
+		),
+	);
 }
 
 export const addProduct = ( { dispatch }, { siteId }, next, newProduct ) =>
@@ -178,12 +203,19 @@ export const listProducts = ( { dispatch }, { siteId }, next, { posts: products 
 };
 
 export default {
-	[ SIMPLE_PAYMENTS_PRODUCT_GET ]:
-		[ dispatchRequest( requestSimplePaymentsProduct, listProduct, noop ) ],
-	[ SIMPLE_PAYMENTS_PRODUCTS_LIST ]:
-		[ dispatchRequest( requestSimplePaymentsProducts, listProducts, noop ) ],
-	[ SIMPLE_PAYMENTS_PRODUCTS_LIST_ADD ]: [ dispatchRequest( requestSimplePaymentsProductAdd, addProduct, noop ) ],
-	[ SIMPLE_PAYMENTS_PRODUCTS_LIST_EDIT ]: [ dispatchRequest( requestSimplePaymentsProductEdit, addProduct, noop ) ],
-	[ SIMPLE_PAYMENTS_PRODUCTS_LIST_DELETE ]:
-		[ dispatchRequest( requestSimplePaymentsProductDelete, deleteProduct, noop ) ],
+	[ SIMPLE_PAYMENTS_PRODUCT_GET ]: [
+		dispatchRequest( requestSimplePaymentsProduct, listProduct, noop ),
+	],
+	[ SIMPLE_PAYMENTS_PRODUCTS_LIST ]: [
+		dispatchRequest( requestSimplePaymentsProducts, listProducts, noop ),
+	],
+	[ SIMPLE_PAYMENTS_PRODUCTS_LIST_ADD ]: [
+		dispatchRequest( requestSimplePaymentsProductAdd, addProduct, noop ),
+	],
+	[ SIMPLE_PAYMENTS_PRODUCTS_LIST_EDIT ]: [
+		dispatchRequest( requestSimplePaymentsProductEdit, addProduct, noop ),
+	],
+	[ SIMPLE_PAYMENTS_PRODUCTS_LIST_DELETE ]: [
+		dispatchRequest( requestSimplePaymentsProductDelete, deleteProduct, noop ),
+	],
 };

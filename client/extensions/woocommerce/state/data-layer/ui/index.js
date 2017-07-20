@@ -7,4 +7,3 @@ import products from './products';
 import shippingZones from './shipping-zones';
 
 export default mergeHandlers( payments, products, shippingZones );
-

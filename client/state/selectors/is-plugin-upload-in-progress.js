@@ -14,4 +14,3 @@ import { get } from 'lodash';
 export default function isPluginUploadInProgress( state, siteId ) {
 	return !! get( state.plugins.upload.inProgress, siteId, false );
 }
-

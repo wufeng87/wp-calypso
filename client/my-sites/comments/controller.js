@@ -57,6 +57,6 @@ export const comments = function( context ) {
 			status={ 'pending' === status ? 'unapproved' : status }
 		/>,
 		'primary',
-		context.store
+		context.store,
 	);
 };

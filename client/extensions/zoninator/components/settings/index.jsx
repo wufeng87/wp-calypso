@@ -11,11 +11,7 @@ import DocumentHead from 'components/data/document-head';
 import Main from 'components/main';
 import Navigation from '../navigation';
 
-const Settings = ( {
-	children,
-	tab,
-	translate
-} ) => {
+const Settings = ( { children, tab, translate } ) => {
 	const mainClassName = 'zoninator__main';
 
 	return (

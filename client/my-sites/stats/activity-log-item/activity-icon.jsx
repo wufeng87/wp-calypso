@@ -6,7 +6,6 @@ import classNames from 'classnames';
 import Gridicon from 'gridicons';
 
 export default class ActivityIcon extends PureComponent {
-
 	static propTypes = {
 		group: PropTypes.oneOf( [
 			'attachment',
@@ -24,16 +23,16 @@ export default class ActivityIcon extends PureComponent {
 	};
 
 	getIcon() {
-		const {
-			group,
-			name,
-		} = this.props;
+		const { group, name } = this.props;
 
 		switch ( name ) {
 			// Inline return makes alphabetizing and searching easier :)
-			case 'post__published': return 'create';
-			case 'post__trashed': return 'trash';
-			case 'user__registered': return 'user-add';
+			case 'post__published':
+				return 'create';
+			case 'post__trashed':
+				return 'trash';
+			case 'user__registered':
+				return 'user-add';
 		}
 
 		switch ( group ) {

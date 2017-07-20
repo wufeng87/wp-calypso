@@ -22,10 +22,20 @@ import { bindActionCreatorsWithSiteId } from 'woocommerce/lib/redux-utils';
 import { getCurrentlyEditingShippingZoneLocationsList } from 'woocommerce/state/ui/shipping/zones/locations/selectors';
 import { openEditLocations } from 'woocommerce/state/ui/shipping/zones/locations/actions';
 import { areShippingZonesFullyLoaded } from 'woocommerce/components/query-shipping-zones';
-import { areSettingsGeneralLoaded, areSettingsGeneralLoadError } from 'woocommerce/state/sites/settings/general/selectors';
+import {
+	areSettingsGeneralLoaded,
+	areSettingsGeneralLoadError,
+} from 'woocommerce/state/sites/settings/general/selectors';
 
-const ShippingZoneLocationList = ( { siteId, loaded, fetchError, translate, locations, actions } ) => {
-	const getLocationFlag = ( location ) => {
+const ShippingZoneLocationList = ( {
+	siteId,
+	loaded,
+	fetchError,
+	translate,
+	locations,
+	actions,
+} ) => {
+	const getLocationFlag = location => {
 		if ( 'continent' === location.type ) {
 			return null;
 		}
@@ -37,10 +47,13 @@ const ShippingZoneLocationList = ( { siteId, loaded, fetchError, translate, loca
 		return <LocationFlag code={ location.code } />;
 	};
 
-	const getLocationDescription = ( location ) => {
+	const getLocationDescription = location => {
 		switch ( location.type ) {
 			case 'continent':
-				if ( location.selectedCountryCount && location.selectedCountryCount !== location.countryCount ) {
+				if (
+					location.selectedCountryCount &&
+					location.selectedCountryCount !== location.countryCount
+				) {
 					return translate(
 						'%(selected)s out of %(count)s country',
 						'%(selected)s out of %(count)s countries',
@@ -49,8 +62,8 @@ const ShippingZoneLocationList = ( { siteId, loaded, fetchError, translate, loca
 							args: {
 								selected: location.selectedCountryCount,
 								count: location.countryCount,
-							}
-						}
+							},
+						},
 					);
 				}
 
@@ -69,7 +82,7 @@ const ShippingZoneLocationList = ( { siteId, loaded, fetchError, translate, loca
 	const renderLocation = ( location, index ) => {
 		if ( ! loaded ) {
 			return (
-				<ListItem key={ index } className="shipping-zone__location is-placeholder" >
+				<ListItem key={ index } className="shipping-zone__location is-placeholder">
 					<ListItemField className="shipping-zone__location-title">
 						<div className="shipping-zone__placeholder-flag" />
 						<span />
@@ -83,7 +96,7 @@ const ShippingZoneLocationList = ( { siteId, loaded, fetchError, translate, loca
 		}
 
 		return (
-			<ListItem key={ index } className="shipping-zone__location" >
+			<ListItem key={ index } className="shipping-zone__location">
 				<ListItemField className="shipping-zone__location-title">
 					{ getLocationFlag( location ) }
 					{ decodeEntities( location.name ) }
@@ -111,22 +124,23 @@ const ShippingZoneLocationList = ( { siteId, loaded, fetchError, translate, loca
 		<div className="shipping-zone__locations-container">
 			<ExtendedHeader
 				label={ translate( 'Zone locations' ) }
-				description={ translate( 'Define the places that are included in this zone.' ) } >
-				<Button onClick={ onAddLocation } disabled={ ! loaded } >
+				description={ translate( 'Define the places that are included in this zone.' ) }
+			>
+				<Button onClick={ onAddLocation } disabled={ ! loaded }>
 					{ isEmpty( locations ) ? translate( 'Add locations' ) : translate( 'Edit locations' ) }
 				</Button>
 			</ExtendedHeader>
 			<List>
 				{ locationsToRender.length
-				? <ListHeader>
-					<ListItemField className="shipping-zone__location-title">
-						{ translate( 'Location' ) }
-					</ListItemField>
-					<ListItemField className="shipping-zone__location-summary">
-						{ translate( 'Details' ) }
-					</ListItemField>
-				</ListHeader>
-				: null }
+					? <ListHeader>
+							<ListItemField className="shipping-zone__location-title">
+								{ translate( 'Location' ) }
+							</ListItemField>
+							<ListItemField className="shipping-zone__location-summary">
+								{ translate( 'Details' ) }
+							</ListItemField>
+						</ListHeader>
+					: null }
 				{ locationsToRender.map( renderLocation ) }
 			</List>
 			<ShippingZoneLocationDialog siteId={ siteId } isAdding={ isEmpty( locations ) } />
@@ -139,7 +153,7 @@ ShippingZoneLocationList.PropTypes = {
 };
 
 export default connect(
-	( state ) => {
+	state => {
 		const loaded = areShippingZonesFullyLoaded( state ) && areSettingsGeneralLoaded( state );
 		return {
 			loaded,
@@ -148,8 +162,12 @@ export default connect(
 		};
 	},
 	( dispatch, ownProps ) => ( {
-		actions: bindActionCreatorsWithSiteId( {
-			openEditLocations,
-		}, dispatch, ownProps.siteId ),
-	} )
+		actions: bindActionCreatorsWithSiteId(
+			{
+				openEditLocations,
+			},
+			dispatch,
+			ownProps.siteId,
+		),
+	} ),
 )( localize( ShippingZoneLocationList ) );

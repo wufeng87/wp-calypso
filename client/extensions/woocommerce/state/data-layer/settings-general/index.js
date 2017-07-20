@@ -30,7 +30,15 @@ export default {
 				dispatch( successAction );
 			};
 
-			store.dispatch( put( siteId, 'settings/general/woocommerce_currency', payload, updatedAction, failureAction ) );
+			store.dispatch(
+				put(
+					siteId,
+					'settings/general/woocommerce_currency',
+					payload,
+					updatedAction,
+					failureAction,
+				),
+			);
 		},
 	],
 };

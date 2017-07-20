@@ -20,16 +20,15 @@ import { getLink } from 'woocommerce/lib/nav-utils';
 import { getSelectedSiteWithFallback } from 'woocommerce/state/sites/selectors';
 
 class ShippingSettingsFinishedButton extends Component {
-
 	componentDidMount = () => {
 		const { site } = this.props;
 
 		if ( site && site.ID ) {
 			this.props.fetchSetupChoices( site.ID );
 		}
-	}
+	};
 
-	componentWillReceiveProps = ( newProps ) => {
+	componentWillReceiveProps = newProps => {
 		const { site } = this.props;
 
 		const newSiteId = newProps.site ? newProps.site.ID : null;
@@ -38,12 +37,12 @@ class ShippingSettingsFinishedButton extends Component {
 		if ( oldSiteId !== newSiteId ) {
 			this.props.fetchSetupChoices( newSiteId );
 		}
-	}
+	};
 
 	redirect = () => {
 		const { site } = this.props;
 		page.redirect( getLink( '/store/:site', site ) );
-	}
+	};
 
 	render() {
 		const { translate, loading, site, finishedInitialSetup } = this.props;
@@ -56,7 +55,11 @@ class ShippingSettingsFinishedButton extends Component {
 			return null;
 		}
 
-		return <Button onClick={ this.redirect } primary>{ translate( 'I\'m Finished' ) }</Button>;
+		return (
+			<Button onClick={ this.redirect } primary>
+				{ translate( "I'm Finished" ) }
+			</Button>
+		);
 	}
 }
 
@@ -76,8 +79,10 @@ function mapDispatchToProps( dispatch ) {
 		{
 			fetchSetupChoices,
 		},
-		dispatch
+		dispatch,
 	);
 }
 
-export default connect( mapStateToProps, mapDispatchToProps )( localize( ShippingSettingsFinishedButton ) );
+export default connect( mapStateToProps, mapDispatchToProps )(
+	localize( ShippingSettingsFinishedButton ),
+);

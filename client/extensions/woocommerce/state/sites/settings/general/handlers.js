@@ -41,9 +41,11 @@ export const handleSettingsGeneral = ( { dispatch, getState }, action, next ) =>
 };
 
 export default {
-	[ WOOCOMMERCE_SETTINGS_GENERAL_REQUEST ]: [ dispatchRequest(
-		handleSettingsGeneral,
-		handleSettingsGeneralSuccess,
-		handleSettingsGeneralError
-	) ]
+	[ WOOCOMMERCE_SETTINGS_GENERAL_REQUEST ]: [
+		dispatchRequest(
+			handleSettingsGeneral,
+			handleSettingsGeneralSuccess,
+			handleSettingsGeneralError,
+		),
+	],
 };

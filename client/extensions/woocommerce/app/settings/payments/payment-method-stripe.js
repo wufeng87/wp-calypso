@@ -20,7 +20,6 @@ import Notice from 'components/notice';
 import NoticeAction from 'components/notice/notice-action';
 
 class PaymentMethodStripe extends Component {
-
 	static propTypes = {
 		method: PropTypes.shape( {
 			settings: PropTypes.shape( {
@@ -38,44 +37,50 @@ class PaymentMethodStripe extends Component {
 		onDone: PropTypes.func.isRequired,
 	};
 
-	onEditFieldHandler = ( e ) => {
+	onEditFieldHandler = e => {
 		this.props.onEditField( e.target.name, e.target.value );
-	}
+	};
 
-	onToggleTestMode = ( mode ) => {
+	onToggleTestMode = mode => {
 		const testmode = mode === 'test' ? 'yes' : 'no';
 		// return curried function
 		return () => {
 			this.props.onEditField( 'testmode', testmode );
 		};
-	}
+	};
 
-	renderEditTextboxSecretKey = ( setting ) => {
+	renderEditTextboxSecretKey = setting => {
 		const { translate } = this.props;
 		return (
 			<FormTextInput
 				name={ setting.id }
 				onChange={ this.onEditFieldHandler }
 				value={ setting.value }
-				placeholder={ translate( 'Enter your secret key from your Stripe.com account' ) } />
+				placeholder={ translate( 'Enter your secret key from your Stripe.com account' ) }
+			/>
 		);
-	}
+	};
 
-	renderEditTextboxPublishableKey = ( setting ) => {
+	renderEditTextboxPublishableKey = setting => {
 		const { translate } = this.props;
 		return (
 			<FormTextInput
 				name={ setting.id }
 				onChange={ this.onEditFieldHandler }
 				value={ setting.value }
-				placeholder={ translate( 'Enter your publishable key from your Stripe.com account' ) } />
+				placeholder={ translate( 'Enter your publishable key from your Stripe.com account' ) }
+			/>
 		);
-	}
+	};
 
-	renderKeyFields = ( isLiveMode ) => {
+	renderKeyFields = isLiveMode => {
 		const { method, translate } = this.props;
-		const secretLabel = isLiveMode ? translate( 'Live Secret Key' ) : translate( 'Test Secret Key' );
-		const publishableLabel = isLiveMode ? translate( 'Live Publishable Key' ) : translate( 'Test Publishable Key' );
+		const secretLabel = isLiveMode
+			? translate( 'Live Secret Key' )
+			: translate( 'Test Secret Key' );
+		const publishableLabel = isLiveMode
+			? translate( 'Live Publishable Key' )
+			: translate( 'Test Publishable Key' );
 
 		return (
 			<div>
@@ -84,7 +89,7 @@ class PaymentMethodStripe extends Component {
 						{ secretLabel }
 					</FormLabel>
 					{ this.renderEditTextboxSecretKey(
-						isLiveMode ? method.settings.secret_key : method.settings.test_secret_key
+						isLiveMode ? method.settings.secret_key : method.settings.test_secret_key,
 					) }
 				</FormFieldset>
 				<FormFieldset className="payments__method-edit-field-container">
@@ -92,16 +97,21 @@ class PaymentMethodStripe extends Component {
 						{ publishableLabel }
 					</FormLabel>
 					{ this.renderEditTextboxPublishableKey(
-						isLiveMode ? method.settings.publishable_key : method.settings.test_publishable_key
+						isLiveMode ? method.settings.publishable_key : method.settings.test_publishable_key,
 					) }
 				</FormFieldset>
 			</div>
 		);
-	}
+	};
 
 	buttons = [
 		{ action: 'cancel', label: this.props.translate( 'Cancel' ), onClick: this.props.onCancel },
-		{ action: 'save', label: this.props.translate( 'Done' ), onClick: this.props.onDone, isPrimary: true },
+		{
+			action: 'save',
+			label: this.props.translate( 'Done' ),
+			onClick: this.props.onDone,
+			isPrimary: true,
+		},
 	];
 
 	render() {
@@ -110,15 +120,21 @@ class PaymentMethodStripe extends Component {
 			<Dialog
 				additionalClassNames="payments__dialog woocommerce"
 				buttons={ this.buttons }
-				isVisible>
+				isVisible
+			>
 				<FormFieldset className="payments__method-edit-field-container">
-					<Notice showDismiss={ false } text={ translate( 'To use Stripe you need to register an account' ) }>
-						<NoticeAction href="https://dashboard.stripe.com/register">{ translate( 'Sign up' ) }</NoticeAction>
-					</Notice>
-					<FormLabel>{ translate( 'Payment Mode' ) }</FormLabel>
-					<SegmentedControl
-						primary
+					<Notice
+						showDismiss={ false }
+						text={ translate( 'To use Stripe you need to register an account' ) }
 					>
+						<NoticeAction href="https://dashboard.stripe.com/register">
+							{ translate( 'Sign up' ) }
+						</NoticeAction>
+					</Notice>
+					<FormLabel>
+						{ translate( 'Payment Mode' ) }
+					</FormLabel>
+					<SegmentedControl primary>
 						<ControlItem
 							selected={ method.settings.testmode.value === 'yes' }
 							onClick={ this.onToggleTestMode( 'test' ) }
@@ -137,22 +153,30 @@ class PaymentMethodStripe extends Component {
 				{ method.settings.testmode.value === 'yes' && this.renderKeyFields( false ) }
 				{ method.settings.testmode.value === 'no' && this.renderKeyFields( true ) }
 				<FormFieldset className="payments__method-edit-field-container">
-					<FormLegend>{ translate( 'Payment authorization' ) }</FormLegend>
+					<FormLegend>
+						{ translate( 'Payment authorization' ) }
+					</FormLegend>
 					<FormLabel>
 						<FormRadio
 							name="capture"
 							value="yes"
 							checked={ 'yes' === method.settings.capture.value }
-							onChange={ this.onEditFieldHandler } />
-						<span>{ translate( 'Authorize and charge the customers credit card automatically' ) }</span>
+							onChange={ this.onEditFieldHandler }
+						/>
+						<span>
+							{ translate( 'Authorize and charge the customers credit card automatically' ) }
+						</span>
 					</FormLabel>
 					<FormLabel>
 						<FormRadio
 							name="capture"
 							value="no"
 							checked={ 'no' === method.settings.capture.value }
-							onChange={ this.onEditFieldHandler } />
-						<span>{ translate( 'Authorize the customers credit card but charge manually' ) }</span>
+							onChange={ this.onEditFieldHandler }
+						/>
+						<span>
+							{ translate( 'Authorize the customers credit card but charge manually' ) }
+						</span>
 					</FormLabel>
 				</FormFieldset>
 				<FormFieldset className="payments__method-edit-field-container">
@@ -160,11 +184,11 @@ class PaymentMethodStripe extends Component {
 					<PaymentMethodEditFormToggle
 						checked={ method.settings.apple_pay.value === 'yes' ? true : false }
 						name="apple_pay"
-						onChange={ this.onEditFieldHandler } />
+						onChange={ this.onEditFieldHandler }
+					/>
 					<span>
 						{ translate(
-							'By using ApplePay you aggree to Stripe and ' +
-							'Apple\'s terms of service'
+							'By using ApplePay you aggree to Stripe and ' + "Apple's terms of service",
 						) }
 					</span>
 				</FormFieldset>

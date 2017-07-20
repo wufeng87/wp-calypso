@@ -12,7 +12,9 @@ import page from 'page';
  * Internal dependencies
  */
 import Main from 'components/main';
-import QueryShippingZones, { areShippingZonesFullyLoaded } from 'woocommerce/components/query-shipping-zones';
+import QueryShippingZones, {
+	areShippingZonesFullyLoaded,
+} from 'woocommerce/components/query-shipping-zones';
 import QuerySettingsGeneral from 'woocommerce/components/query-settings-general';
 import { areSettingsGeneralLoaded } from 'woocommerce/state/sites/settings/general/selectors';
 import ShippingZoneHeader from './shipping-zone-header';
@@ -70,7 +72,12 @@ class Shipping extends Component {
 
 		// If the zone didn't have a real ID before but it does now, change the URL from /zone/new to /zone/ID
 		if ( this.props.zone && isNaN( this.props.zone.id ) && zone && ! isNaN( zone.id ) ) {
-			page.replace( getLink( '/store/settings/shipping/zone/:site/' + zone.id, site ), null, false, false );
+			page.replace(
+				getLink( '/store/settings/shipping/zone/:site/' + zone.id, site ),
+				null,
+				false,
+				false,
+			);
 		}
 	}
 
@@ -79,36 +86,40 @@ class Shipping extends Component {
 
 		const successAction = successNotice(
 			isNaN( zone.id ) ? translate( 'Shipping Zone added.' ) : translate( 'Shipping Zone saved.' ),
-			{ duration: 4000 }
+			{ duration: 4000 },
 		);
 
 		const failureAction = errorNotice(
-			translate( 'There was a problem saving the Shipping Zone. Please try again.' )
+			translate( 'There was a problem saving the Shipping Zone. Please try again.' ),
 		);
 
 		const locationsFailAction = errorNotice(
 			translate( 'Add at least one location to this zone' ),
-			{ duration: 4000 }
+			{ duration: 4000 },
 		);
 
-		const methodsFailAction = errorNotice(
-			translate( 'Add shipping methods to this zone' ),
-			{ duration: 4000 }
-		);
+		const methodsFailAction = errorNotice( translate( 'Add shipping methods to this zone' ), {
+			duration: 4000,
+		} );
 
-		actions.createShippingZoneSaveActionList( successAction, failureAction, locationsFailAction, methodsFailAction );
+		actions.createShippingZoneSaveActionList(
+			successAction,
+			failureAction,
+			locationsFailAction,
+			methodsFailAction,
+		);
 	}
 
 	onDelete() {
 		const { translate, actions } = this.props;
 
-		const successAction = successNotice(
-			translate( 'Shipping Zone deleted.' ),
-			{ duration: 4000, displayOnNextPage: true }
-		);
+		const successAction = successNotice( translate( 'Shipping Zone deleted.' ), {
+			duration: 4000,
+			displayOnNextPage: true,
+		} );
 
 		const failureAction = errorNotice(
-			translate( 'There was a problem deleting the Shipping Zone. Please try again.' )
+			translate( 'There was a problem deleting the Shipping Zone. Please try again.' ),
 		);
 
 		actions.createShippingZoneDeleteActionList( successAction, failureAction );
@@ -122,9 +133,7 @@ class Shipping extends Component {
 				<ProtectFormGuard isChanged={ hasEdits } />
 				<QueryShippingZones siteId={ siteId } />
 				<QuerySettingsGeneral siteId={ siteId } />
-				<ShippingZoneHeader
-					onSave={ this.onSave }
-					onDelete={ this.onDelete } />
+				<ShippingZoneHeader onSave={ this.onSave } onDelete={ this.onDelete } />
 				{ ! isRestOfTheWorld && <ShippingZoneLocationList siteId={ siteId } /> }
 				<ShippingZoneMethodList siteId={ siteId } />
 				{ ! isRestOfTheWorld && <ShippingZoneName siteId={ siteId } /> }
@@ -139,7 +148,7 @@ Shipping.propTypes = {
 };
 
 export default connect(
-	( state ) => {
+	state => {
 		const loaded = areShippingZonesFullyLoaded( state ) && areSettingsGeneralLoaded( state );
 		const zone = loaded && getCurrentlyEditingShippingZone( state );
 		const isRestOfTheWorld = zone && 0 === zone.id;
@@ -153,13 +162,15 @@ export default connect(
 			hasEdits: Boolean( zone && 0 !== getSaveZoneActionListSteps( state ).length ),
 		};
 	},
-	( dispatch ) => ( {
+	dispatch => ( {
 		actions: bindActionCreators(
 			{
 				addNewShippingZone,
 				openShippingZoneForEdit,
 				createShippingZoneSaveActionList,
 				createShippingZoneDeleteActionList,
-			}, dispatch
-		)
-	} ) )( localize( Shipping ) );
+			},
+			dispatch,
+		),
+	} ),
+)( localize( Shipping ) );

@@ -39,11 +39,7 @@ const simplePayments = editor => {
 					activeTab,
 					isEdit,
 					onInsert( productData ) {
-						editor.execCommand(
-							'mceInsertContent',
-							false,
-							serialize( productData )
-						);
+						editor.execCommand( 'mceInsertContent', false, serialize( productData ) );
 						renderModal( 'hide', activeTab );
 					},
 					onClose() {

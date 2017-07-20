@@ -113,7 +113,7 @@ describe( '#fetchCommentList', () => {
 
 describe( '#requestComment', () => {
 	let dispatch;
-	beforeEach( () => dispatch = spy() );
+	beforeEach( () => ( dispatch = spy() ) );
 
 	it( 'should dispatch http action', () => {
 		const siteId = '124';
@@ -122,19 +122,21 @@ describe( '#requestComment', () => {
 
 		requestComment( { dispatch }, action );
 
-		expect( dispatch ).calledWith( http( {
-			method: 'GET',
-			path: `/sites/${ siteId }/comments/${ commentId }`,
-			apiVersion: '1.1',
-			onSuccess: action,
-			onFailure: action,
-		} ) );
+		expect( dispatch ).calledWith(
+			http( {
+				method: 'GET',
+				path: `/sites/${ siteId }/comments/${ commentId }`,
+				apiVersion: '1.1',
+				onSuccess: action,
+				onFailure: action,
+			} ),
+		);
 	} );
 } );
 
 describe( '#receiveCommentSuccess', () => {
 	let dispatch;
-	beforeEach( () => dispatch = spy() );
+	beforeEach( () => ( dispatch = spy() ) );
 
 	it( 'should dispatch receive comments with a single comment', () => {
 		const siteId = '124';
@@ -155,7 +157,7 @@ describe( '#receiveCommentSuccess', () => {
 
 describe( '#receiveCommentError', () => {
 	let dispatch;
-	beforeEach( () => dispatch = spy() );
+	beforeEach( () => ( dispatch = spy() ) );
 
 	it( 'should dispatch receive comments with a single comment', () => {
 		const siteId = '124';
@@ -166,7 +168,7 @@ describe( '#receiveCommentError', () => {
 			reader: {
 				sites: {
 					items: {
-						124: { title: 'sqeeeeee!' }
+						124: { title: 'sqeeeeee!' },
 					},
 				},
 			},

@@ -19,7 +19,7 @@ const PluginSiteDisabledManage = ( {
 	plugin,
 	remoteManagementUrl,
 	site,
-	translate
+	translate,
 } ) => {
 	const url = remoteManagementUrl + '&section=plugins';
 	const message = isNetwork
@@ -32,7 +32,9 @@ const PluginSiteDisabledManage = ( {
 	if ( plugin.slug === 'jetpack' ) {
 		return (
 			<span className="plugin-site-disabled-manage">
-				<span className="plugin-site-disabled-manage__label">{ message }</span>
+				<span className="plugin-site-disabled-manage__label">
+					{ message }
+				</span>
 				<DisconnectJetpackButton disabled={ ! plugin } site={ site } redirect="/plugins/jetpack" />
 			</span>
 		);
@@ -40,7 +42,9 @@ const PluginSiteDisabledManage = ( {
 
 	return (
 		<span className="plugin-site-disabled-manage">
-			<span className="plugin-site-disabled-manage__label">{ message }</span>
+			<span className="plugin-site-disabled-manage__label">
+				{ message }
+			</span>
 			<Button
 				compact={ true }
 				className="plugin-site-disabled-manage__link"
@@ -53,8 +57,6 @@ const PluginSiteDisabledManage = ( {
 	);
 };
 
-export default connect(
-	( state, ownProps ) => ( {
-		remoteManagementUrl: getJetpackSiteRemoteManagementUrl( state, get( ownProps, 'site.ID' ) )
-	} )
-)( localize( PluginSiteDisabledManage ) );
+export default connect( ( state, ownProps ) => ( {
+	remoteManagementUrl: getJetpackSiteRemoteManagementUrl( state, get( ownProps, 'site.ID' ) ),
+} ) )( localize( PluginSiteDisabledManage ) );

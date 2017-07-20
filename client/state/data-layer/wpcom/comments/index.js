@@ -177,21 +177,17 @@ export const deleteComment = ( { dispatch, getState }, action ) => {
 			{
 				...action,
 				comment,
-			}
-		)
+			},
+		),
 	);
 };
 
 export const announceDeleteSuccess = ( { dispatch } ) => {
 	dispatch(
-		createNotice(
-			'is-error',
-			translate( 'Comment deleted permanently.' ),
-			{
-				duration: 5000,
-				isPersistent: true,
-			}
-		)
+		createNotice( 'is-error', translate( 'Comment deleted permanently.' ), {
+			duration: 5000,
+			isPersistent: true,
+		} ),
 	);
 };
 
@@ -199,13 +195,10 @@ export const announceDeleteFailure = ( { dispatch, getState }, action ) => {
 	const { siteId, postId, comment } = action;
 
 	dispatch(
-		errorNotice(
-			translate( 'Could not delete the comment.' ),
-			{
-				duration: 5000,
-				isPersistent: true,
-			}
-		)
+		errorNotice( translate( 'Could not delete the comment.' ), {
+			duration: 5000,
+			isPersistent: true,
+		} ),
 	);
 
 	if ( comment ) {
@@ -221,5 +214,7 @@ export const announceDeleteFailure = ( { dispatch, getState }, action ) => {
 
 export default {
 	[ COMMENTS_REQUEST ]: [ dispatchRequest( fetchPostComments, addComments, announceFailure ) ],
-	[ COMMENTS_DELETE ]: [ dispatchRequest( deleteComment, announceDeleteSuccess, announceDeleteFailure ) ],
+	[ COMMENTS_DELETE ]: [
+		dispatchRequest( deleteComment, announceDeleteSuccess, announceDeleteFailure ),
+	],
 };

@@ -30,8 +30,7 @@ import PluginUpload from './plugin-upload';
 const allowedCategoryNames = [ 'new', 'popular', 'featured' ];
 const sites = sitesFactory();
 
-let lastPluginsListVisited,
-	lastPluginsQuerystring;
+let lastPluginsListVisited, lastPluginsQuerystring;
 
 function renderSinglePlugin( context, siteUrl ) {
 	const pluginSlug = decodeURIComponent( context.params.plugin );
@@ -44,9 +43,7 @@ function renderSinglePlugin( context, siteUrl ) {
 		baseAnalyticsPath += '/:site';
 	}
 
-	analytics
-	.pageView
-	.record( baseAnalyticsPath, `${ analyticsPageTitle } > Plugin Details` );
+	analytics.pageView.record( baseAnalyticsPath, `${ analyticsPageTitle } > Plugin Details` );
 
 	// Scroll to the top
 	window.scrollTo( 0, 0 );
@@ -69,7 +66,7 @@ function renderSinglePlugin( context, siteUrl ) {
 			siteUrl,
 		} ),
 		document.getElementById( 'primary' ),
-		context.store
+		context.store,
 	);
 }
 
@@ -95,29 +92,25 @@ function renderPluginList( context, basePath ) {
 			filter: context.params.pluginFilter,
 			category: context.params.category,
 			sites,
-			search
+			search,
 		} ),
 		'primary',
-		context.store
+		context.store,
 	);
 
 	if ( search ) {
 		analytics.ga.recordEvent( 'Plugins', 'Search', 'Search term', search );
 	}
 
-	const analyticsPageTitle = 'Plugins' +
-		( context.params.pluginFilter
-			? ' ' + capitalize( context.params.pluginFilter )
-			: ''
-		);
+	const analyticsPageTitle =
+		'Plugins' +
+		( context.params.pluginFilter ? ' ' + capitalize( context.params.pluginFilter ) : '' );
 
 	let baseAnalyticsPath = 'plugins';
 	if ( site ) {
 		baseAnalyticsPath += '/:site';
 	}
-	analytics
-		.pageView
-		.record( baseAnalyticsPath, analyticsPageTitle );
+	analytics.pageView.record( baseAnalyticsPath, analyticsPageTitle );
 }
 
 function renderPluginsBrowser( context ) {
@@ -141,9 +134,7 @@ function renderPluginsBrowser( context ) {
 		baseAnalyticsPath += '/:site';
 	}
 
-	analytics
-	.pageView
-	.record( baseAnalyticsPath, analyticsPageTitle );
+	analytics.pageView.record( baseAnalyticsPath, analyticsPageTitle );
 
 	renderWithReduxStore(
 		React.createElement( PluginBrowser, {
@@ -151,10 +142,10 @@ function renderPluginsBrowser( context ) {
 			path: context.path,
 			category,
 			sites,
-			search: searchTerm
+			search: searchTerm,
 		} ),
 		document.getElementById( 'primary' ),
-		context.store
+		context.store,
 	);
 }
 
@@ -166,10 +157,10 @@ function renderPluginWarnings( context ) {
 	renderWithReduxStore(
 		React.createElement( PluginEligibility, {
 			siteSlug: site.slug,
-			pluginSlug
+			pluginSlug,
 		} ),
 		document.getElementById( 'primary' ),
-		context.store
+		context.store,
 	);
 }
 
@@ -188,10 +179,10 @@ function renderProvisionPlugins( context ) {
 
 	renderWithReduxStore(
 		React.createElement( PlanSetup, {
-			whitelist: context.query.only || false
+			whitelist: context.query.only || false,
 		} ),
 		document.getElementById( 'primary' ),
-		context.store
+		context.store,
 	);
 }
 
@@ -213,11 +204,7 @@ const controller = {
 	plugin( context ) {
 		const siteUrl = route.getSiteFragment( context.path );
 
-		if (
-			siteUrl &&
-			context.params.plugin &&
-			context.params.plugin === siteUrl.toString()
-		) {
+		if ( siteUrl && context.params.plugin && context.params.plugin === siteUrl.toString() ) {
 			controller.plugins( 'all', context );
 			return;
 		}
@@ -266,7 +253,7 @@ const controller = {
 	resetHistory() {
 		lastPluginsListVisited = null;
 		lastPluginsQuerystring = null;
-	}
+	},
 };
 
 module.exports = controller;

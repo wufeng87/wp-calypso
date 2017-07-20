@@ -24,7 +24,7 @@ import { NUMBER_OF_COMMENTS_PER_FETCH } from './constants';
 export const requestComment = ( { siteId, commentId } ) => ( {
 	type: COMMENT_REQUEST,
 	siteId,
-	commentId
+	commentId,
 } );
 
 /***
@@ -136,7 +136,7 @@ export function changeCommentStatus( siteId, postId, commentId, status ) {
 			siteId,
 			postId,
 			commentId,
-			status
+			status,
 		} );
 
 		return wpcom

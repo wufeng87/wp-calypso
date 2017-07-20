@@ -17,18 +17,29 @@ function renderViewButton( product, translate ) {
 	const url = product && product.permalink;
 	return (
 		// TODO: Do more to validate this URL?
-		<Button borderless className="products__header-view-link" href={ url } target="_blank" rel="noopener noreferrer">
+		<Button
+			borderless
+			className="products__header-view-link"
+			href={ url }
+			target="_blank"
+			rel="noopener noreferrer"
+		>
 			<Gridicon icon="visible" />
-			<span>{ translate( 'View' ) }</span>
+			<span>
+				{ translate( 'View' ) }
+			</span>
 		</Button>
 	);
 }
 
 function renderTrashButton( onTrash, product, isBusy, translate ) {
-	return onTrash && (
+	return (
+		onTrash &&
 		<Button borderless scary onClick={ onTrash }>
 			<Gridicon icon="trash" />
-			<span>{ translate( 'Delete' ) } </span>
+			<span>
+				{ translate( 'Delete' ) }{' '}
+			</span>
 		</Button>
 	);
 }
@@ -37,12 +48,11 @@ function renderSaveButton( onSave, product, isBusy, translate ) {
 	const saveExists = 'undefined' !== typeof onSave;
 	const saveDisabled = false === onSave;
 
-	const saveLabel = ( product && ! isObject( product.id )
-		? translate( 'Update' )
-		: translate( 'Save & Publish' )
-	);
+	const saveLabel =
+		product && ! isObject( product.id ) ? translate( 'Update' ) : translate( 'Save & Publish' );
 
-	return saveExists && (
+	return (
+		saveExists &&
 		<Button primary onClick={ onSave } disabled={ saveDisabled } busy={ isBusy }>
 			{ saveLabel }
 		</Button>
@@ -56,12 +66,20 @@ const ProductHeader = ( { viewEnabled, onTrash, onSave, isBusy, translate, site,
 	const trashButton = renderTrashButton( onTrash, product, isBusy, translate );
 	const saveButton = renderSaveButton( onSave, product, isBusy, translate );
 
-	const currentCrumb = product && existing
-		? ( <span>{ translate( 'Edit Product' ) }</span> )
-		: ( <span>{ translate( 'Add New' ) }</span> );
+	const currentCrumb =
+		product && existing
+			? <span>
+					{ translate( 'Edit Product' ) }
+				</span>
+			: <span>
+					{ translate( 'Add New' ) }
+				</span>;
 
 	const breadcrumbs = [
-		( <a href={ getLink( '/store/products/:site/', site ) }> { translate( 'Products' ) } </a> ),
+		<a href={ getLink( '/store/products/:site/', site ) }>
+			{' '}
+			{ translate( 'Products' ) }{' '}
+		</a>,
 		currentCrumb,
 	];
 
@@ -79,17 +97,11 @@ ProductHeader.propTypes = {
 		slug: PropTypes.string,
 	} ),
 	product: PropTypes.shape( {
-		id: PropTypes.oneOfType( [
-			PropTypes.number,
-			PropTypes.object,
-		] ),
+		id: PropTypes.oneOfType( [ PropTypes.number, PropTypes.object ] ),
 	} ),
 	viewEnabled: PropTypes.bool,
 	onTrash: PropTypes.func,
-	onSave: PropTypes.oneOfType( [
-		React.PropTypes.func,
-		React.PropTypes.bool,
-	] ),
+	onSave: PropTypes.oneOfType( [ React.PropTypes.func, React.PropTypes.bool ] ),
 };
 
 export default localize( ProductHeader );

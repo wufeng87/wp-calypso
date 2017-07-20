@@ -29,7 +29,7 @@ const getZones = () => {
 const Navigation = ( { activeTab, siteSlug, translate } ) => {
 	const getSettingsPath = () => {
 		const sections = sectionsModule.get();
-		const section = find( sections, ( value => value.name === 'zoninator' ) );
+		const section = find( sections, value => value.name === 'zoninator' );
 
 		return get( section, 'settings_path' );
 	};
@@ -38,10 +38,7 @@ const Navigation = ( { activeTab, siteSlug, translate } ) => {
 		const path = trimEnd( `${ getSettingsPath() }/${ siteSlug }/${ slug }`, '/' );
 
 		return (
-			<SectionNavTabItem
-				key={ slug }
-				path={ path }
-				selected={ activeTab === slug }>
+			<SectionNavTabItem key={ slug } path={ path } selected={ activeTab === slug }>
 				{ label }
 			</SectionNavTabItem>
 		);
@@ -71,13 +68,10 @@ Navigation.defaultProps = {
 	activeTab: '',
 };
 
-const connectComponent = connect( ( state ) => {
+const connectComponent = connect( state => {
 	return {
 		siteSlug: getSelectedSiteSlug( state ),
 	};
 } );
 
-export default flowRight(
-	connectComponent,
-	localize,
-)( Navigation );
+export default flowRight( connectComponent, localize )( Navigation );

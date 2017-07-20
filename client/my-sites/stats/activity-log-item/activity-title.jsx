@@ -6,7 +6,6 @@ import { get } from 'lodash';
 import { localize } from 'i18n-calypso';
 
 class ActivityTitle extends Component {
-
 	static propTypes = {
 		action: PropTypes.string,
 
@@ -88,7 +87,7 @@ class ActivityTitle extends Component {
 						slug: PropTypes.string,
 						uri: PropTypes.string,
 						version: PropTypes.string,
-					} )
+					} ),
 				),
 				PropTypes.shape( {
 					name: PropTypes.string,
@@ -186,10 +185,7 @@ class ActivityTitle extends Component {
 	}
 
 	getObjectName() {
-		const {
-			group,
-			object,
-		} = this.props;
+		const { group, object } = this.props;
 
 		switch ( group ) {
 			case 'attachment': {
@@ -265,7 +261,9 @@ class ActivityTitle extends Component {
 		return (
 			<div className="activity-log-item__title-title">
 				{ `${ actorName } ${ action } ` }
-				<em>{ objectName }</em>
+				<em>
+					{ objectName }
+				</em>
 			</div>
 		);
 	}
@@ -280,7 +278,10 @@ class ActivityTitle extends Component {
 		return (
 			<div className="activity-log-item__title">
 				{ this.renderTitle() }
-				{ subTitle && <div className="activity-log-item__title-subtitle">{ subTitle }</div> }
+				{ subTitle &&
+					<div className="activity-log-item__title-subtitle">
+						{ subTitle }
+					</div> }
 			</div>
 		);
 	}

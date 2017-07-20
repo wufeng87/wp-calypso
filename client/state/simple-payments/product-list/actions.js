@@ -10,7 +10,7 @@ import {
 	SIMPLE_PAYMENTS_PRODUCTS_LIST_RECEIVE_DELETE,
 } from 'state/action-types';
 
-export const requestProducts = ( siteId ) => ( {
+export const requestProducts = siteId => ( {
 	siteId,
 	type: SIMPLE_PAYMENTS_PRODUCTS_LIST,
 } );
@@ -41,7 +41,7 @@ export function receiveUpdateProduct( siteId, product ) {
 	return {
 		siteId,
 		type: SIMPLE_PAYMENTS_PRODUCTS_LIST_RECEIVE_UPDATE,
-		product
+		product,
 	};
 }
 

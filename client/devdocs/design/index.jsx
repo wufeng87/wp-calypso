@@ -188,7 +188,7 @@ if ( config.isEnabled( 'devdocs/components-usage-stats' ) ) {
 			{
 				dispatchFetchComponentsUsageStats: fetchComponentsUsageStats,
 			},
-			dispatch
+			dispatch,
 		);
 	};
 

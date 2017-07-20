@@ -48,7 +48,12 @@ class ProductList extends Component {
 								onChange={ this.handleRadioChange }
 							/>
 							<label className="editor-simple-payments-modal__list-label" htmlFor={ radioId }>
-								<div>{ title }</div><div>{ formatCurrency( price, currency ) }</div>
+								<div>
+									{ title }
+								</div>
+								<div>
+									{ formatCurrency( price, currency ) }
+								</div>
 							</label>
 						</CompactCard>
 					);

@@ -29,7 +29,7 @@ import { getActionList } from 'woocommerce/state/action-list/selectors';
 import {
 	getCurrentlyEditingId,
 	getProductWithLocalEdits,
-	getProductEdits
+	getProductEdits,
 } from 'woocommerce/state/ui/products/selectors';
 import { getProductVariationsWithLocalEdits } from 'woocommerce/state/ui/products/variations/selectors';
 import { fetchProductCategories } from 'woocommerce/state/sites/product-categories/actions';
@@ -73,8 +73,8 @@ class ProductCreate extends React.Component {
 
 	componentWillReceiveProps( newProps ) {
 		const { site } = this.props;
-		const newSiteId = newProps.site && newProps.site.ID || null;
-		const oldSiteId = site && site.ID || null;
+		const newSiteId = ( newProps.site && newProps.site.ID ) || null;
+		const oldSiteId = ( site && site.ID ) || null;
 		if ( oldSiteId !== newSiteId ) {
 			this.props.editProduct( newSiteId, null, {} );
 			this.props.fetchProductCategories( newSiteId );
@@ -94,7 +94,7 @@ class ProductCreate extends React.Component {
 	onSave = () => {
 		const { site, product, translate } = this.props;
 
-		const successAction = ( products ) => {
+		const successAction = products => {
 			const newProduct = head( products );
 			page.redirect( getLink( '/store/products/:site', site ) );
 			return successNotice(
@@ -108,14 +108,14 @@ class ProductCreate extends React.Component {
 					onClick: () => {
 						window.open( newProduct.permalink );
 					},
-				}
+				},
 			);
 		};
 
 		const failureAction = errorNotice(
 			translate( 'There was a problem saving %(product)s. Please try again.', {
 				args: { product: product.name },
-			} )
+			} ),
 		);
 
 		if ( ! product.type ) {
@@ -123,15 +123,22 @@ class ProductCreate extends React.Component {
 			this.props.editProduct( site.ID, product, { type: 'simple' } );
 		}
 		this.props.createProductActionList( successAction, failureAction );
-	}
+	};
 
 	isProductValid( product = this.props.product ) {
-		return product &&
-			product.name && product.name.length > 0;
+		return product && product.name && product.name.length > 0;
 	}
 
 	render() {
-		const { site, product, hasEdits, className, variations, productCategories, actionList } = this.props;
+		const {
+			site,
+			product,
+			hasEdits,
+			className,
+			variations,
+			productCategories,
+			actionList,
+		} = this.props;
 
 		const isValid = 'undefined' !== site && this.isProductValid();
 		const isBusy = Boolean( actionList ); // If there's an action list present, we're trying to save.
@@ -195,7 +202,7 @@ function mapDispatchToProps( dispatch ) {
 			clearProductCategoryEdits,
 			clearProductVariationEdits,
 		},
-		dispatch
+		dispatch,
 	);
 }
 

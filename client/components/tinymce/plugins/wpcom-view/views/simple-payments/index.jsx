@@ -22,7 +22,7 @@ class SimplePaymentsView extends Component {
 		const { productId, product, siteId } = this.props;
 
 		if ( ! product ) {
-			return ( <QuerySimplePayments siteId={ siteId } productId={ productId } /> );
+			return <QuerySimplePayments siteId={ siteId } productId={ productId } />;
 		}
 
 		const { title, description, price, currency } = product;
@@ -38,10 +38,7 @@ class SimplePaymentsView extends Component {
 				<div className="wpview-type-simple-payments__wrapper">
 					<div className="wpview-type-simple-payments__image-part">
 						<figure className="wpview-type-simple-payments__image-figure">
-							<img
-								className="wpview-type-simple-payments__image"
-								src={ imageUrl }
-							/>
+							<img className="wpview-type-simple-payments__image" src={ imageUrl } />
 						</figure>
 					</div>
 					<div className="wpview-type-simple-payments__text-part">
@@ -93,7 +90,7 @@ SimplePaymentsView = connect( ( state, props ) => {
 	};
 } )( localize( SimplePaymentsView ) );
 
-SimplePaymentsView.match = ( content ) => {
+SimplePaymentsView.match = content => {
 	const match = shortcodeUtils.next( 'simple-payment', content );
 
 	if ( match ) {
@@ -101,13 +98,13 @@ SimplePaymentsView.match = ( content ) => {
 			index: match.index,
 			content: match.content,
 			options: {
-				shortcode: match.shortcode
-			}
+				shortcode: match.shortcode,
+			},
 		};
 	}
 };
 
-SimplePaymentsView.serialize = ( content ) => {
+SimplePaymentsView.serialize = content => {
 	return encodeURIComponent( content );
 };
 

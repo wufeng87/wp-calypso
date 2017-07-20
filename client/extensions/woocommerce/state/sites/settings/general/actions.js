@@ -12,7 +12,7 @@ import {
 	WOOCOMMERCE_SETTINGS_GENERAL_REQUEST,
 } from 'woocommerce/state/action-types';
 
-export const fetchSettingsGeneral = ( siteId ) => {
+export const fetchSettingsGeneral = siteId => {
 	return {
 		type: WOOCOMMERCE_SETTINGS_GENERAL_REQUEST,
 		siteId,
@@ -27,12 +27,7 @@ export const saveCurrencySuccess = ( siteId, data ) => {
 	};
 };
 
-export const saveCurrency = (
-	siteId,
-	currency,
-	successAction = null,
-	failureAction = null
-) => {
+export const saveCurrency = ( siteId, currency, successAction = null, failureAction = null ) => {
 	return {
 		type: WOOCOMMERCE_CURRENCY_UPDATE,
 		siteId,
@@ -56,7 +51,7 @@ export const updateTaxesEnabledSetting = (
 	siteId,
 	taxesEnabled,
 	successAction = null,
-	failureAction = null
+	failureAction = null,
 ) => ( dispatch, getState ) => {
 	const state = getState();
 	if ( ! siteId ) {
@@ -70,8 +65,9 @@ export const updateTaxesEnabledSetting = (
 	dispatch( updateAction );
 
 	const value = taxesEnabled ? 'yes' : 'no';
-	return request( siteId ).post( 'settings/general/woocommerce_calc_taxes', { value } )
-		.then( ( data ) => {
+	return request( siteId )
+		.post( 'settings/general/woocommerce_calc_taxes', { value } )
+		.then( data => {
 			dispatch( updateTaxesEnabledSettingSuccess( siteId, data ) );
 			if ( successAction ) {
 				dispatch( successAction( data ) );

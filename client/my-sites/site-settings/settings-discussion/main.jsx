@@ -17,10 +17,7 @@ import JetpackDevModeNotice from 'my-sites/site-settings/jetpack-dev-mode-notice
 import Placeholder from 'my-sites/site-settings/placeholder';
 import { getSelectedSite } from 'state/ui/selectors';
 
-const SiteSettingsDiscussion = ( {
-	site,
-	translate,
-} ) => {
+const SiteSettingsDiscussion = ( { site, translate } ) => {
 	if ( ! site ) {
 		return <Placeholder />;
 	}
@@ -36,8 +33,6 @@ const SiteSettingsDiscussion = ( {
 	);
 };
 
-export default connect(
-	( state ) => ( {
-		site: getSelectedSite( state ),
-	} )
-)( localize( SiteSettingsDiscussion ) );
+export default connect( state => ( {
+	site: getSelectedSite( state ),
+} ) )( localize( SiteSettingsDiscussion ) );

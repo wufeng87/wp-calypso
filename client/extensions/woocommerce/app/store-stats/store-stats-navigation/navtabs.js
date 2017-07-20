@@ -13,15 +13,15 @@ const StoreStatsNavigationTabs = props => {
 	const { label, slug, type, unit, units } = props;
 	return (
 		<NavTabs label={ label }>
-			{ Object.keys( units ).map( key => (
+			{ Object.keys( units ).map( key =>
 				<NavItem
 					key={ key }
 					path={ `/store/stats/${ type }/${ key }/${ slug }` }
 					selected={ unit === key }
 				>
 					{ units[ key ].title }
-				</NavItem>
-			) ) }
+				</NavItem>,
+			) }
 		</NavTabs>
 	);
 };

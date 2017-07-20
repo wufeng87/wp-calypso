@@ -17,11 +17,7 @@ import { isNotificationsOpen } from 'state/selectors';
 import { recordTracksEvent, withAnalytics } from 'state/analytics/actions';
 import { savePreference } from 'state/preferences/actions';
 import TrackComponentView from 'lib/analytics/track-component-view';
-import {
-	identity,
-	includes,
-	noop
-} from 'lodash';
+import { identity, includes, noop } from 'lodash';
 import {
 	ALLOWED_SECTIONS,
 	getAppBannerData,
@@ -47,7 +43,7 @@ class AppBanner extends Component {
 		saveDismissTime: noop,
 		translate: identity,
 		recordAppBannerOpen: noop,
-		userAgent: ( typeof window !== 'undefined' ) ? navigator.userAgent : '',
+		userAgent: typeof window !== 'undefined' ? navigator.userAgent : '',
 	};
 
 	isVisible() {
@@ -68,7 +64,7 @@ class AppBanner extends Component {
 		return this.isiOS() || this.isAndroid();
 	}
 
-	dismiss = ( event ) => {
+	dismiss = event => {
 		event.preventDefault();
 		const { currentSection, dismissedUntil } = this.props;
 
@@ -120,10 +116,16 @@ class AppBanner extends Component {
 				/>
 				<div className="app-banner__text-content">
 					<div className="app-banner__title">
-						<span> { title } </span>
+						<span>
+							{' '}
+							{ title }{' '}
+						</span>
 					</div>
 					<div className="app-banner__copy">
-						<span> { copy } </span>
+						<span>
+							{' '}
+							{ copy }{' '}
+						</span>
 					</div>
 				</div>
 				<div className="app-banner__buttons">
@@ -136,10 +138,7 @@ class AppBanner extends Component {
 					>
 						{ translate( 'Open in app' ) }
 					</Button>
-					<a
-						className="app-banner__no-thanks-button"
-						onClick={ this.dismiss }
-					>
+					<a className="app-banner__no-thanks-button" onClick={ this.dismiss }>
 						{ translate( 'No thanks' ) }
 					</a>
 				</div>
@@ -148,7 +147,7 @@ class AppBanner extends Component {
 	}
 }
 
-const mapStateToProps = ( state ) => {
+const mapStateToProps = state => {
 	const sectionName = getSectionName( state );
 	const isNotesOpen = isNotificationsOpen( state );
 
@@ -160,11 +159,16 @@ const mapStateToProps = ( state ) => {
 };
 
 const mapDispatchToProps = {
-	recordAppBannerOpen: ( sectionName ) => recordTracksEvent( 'calypso_mobile_app_banner_open', { page: sectionName } ),
-	saveDismissTime: ( sectionName, currentDimissTimes ) => withAnalytics(
-		recordTracksEvent( 'calypso_mobile_app_banner_dismiss', { page: sectionName } ),
-		savePreference( APP_BANNER_DISMISS_TIMES_PREFERENCE, getNewDismissTimes( sectionName, currentDimissTimes ) )
-	),
+	recordAppBannerOpen: sectionName =>
+		recordTracksEvent( 'calypso_mobile_app_banner_open', { page: sectionName } ),
+	saveDismissTime: ( sectionName, currentDimissTimes ) =>
+		withAnalytics(
+			recordTracksEvent( 'calypso_mobile_app_banner_dismiss', { page: sectionName } ),
+			savePreference(
+				APP_BANNER_DISMISS_TIMES_PREFERENCE,
+				getNewDismissTimes( sectionName, currentDimissTimes ),
+			),
+		),
 };
 
 export default connect( mapStateToProps, mapDispatchToProps )( localize( AppBanner ) );

@@ -1,10 +1,7 @@
 /**
  * Internal dependencies
  */
-import {
-	isPluginUploadInProgress,
-	getUploadedPluginId,
-} from 'state/selectors';
+import { isPluginUploadInProgress, getUploadedPluginId } from 'state/selectors';
 
 /**
  * Indicates whether a plugin upload has completed
@@ -15,8 +12,5 @@ import {
  * @return {boolean} true if plugin upload is complete
  */
 export default function isPluginUploadComplete( state, siteId ) {
-	return !! (
-		( ! isPluginUploadInProgress( state, siteId ) ) &&
-		getUploadedPluginId( state, siteId )
-	);
+	return !! ( ! isPluginUploadInProgress( state, siteId ) && getUploadedPluginId( state, siteId ) );
 }

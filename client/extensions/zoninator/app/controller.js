@@ -12,7 +12,7 @@ import { getSiteFragment, sectionify } from 'lib/route';
 import { renderWithReduxStore } from 'lib/react-helpers';
 import Settings from '../components/settings';
 
-export const renderTab = ( component ) => ( context ) => {
+export const renderTab = component => context => {
 	const siteId = getSiteFragment( context.path );
 	const { zone = '' } = context.params;
 
@@ -37,6 +37,6 @@ export const renderTab = ( component ) => ( context ) => {
 			{ React.createElement( component ) }
 		</Settings>,
 		document.getElementById( 'primary' ),
-		context.store
+		context.store,
 	);
 };

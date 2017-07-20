@@ -26,13 +26,16 @@ export class CommentDetailReply extends Component {
 
 	bindTextareaRef = textarea => {
 		this.textarea = textarea;
-	}
+	};
 
 	calculateTextareaHeight = () => {
 		const textareaScrollHeight = this.textarea.scrollHeight;
-		const textareaHeight = Math.min( TEXTAREA_MAX_HEIGHT, textareaScrollHeight + TEXTAREA_VERTICAL_BORDER );
+		const textareaHeight = Math.min(
+			TEXTAREA_MAX_HEIGHT,
+			textareaScrollHeight + TEXTAREA_VERTICAL_BORDER,
+		);
 		return Math.max( TEXTAREA_HEIGHT_FOCUSED, textareaHeight );
-	}
+	};
 
 	getTextareaPlaceholder = () => {
 		const { authorDisplayName, commentStatus, translate } = this.props;
@@ -40,17 +43,17 @@ export class CommentDetailReply extends Component {
 		if ( 'approved' !== commentStatus ) {
 			return authorDisplayName
 				? translate( 'Approve and reply to %(commentAuthor)s…', {
-					args: { commentAuthor: authorDisplayName }
-				} )
+						args: { commentAuthor: authorDisplayName },
+					} )
 				: translate( 'Approve and reply to comment…' );
 		}
 
 		return authorDisplayName
 			? translate( 'Reply to %(commentAuthor)s…', {
-				args: { commentAuthor: authorDisplayName }
-			} )
+					args: { commentAuthor: authorDisplayName },
+				} )
 			: translate( 'Reply to comment…' );
-	}
+	};
 
 	handleTextChange = event => {
 		const { value } = event.target;
@@ -60,30 +63,26 @@ export class CommentDetailReply extends Component {
 			commentText: value,
 			textareaHeight,
 		} );
-	}
+	};
 
-	setFocus = () => this.setState( {
-		hasFocus: true,
-		textareaHeight: this.calculateTextareaHeight(),
-	} );
+	setFocus = () =>
+		this.setState( {
+			hasFocus: true,
+			textareaHeight: this.calculateTextareaHeight(),
+		} );
 
 	submit = () => {
-		const {
-			commentId,
-			commentStatus,
-			postId,
-			replyComment,
-		} = this.props;
+		const { commentId, commentStatus, postId, replyComment } = this.props;
 		const { commentText } = this.state;
 
 		replyComment( commentText, postId, commentId, { alsoApprove: 'approved' !== commentStatus } );
 		this.setState( { commentText: '' } );
-	}
+	};
 
 	submitComment = event => {
 		event.preventDefault();
 		this.submit();
-	}
+	};
 
 	submitCommentOnCtrlEnter = event => {
 		// Use Ctrl+Enter to submit comment
@@ -91,20 +90,17 @@ export class CommentDetailReply extends Component {
 			event.preventDefault();
 			this.submit();
 		}
-	}
+	};
 
-	unsetFocus = () => this.setState( {
-		hasFocus: false,
-		textareaHeight: TEXTAREA_HEIGHT_COLLAPSED,
-	} );
+	unsetFocus = () =>
+		this.setState( {
+			hasFocus: false,
+			textareaHeight: TEXTAREA_HEIGHT_COLLAPSED,
+		} );
 
 	render() {
 		const { translate } = this.props;
-		const {
-			commentText,
-			hasFocus,
-			textareaHeight,
-		} = this.state;
+		const { commentText, hasFocus, textareaHeight } = this.state;
 
 		const hasCommentText = commentText.trim().length > 0;
 
@@ -148,15 +144,14 @@ export class CommentDetailReply extends Component {
 						onClick={ this.submitComment }
 					>
 						{ translate( 'Send' ) }
-					</button>
-				}
+					</button> }
 			</form>
 		);
 	}
 }
 
 const mapStateToProps = state => ( {
-	currentUser: getCurrentUser( state )
+	currentUser: getCurrentUser( state ),
 } );
 
 export default connect( mapStateToProps )( localize( CommentDetailReply ) );

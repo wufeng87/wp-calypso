@@ -37,11 +37,11 @@ function validatePath( path ) {
 function getSavedPath() {
 	return new Promise( ( resolve, reject ) => {
 		readLastPath()
-			.then( ( lastPath ) => {
+			.then( lastPath => {
 				validatePath( lastPath );
 				resolve( lastPath );
 			} )
-			.catch( ( reason ) => reject( reason ) );
+			.catch( reason => reject( reason ) );
 	} );
 }
 
@@ -54,13 +54,13 @@ function savePath( path ) {
 		}
 
 		readLastPath()
-			.then( ( lastPath ) => {
+			.then( lastPath => {
 				if ( lastPath === path ) {
 					return reject( 'path is identical' );
 				}
 				localforage.setItem( LAST_PATH, path ).then( () => resolve() );
 			} )
-			.catch( ( reason ) => reject( reason ) );
+			.catch( reason => reject( reason ) );
 	} );
 }
 

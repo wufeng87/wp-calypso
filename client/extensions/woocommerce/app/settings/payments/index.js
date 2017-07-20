@@ -13,9 +13,7 @@ import page from 'page';
  */
 import ActionHeader from 'woocommerce/components/action-header';
 import Button from 'components/button';
-import {
-	createPaymentSettingsActionList,
-} from 'woocommerce/state/ui/payments/actions';
+import { createPaymentSettingsActionList } from 'woocommerce/state/ui/payments/actions';
 import { errorNotice, successNotice } from 'state/notices/actions';
 import { fetchSetupChoices } from 'woocommerce/state/sites/setup-choices/actions';
 import { getActionList } from 'woocommerce/state/action-list/selectors';
@@ -30,7 +28,6 @@ import SettingsPaymentsOffSite from './payments-off-site';
 import SettingsPaymentsOnSite from './payments-on-site';
 
 class SettingsPayments extends Component {
-
 	static propTypes = {
 		isSaving: PropTypes.bool,
 		site: PropTypes.shape( {
@@ -45,9 +42,9 @@ class SettingsPayments extends Component {
 		if ( site && site.ID ) {
 			this.props.fetchSetupChoices( site.ID );
 		}
-	}
+	};
 
-	componentWillReceiveProps = ( newProps ) => {
+	componentWillReceiveProps = newProps => {
 		const { site } = this.props;
 
 		const newSiteId = newProps.site ? newProps.site.ID : null;
@@ -56,7 +53,7 @@ class SettingsPayments extends Component {
 		if ( oldSiteId !== newSiteId ) {
 			this.props.fetchSetupChoices( newSiteId );
 		}
-	}
+	};
 
 	onSave = () => {
 		const { translate, site, finishedInitialSetup } = this.props;
@@ -65,37 +62,36 @@ class SettingsPayments extends Component {
 				page.redirect( getLink( '/store/:site', site ) );
 			}
 
-			return successNotice(
-				translate( 'Payment settings saved.' ),
-				{ duration: 4000, displayOnNextPage: true }
-			);
+			return successNotice( translate( 'Payment settings saved.' ), {
+				duration: 4000,
+				displayOnNextPage: true,
+			} );
 		};
 
 		const failureAction = errorNotice(
-			translate( 'There was a problem saving the payment settings. Please try again.' )
+			translate( 'There was a problem saving the payment settings. Please try again.' ),
 		);
 
 		this.props.createPaymentSettingsActionList( successAction, failureAction );
-	}
+	};
 
 	render() {
 		const { isSaving, site, translate, className, finishedInitialSetup } = this.props;
 
 		const breadcrumbs = [
-			( <a href={ getLink( '/store/:site/', site ) }>{ translate( 'Settings' ) }</a> ),
-			( <span>{ translate( 'Payments' ) }</span> ),
+			<a href={ getLink( '/store/:site/', site ) }>
+				{ translate( 'Settings' ) }
+			</a>,
+			<span>
+				{ translate( 'Payments' ) }
+			</span>,
 		];
 
 		const saveMessage = finishedInitialSetup ? translate( 'Save' ) : translate( 'Save & Finish' );
 		return (
-			<Main
-				className={ classNames( 'settingsPayments', className ) }>
+			<Main className={ classNames( 'settingsPayments', className ) }>
 				<ActionHeader breadcrumbs={ breadcrumbs }>
-					<Button
-						primary
-						onClick={ this.onSave }
-						busy={ isSaving }
-						disabled={ isSaving }>
+					<Button primary onClick={ this.onSave } busy={ isSaving } disabled={ isSaving }>
 						{ saveMessage }
 					</Button>
 				</ActionHeader>
@@ -107,7 +103,6 @@ class SettingsPayments extends Component {
 			</Main>
 		);
 	}
-
 }
 
 function mapStateToProps( state ) {
@@ -121,10 +116,13 @@ function mapStateToProps( state ) {
 }
 
 function mapDispatchToProps( dispatch ) {
-	return bindActionCreators( {
-		createPaymentSettingsActionList,
-		fetchSetupChoices,
-	}, dispatch );
+	return bindActionCreators(
+		{
+			createPaymentSettingsActionList,
+			fetchSetupChoices,
+		},
+		dispatch,
+	);
 }
 
 export default connect( mapStateToProps, mapDispatchToProps )( localize( SettingsPayments ) );

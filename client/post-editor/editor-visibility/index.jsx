@@ -39,7 +39,7 @@ const EditorVisibility = React.createClass( {
 
 	getDefaultProps() {
 		return {
-			isPrivateSite: false
+			isPrivateSite: false,
 		};
 	},
 
@@ -85,7 +85,7 @@ const EditorVisibility = React.createClass( {
 			recordStat( 'visibility-dialog-opened' );
 			recordEvent( 'Opened visibility dialog' );
 			this.setState( {
-				showPopover: true
+				showPopover: true,
 			} );
 		}
 	},
@@ -132,34 +132,41 @@ const EditorVisibility = React.createClass( {
 
 		switch ( visibility ) {
 			case 'public':
-				infotext = this.props.translate( 'Visible to everyone.',
-					{ context: 'Post visibility: info text shown when changing post visibility to public.' }
-				);
+				infotext = this.props.translate( 'Visible to everyone.', {
+					context: 'Post visibility: info text shown when changing post visibility to public.',
+				} );
 				if ( this.props.isPrivateSite ) {
-					infotext = this.props.translate( 'Any member of the site can view this post.',
-						{ context: 'Post visibility: info text shown when changing post visibility to public on a members-only site.' }
-					);
+					infotext = this.props.translate( 'Any member of the site can view this post.', {
+						context:
+							'Post visibility: info text shown when changing post visibility to public on a members-only site.',
+					} );
 				}
 				break;
 			case 'private':
-				infotext = this.props.translate( 'Only visible to site admins and editors.',
-					{ context: 'Post visibility: info text shown when changing post visibility to private.' }
-				);
+				infotext = this.props.translate( 'Only visible to site admins and editors.', {
+					context: 'Post visibility: info text shown when changing post visibility to private.',
+				} );
 				break;
 			case 'password':
-				infotext = this.props.translate( 'Protected with a password you choose. Only those with the password can view this post.',
-					{ context: 'Post visibility: info text shown when changing post visibility to password protected.' }
+				infotext = this.props.translate(
+					'Protected with a password you choose. Only those with the password can view this post.',
+					{
+						context:
+							'Post visibility: info text shown when changing post visibility to password protected.',
+					},
 				);
 				break;
 		}
 
 		return (
-			<FormSettingExplanation className={ visibility }>{ infotext }</FormSettingExplanation>
+			<FormSettingExplanation className={ visibility }>
+				{ infotext }
+			</FormSettingExplanation>
 		);
 	},
 
 	updateVisibility( event ) {
-		const { siteId, postId } = this.props;
+		const { siteId, postId } = this.props;
 		const defaultVisibility = 'draft' === this.props.status ? 'draft' : 'publish';
 		const newVisibility = event.target.value;
 		const postEdits = { status: defaultVisibility };
@@ -181,7 +188,10 @@ const EditorVisibility = React.createClass( {
 
 		recordStat( 'visibility-set-' + newVisibility );
 		recordEvent( 'Changed visibility', newVisibility );
-		tracks.recordEvent( 'calypso_editor_visibility_set', { context: this.props.context, visibility: newVisibility } );
+		tracks.recordEvent( 'calypso_editor_visibility_set', {
+			context: this.props.context,
+			visibility: newVisibility,
+		} );
 
 		// TODO: REDUX - remove flux actions when whole post-editor is reduxified
 		postActions.edit( postEdits );
@@ -209,7 +219,10 @@ const EditorVisibility = React.createClass( {
 
 		recordStat( 'visibility-set-' + newVisibility );
 		recordEvent( 'Changed visibility', newVisibility );
-		tracks.recordEvent( 'calypso_editor_visibility_set', { context: this.props.context, visibility: newVisibility } );
+		tracks.recordEvent( 'calypso_editor_visibility_set', {
+			context: this.props.context,
+			visibility: newVisibility,
+		} );
 
 		// TODO: REDUX - remove flux actions when whole post-editor is reduxified
 		postActions.edit( postEdits );
@@ -225,27 +238,30 @@ const EditorVisibility = React.createClass( {
 	},
 
 	setPostToPrivate() {
-		const { siteId, postId } = this.props;
+		const { siteId, postId } = this.props;
 		// TODO: REDUX - remove flux actions when whole post-editor is reduxified
 		postActions.edit( {
-			status: 'private'
+			status: 'private',
 		} );
 
 		// Private posts cannot be sticky
 		this.props.editPost( siteId, postId, {
 			password: '',
-			sticky: false
+			sticky: false,
 		} );
 
 		recordStat( 'visibility-set-private' );
 		recordEvent( 'Changed visibility', 'private' );
-		tracks.recordEvent( 'calypso_editor_visibility_set', { context: this.props.context, visibility: 'private' } );
+		tracks.recordEvent( 'calypso_editor_visibility_set', {
+			context: this.props.context,
+			visibility: 'private',
+		} );
 	},
 
 	onPrivatePublish() {
 		this.setPostToPrivate();
 		this.setState( {
-			showPopover: false
+			showPopover: false,
 		} );
 		setTimeout( () => this.props.onPrivatePublish( true ), 0 );
 	},
@@ -263,21 +279,26 @@ const EditorVisibility = React.createClass( {
 		if ( this.props.type === 'page' ) {
 			message = this.props.translate(
 				'Private pages are only visible to administrators and editors of this site. ' +
-				'Would you like to privately publish this page now?'
+					'Would you like to privately publish this page now?',
 			);
 		} else {
 			message = this.props.translate(
 				'Private posts are only visible to administrators and editors of this site. ' +
-				'Would you like to privately publish this post now?'
+					'Would you like to privately publish this post now?',
 			);
 		}
 
-		accept( message, ( accepted ) => {
-			this.showingAcceptDialog = false;
-			if ( accepted ) {
-				this.onPrivatePublish();
-			}
-		}, this.props.translate( 'Yes' ), this.props.translate( 'No' ) );
+		accept(
+			message,
+			accepted => {
+				this.showingAcceptDialog = false;
+				if ( accepted ) {
+					this.onPrivatePublish();
+				}
+			},
+			this.props.translate( 'Yes' ),
+			this.props.translate( 'No' ),
+		);
 	},
 
 	onPasswordChange( event ) {
@@ -298,7 +319,9 @@ const EditorVisibility = React.createClass( {
 	renderPasswordInput() {
 		const value = this.props.password ? this.props.password.trim() : null;
 		const isError = ! this.state.passwordIsValid;
-		const errorMessage = this.props.translate( 'Password is empty.', { context: 'Editor: Error shown when password is empty.' } );
+		const errorMessage = this.props.translate( 'Password is empty.', {
+			context: 'Editor: Error shown when password is empty.',
+		} );
 
 		return (
 			<div>
@@ -309,7 +332,9 @@ const EditorVisibility = React.createClass( {
 					isError={ isError }
 					ref="postPassword"
 					className={ this.state.showVisibilityInfotips ? 'is-info-open' : null }
-					placeholder={ this.props.translate( 'Create password', { context: 'Editor: Create password for post' } ) }
+					placeholder={ this.props.translate( 'Create password', {
+						context: 'Editor: Create password for post',
+					} ) }
 				/>
 
 				{ isError ? <FormInputValidation isError={ true } text={ errorMessage } /> : null }
@@ -321,12 +346,12 @@ const EditorVisibility = React.createClass( {
 		if ( this.state.showVisibilityInfotips ) {
 			recordEvent( 'InfoPopover: Visibility Closed' );
 			this.setState( {
-				showVisibilityInfotips: false
+				showVisibilityInfotips: false,
 			} );
 		} else {
 			recordEvent( 'InfoPopover: Visibility Opened' );
 			this.setState( {
-				showVisibilityInfotips: true
+				showVisibilityInfotips: true,
 			} );
 		}
 	},
@@ -334,17 +359,12 @@ const EditorVisibility = React.createClass( {
 	renderPrivacyPopover( visibility ) {
 		const icons = {
 			password: 'lock',
-			'private': 'not-visible',
-			'public': 'visible'
+			private: 'not-visible',
+			public: 'visible',
 		};
 
 		return (
-			<Button
-					compact
-					borderless
-					onClick={ this.togglePopover }
-					ref="setVisibility"
-				>
+			<Button compact borderless onClick={ this.togglePopover } ref="setVisibility">
 				<Gridicon icon={ icons[ visibility ] || 'visible' } /> { visibility }
 				<Popover
 					className="editor-visibility__popover"
@@ -360,11 +380,9 @@ const EditorVisibility = React.createClass( {
 								<Gridicon
 									icon="info-outline"
 									size={ 18 }
-									className={
-										classNames(
-											'editor-visibility__dialog-info',
-											{ is_active: this.state.showVisibilityInfotips }
-										) }
+									className={ classNames( 'editor-visibility__dialog-info', {
+										is_active: this.state.showVisibilityInfotips,
+									} ) }
 									onClick={ this.toggleVisibilityInfotips }
 								/>
 							</FormLegend>
@@ -376,17 +394,13 @@ const EditorVisibility = React.createClass( {
 									checked={ 'public' === visibility }
 								/>
 								<span>
-									{
-										this.props.isPrivateSite
-										? this.props.translate(
-											'Visible for members of the site',
-											{ context: 'Editor: Radio label to set post visibility' }
-										)
-										: this.props.translate(
-											'Public',
-											{ context: 'Editor: Radio label to set post visible to public'
-										} )
-									}
+									{ this.props.isPrivateSite
+										? this.props.translate( 'Visible for members of the site', {
+												context: 'Editor: Radio label to set post visibility',
+											} )
+										: this.props.translate( 'Public', {
+												context: 'Editor: Radio label to set post visible to public',
+											} ) }
 								</span>
 							</FormLabel>
 							{ this.renderVisibilityTip( 'public' ) }
@@ -399,12 +413,9 @@ const EditorVisibility = React.createClass( {
 									checked={ 'private' === visibility }
 								/>
 								<span>
-								{
-									this.props.translate(
-										'Private',
-										{ context: 'Editor: Radio label to set post to private' }
-									)
-								}
+									{ this.props.translate( 'Private', {
+										context: 'Editor: Radio label to set post to private',
+									} ) }
 								</span>
 							</FormLabel>
 							{ this.renderVisibilityTip( 'private' ) }
@@ -416,12 +427,9 @@ const EditorVisibility = React.createClass( {
 									checked={ 'password' === visibility }
 								/>
 								<span>
-								{
-									this.props.translate(
-										'Password Protected',
-										{ context: 'Editor: Radio label to set post to password protected' }
-									)
-								}
+									{ this.props.translate( 'Password Protected', {
+										context: 'Editor: Radio label to set post to password protected',
+									} ) }
 								</span>
 							</FormLabel>
 							{ this.renderVisibilityTip( 'password' ) }
@@ -436,26 +444,32 @@ const EditorVisibility = React.createClass( {
 	renderPrivacyDropdown( visibility ) {
 		const dropdownItems = [
 			{
-				label: this.props.translate( 'Public', { context: 'Editor: Radio label to set post visible to public' } ),
+				label: this.props.translate( 'Public', {
+					context: 'Editor: Radio label to set post visible to public',
+				} ),
 				icon: <Gridicon icon="globe" size={ 18 } />,
 				value: 'public',
 				onClick: () => {
 					this.updateDropdownVisibility( 'public' );
-				}
+				},
 			},
 			{
-				label: this.props.translate( 'Private', { context: 'Editor: Radio label to set post to private' } ),
+				label: this.props.translate( 'Private', {
+					context: 'Editor: Radio label to set post to private',
+				} ),
 				icon: <Gridicon icon="user" size={ 18 } />,
 				value: 'private',
-				onClick: this.onSetToPrivate
+				onClick: this.onSetToPrivate,
 			},
 			{
-				label: this.props.translate( 'Password Protected', { context: 'Editor: Radio label to set post to password protected' } ),
+				label: this.props.translate( 'Password Protected', {
+					context: 'Editor: Radio label to set post to password protected',
+				} ),
 				icon: <Gridicon icon="lock" size={ 18 } />,
 				value: 'password',
 				onClick: () => {
 					this.updateDropdownVisibility( 'password' );
-				}
+				},
 			},
 		];
 		const selectedItem = find( dropdownItems, [ 'value', visibility ] );
@@ -464,7 +478,9 @@ const EditorVisibility = React.createClass( {
 			<div className="editor-visibility__dropdown">
 				<FormFieldset className="editor-fieldset">
 					<SelectDropdown
-						selectedText={ selectedItem ? selectedItem.label : this.props.translate( 'Select an option' ) }
+						selectedText={
+							selectedItem ? selectedItem.label : this.props.translate( 'Select an option' )
+						}
 						selectedIcon={ selectedItem.icon }
 					>
 						{ dropdownItems.map( option =>
@@ -476,7 +492,7 @@ const EditorVisibility = React.createClass( {
 								icon={ option.icon }
 							>
 								{ option.label }
-							</DropdownItem>
+							</DropdownItem>,
 						) }
 					</SelectDropdown>
 					{ 'password' === visibility ? this.renderPasswordInput() : null }
@@ -487,7 +503,8 @@ const EditorVisibility = React.createClass( {
 
 	render() {
 		const visibility = this.getVisibility();
-		const isDropdown = config.isEnabled( 'post-editor/delta-post-publish-flow' ) &&
+		const isDropdown =
+			config.isEnabled( 'post-editor/delta-post-publish-flow' ) &&
 			abtest( 'postPublishConfirmation' ) === 'showPublishConfirmation';
 		const classes = classNames( 'editor-visibility', {
 			'is-dialog-open': this.state.showPopover,
@@ -497,26 +514,23 @@ const EditorVisibility = React.createClass( {
 
 		return (
 			<div className={ classes }>
-				{
-					isDropdown
-						? this.renderPrivacyDropdown( visibility )
-						: this.renderPrivacyPopover( visibility )
-				}
+				{ isDropdown
+					? this.renderPrivacyDropdown( visibility )
+					: this.renderPrivacyPopover( visibility ) }
 			</div>
 		);
-	}
-
+	},
 } );
 
 export default connect(
-	( state ) => {
+	state => {
 		const siteId = getSelectedSiteId( state );
 		const postId = getEditorPostId( state );
 
 		return {
 			siteId,
-			postId
+			postId,
 		};
 	},
-	{ editPost }
+	{ editPost },
 )( localize( EditorVisibility ) );

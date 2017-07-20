@@ -23,7 +23,11 @@ import { areOrdersLoading, getOrders } from 'woocommerce/state/sites/orders/sele
 import { fetchOrders } from 'woocommerce/state/sites/orders/actions';
 import { fetchProducts } from 'woocommerce/state/sites/products/actions';
 import { getSelectedSiteWithFallback } from 'woocommerce/state/sites/selectors';
-import { getTotalProducts, areProductsLoading, areProductsLoaded } from 'woocommerce/state/sites/products/selectors';
+import {
+	getTotalProducts,
+	areProductsLoading,
+	areProductsLoaded,
+} from 'woocommerce/state/sites/products/selectors';
 import Main from 'components/main';
 import ManageNoOrdersView from './manage-no-orders-view';
 import ManageOrdersView from './manage-orders-view';
@@ -33,7 +37,6 @@ import RequiredPluginsInstallView from './required-plugins-install-view';
 import SetupTasksView from './setup-tasks-view';
 
 class Dashboard extends Component {
-
 	static propTypes = {
 		className: PropTypes.string,
 		finishedInitialSetup: PropTypes.bool,
@@ -59,15 +62,15 @@ class Dashboard extends Component {
 				this.props.fetchProducts( selectedSite.ID, 1 );
 			}
 		}
-	}
+	};
 
-	componentWillReceiveProps = ( newProps ) => {
+	componentWillReceiveProps = newProps => {
 		const { selectedSite, productsLoaded } = this.props;
 
 		const newSiteId = newProps.selectedSite ? newProps.selectedSite.ID : null;
 		const oldSiteId = selectedSite ? selectedSite.ID : null;
 
-		if ( newSiteId && ( oldSiteId !== newSiteId ) ) {
+		if ( newSiteId && oldSiteId !== newSiteId ) {
 			this.props.fetchSetupChoices( newSiteId );
 			this.props.fetchOrders( newSiteId, 1 );
 
@@ -75,7 +78,7 @@ class Dashboard extends Component {
 				this.props.fetchProducts( newSiteId, 1 );
 			}
 		}
-	}
+	};
 
 	getBreadcrumb = () => {
 		const {
@@ -104,7 +107,7 @@ class Dashboard extends Component {
 		}
 
 		return translate( 'Dashboard' );
-	}
+	};
 
 	renderDashboardContent = () => {
 		const {
@@ -118,27 +121,27 @@ class Dashboard extends Component {
 		} = this.props;
 
 		if ( ! finishedInstallOfRequiredPlugins ) {
-			return ( <RequiredPluginsInstallView site={ selectedSite } /> );
+			return <RequiredPluginsInstallView site={ selectedSite } />;
 		}
 
 		if ( ! finishedPageSetup && ! hasProducts ) {
-			return ( <RequiredPagesSetupView site={ selectedSite } /> );
+			return <RequiredPagesSetupView site={ selectedSite } />;
 		}
 
 		if ( ! setStoreAddressDuringInitialSetup && ! hasProducts ) {
-			return ( <PreSetupView site={ selectedSite } /> );
+			return <PreSetupView site={ selectedSite } />;
 		}
 
 		if ( ! finishedInitialSetup ) {
-			return ( <SetupTasksView onFinished={ this.onStoreSetupFinished } site={ selectedSite } /> );
+			return <SetupTasksView onFinished={ this.onStoreSetupFinished } site={ selectedSite } />;
 		}
 
 		if ( ! hasOrders ) {
-			return ( <ManageNoOrdersView site={ selectedSite } /> );
+			return <ManageNoOrdersView site={ selectedSite } />;
 		}
 
-		return ( <ManageOrdersView site={ selectedSite } /> );
-	}
+		return <ManageOrdersView site={ selectedSite } />;
+	};
 
 	render = () => {
 		const { className, loading, selectedSite } = this.props;
@@ -154,13 +157,13 @@ class Dashboard extends Component {
 				{ this.renderDashboardContent() }
 			</Main>
 		);
-	}
-
+	};
 }
 
 function mapStateToProps( state ) {
 	const selectedSite = getSelectedSiteWithFallback( state );
-	const loading = ( areOrdersLoading( state ) || areSetupChoicesLoading( state ) || areProductsLoading( state ) );
+	const loading =
+		areOrdersLoading( state ) || areSetupChoicesLoading( state ) || areProductsLoading( state );
 	const hasOrders = getOrders( state ).length > 0;
 	const hasProducts = getTotalProducts( state ) > 0;
 	const productsLoaded = areProductsLoaded( state );
@@ -185,7 +188,7 @@ function mapDispatchToProps( dispatch ) {
 			fetchSetupChoices,
 			fetchProducts,
 		},
-		dispatch
+		dispatch,
 	);
 }
 

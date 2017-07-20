@@ -20,8 +20,4 @@ function googleAppsSettingsUrl( domainName ) {
 	return GOOGLE_APPS_LINK_PREFIX + domainName;
 }
 
-export {
-	getAnnualPrice,
-	getMonthlyPrice,
-	googleAppsSettingsUrl
-};
+export { getAnnualPrice, getMonthlyPrice, googleAppsSettingsUrl };

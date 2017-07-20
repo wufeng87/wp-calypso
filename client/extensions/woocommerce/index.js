@@ -105,11 +105,12 @@ const getStorePages = () => {
 function addStorePage( storePage, storeNavigation ) {
 	page( storePage.path, siteSelection, storeNavigation, function( context ) {
 		const component = React.createElement( storePage.container, { params: context.params } );
-		const appProps = storePage.documentTitle && { documentTitle: storePage.documentTitle } || {};
+		const appProps =
+			( storePage.documentTitle && { documentTitle: storePage.documentTitle } ) || {};
 		renderWithReduxStore(
 			React.createElement( App, appProps, component ),
 			document.getElementById( 'primary' ),
-			context.store
+			context.store,
 		);
 	} );
 }
@@ -121,7 +122,7 @@ function createStoreNavigation( context, next, storePage ) {
 			page: storePage,
 		} ),
 		document.getElementById( 'secondary' ),
-		context.store
+		context.store,
 	);
 
 	next();
@@ -131,7 +132,9 @@ export default function() {
 	// Add pages that use the store navigation
 	getStorePages().forEach( function( storePage ) {
 		if ( config.isEnabled( storePage.configKey ) ) {
-			addStorePage( storePage, ( context, next ) => createStoreNavigation( context, next, storePage ) );
+			addStorePage( storePage, ( context, next ) =>
+				createStoreNavigation( context, next, storePage ),
+			);
 		}
 	} );
 
