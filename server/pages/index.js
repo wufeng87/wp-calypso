@@ -96,26 +96,12 @@ function generateStaticUrls() {
 
 	// in production, only load assets file the first go around
 	if ( ! assets || process.env.NODE_ENV === 'development' ) {
-		fs.readFile(
-			path.join( __dirname, '../', 'bundler', 'assets.json' ),
-			'utf8',
-			( err, data ) => {
-				console.error( data, JSON.parse( data ) );
-				if ( err ) {
-					console.error( err );
-					return;
-				}
-				assets = JSON.parse( data );
-			}
+		assets = JSON.parse(
+			fs.readFileSync( path.join( __dirname, '../', 'bundler', 'assets.json' ), 'utf8' )
 		);
 	}
 
-	forEach( assets, function( asset, name ) {
-		urls[ name ] = asset.js;
-		if ( config( 'env' ) !== 'development' ) {
-			urls[ name + '-min' ] = asset.url.replace( '.js', '.min.js' );
-		}
-	} );
+	forEach( assets, ( asset, name ) => urls[ name ] = asset.js );
 
 	return urls;
 }
