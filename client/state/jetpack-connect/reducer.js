@@ -18,9 +18,13 @@ import {
 	JETPACK_CONNECT_AUTHORIZE_RECEIVE_SITE_LIST,
 	JETPACK_CONNECT_CREATE_ACCOUNT,
 	JETPACK_CONNECT_CREATE_ACCOUNT_RECEIVE,
+	JETPACK_CONNECT_DISMISS_REMOTE_INSTALL,
 	JETPACK_CONNECT_REDIRECT,
 	JETPACK_CONNECT_REDIRECT_WP_ADMIN,
 	JETPACK_CONNECT_REDIRECT_XMLRPC_ERROR_FALLBACK_URL,
+	JETPACK_CONNECT_REMOTE_INSTALL_REQUEST,
+	JETPACK_CONNECT_REMOTE_INSTALL_SUCCESS,
+	JETPACK_CONNECT_REMOTE_INSTALL_ERROR,
 	JETPACK_CONNECT_RETRY_AUTH,
 	JETPACK_CONNECT_SELECT_PLAN_IN_ADVANCE,
 	JETPACK_CONNECT_SSO_AUTHORIZE_REQUEST,
@@ -87,8 +91,12 @@ export function jetpackConnectSite( state = {}, action ) {
 		url: null,
 		isFetching: false,
 		isFetched: false,
-		isDismissed: false,
 		installConfirmedByUser: null,
+		isInstalling: false,
+		hasInstalled: false,
+		errorInstalling: false,
+		remoteInstallDismissed: false,
+		errorLogin: false,
 		data: {}
 	};
 	switch ( action.type ) {
@@ -102,6 +110,11 @@ export function jetpackConnectSite( state = {}, action ) {
 					isFetched: false,
 					isDismissed: false,
 					installConfirmedByUser: null,
+					isInstalling: false,
+					hasInstalled: false,
+					errorInstalling: false,
+					remoteInstallDismissed: false,
+					errorLogin: false,
 					data: {}
 				}
 			);
@@ -122,6 +135,17 @@ export function jetpackConnectSite( state = {}, action ) {
 			return state;
 		case JETPACK_CONNECT_CONFIRM_JETPACK_STATUS:
 			return Object.assign( {}, state, { installConfirmedByUser: action.status } );
+		case JETPACK_CONNECT_REMOTE_INSTALL_REQUEST:
+			return Object.assign( {}, state, { isInstalling: true, hasInstalled: false, errorInstalling: false, errorLogin: false } );
+		case JETPACK_CONNECT_REMOTE_INSTALL_SUCCESS:
+			return Object.assign( {}, state, { isInstalling: false, hasInstalled: true, errorInstalling: false, errorLogin: false } );
+		case JETPACK_CONNECT_REMOTE_INSTALL_ERROR:
+			if ( action.error && ! action.error.login ) {
+				return Object.assign( {}, state, { isInstalling: false, hasInstalled: false, errorInstalling: false, errorLogin: true } );
+			}
+			return Object.assign( {}, state, { isInstalling: false, hasInstalled: false, errorInstalling: true, errorLogin: false } );
+		case JETPACK_CONNECT_DISMISS_REMOTE_INSTALL:
+			return Object.assign( {}, state, { remoteInstallDismissed: true } );
 		case JETPACK_CONNECT_COMPLETE_FLOW:
 			return {};
 	}

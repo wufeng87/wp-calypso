@@ -16,11 +16,15 @@ import LoggedOutFormLinks from 'components/logged-out-form/links';
 import LoggedOutFormLinkItem from 'components/logged-out-form/link-item';
 import JetpackConnectNotices from './jetpack-connect-notices';
 import SiteUrlInput from './site-url-input';
+import ProgressBar from 'components/progress-bar';
 import {
 	getGlobalSelectedPlan,
 	getConnectingSite,
 	getJetpackSiteByUrl
 } from 'state/jetpack-connect/selectors';
+import FormTextInput from 'components/forms/form-text-input';
+import FormPasswordInput from 'components/forms/form-password-input';
+import FormFieldset from 'components/forms/form-fieldset';
 import { isRequestingSites } from 'state/sites/selectors';
 import QuerySites from 'components/data/query-sites';
 import JetpackInstallStep from './install-step';
@@ -33,9 +37,11 @@ import HelpButton from './help-button';
 import untrailingslashit from 'lib/route/untrailingslashit';
 import {
 	confirmJetpackInstallStatus,
+	dismissRemoteInstall,
 	dismissUrl,
 	goToRemoteAuth,
 	goToPluginInstall,
+	remoteInstall,
 	goToPlans,
 	goToPluginActivation,
 	checkUrl
@@ -64,11 +70,15 @@ class JetpackConnectMain extends Component {
 		? {
 			currentUrl: this.cleanUrl( this.props.url ),
 			shownUrl: this.props.url,
-			waitingForSites: false
+			waitingForSites: false,
+			user: '',
+			password: ''
 		} : {
 			currentUrl: '',
 			shownUrl: '',
-			waitingForSites: false
+			waitingForSites: false,
+			user: '',
+			password: ''
 		};
 
 	componentWillMount() {
@@ -103,6 +113,10 @@ class JetpackConnectMain extends Component {
 		) {
 			return this.props.goToRemoteAuth( this.state.currentUrl );
 		}
+		if ( this.props.jetpackConnectSite.hasInstalled &&
+			! this.props.jetpackConnectSite.isRedirecting ) {
+			return this.props.goToRemoteAuth( this.state.currentUrl );
+		}
 		if ( this.getStatus() === 'alreadyOwned' &&
 			! this.props.jetpackConnectSite.isRedirecting ) {
 			return this.props.goToPlans( this.state.currentUrl );
@@ -113,6 +127,14 @@ class JetpackConnectMain extends Component {
 			this.setState( { waitingForSites: false } );
 			this.checkUrl( this.state.currentUrl );
 		}
+	}
+
+	isBusy() {
+		return this.props.isRequestingSites ||
+			this.state.waitingForSites ||
+			this.props.jetpackConnectSite.isRedirecting ||
+			this.props.jetpackConnectSite.isFetching ||
+			this.props.jetpackConnectSite.isInstalling;
 	}
 
 	dismissUrl = () => this.props.dismissUrl( this.state.currentUrl );
@@ -137,6 +159,18 @@ class JetpackConnectMain extends Component {
 			shownUrl: url,
 		} );
 	};
+
+	handleUserChange = ( event ) => {
+		this.setState( {
+			user: event.target.value
+		} );
+	}
+
+	handlePasswordChange = ( event ) => {
+		this.setState( {
+			password: event.target.value
+		} );
+	}
 
 	cleanUrl( inputUrl ) {
 		let url = inputUrl.trim().toLowerCase();
@@ -173,6 +207,14 @@ class JetpackConnectMain extends Component {
 
 		this.props.goToPluginInstall( this.state.currentUrl );
 	};
+
+	remoteInstallJetpack = () => {
+		this.props.remoteInstall( this.state.currentUrl, this.state.user, this.state.password );
+	}
+
+	dismissRemoteInstall = () => {
+		this.props.dismissRemoteInstall( this.state.currentUrl );
+	}
 
 	activateJetpack = () => {
 		this.props.recordTracksEvent( 'calypso_jpc_instructions_click', {
@@ -422,6 +464,87 @@ class JetpackConnectMain extends Component {
 		);
 	}
 
+	renderRemoteInstall() {
+		const { translate } = this.props;
+		const footer = this.props.jetpackConnectSite.isInstalling || this.props.jetpackConnectSite.hasInstalled ?
+			( <div className="jetpack-connect__install-bar">
+				<div className="jetpack-connect__install-step-text">Installing Jetpack</div>
+				<ProgressBar value={ 100 } total={ 100 } isPulsing />
+			</div> ) :
+			( <div className="jetpack-connect__install-buttons">
+				<div>
+					<Button onClick={ this.remoteInstallJetpack } primary>{ translate( 'Install Jetpack' ) }</Button>
+				</div>
+				<div>
+					<Button onClick={ this.dismissRemoteInstall }>{ translate( 'Manual Install' ) }</Button>
+				</div>
+				<div className="jetpack-connect__navigation">
+					{ this.renderBackButton() }
+				</div>
+			</div> );
+
+		let errorMessage = null;
+		if ( this.props.jetpackConnectSite.errorInstalling ) {
+			errorMessage = <JetpackConnectNotices  noticeType="errorInstalling" onDismissClick={ this.dismissRemoteInstall } url={ this.state.currentUrl } />
+		}
+		if ( this.props.jetpackConnectSite.errorLogin ) {
+			errorMessage = <JetpackConnectNotices  noticeType="errorLogin" onDismissClick={ this.dismissRemoteInstall } url={ this.state.currentUrl } />
+		}
+
+
+		return (
+			<MainWrapper isWide>
+				{ this.renderLocaleSuggestions() }
+				<div className="jetpack-connect__install">
+					<FormattedHeader
+						headerText={ translate( "Ready for install" ) }
+						subHeaderText={ translate( "You need to install Jetpack on your site to continue" ) }
+						step={ 1 }
+						steps={ 4 }
+					/>
+					<div className="jetpack-connect__install-text">
+						<div className="jetpack-connect__install-step-text">
+ 							{ translate( "We can do this automagically for you, but we need you to enter the username and password you use in your site. We won't store this information, we will use it only for installing Jetpack and configuring it for you." ) }
+						</div>
+						<div className="jetpack-connect__install-step-text">
+							{ translate( "You can also skip the automatic config and get information about how to manually configure Jetpack" ) }
+						</div>
+						{ errorMessage }
+					</div>
+
+					<div className="jetpack-connect__install-steps">
+						<FormFieldset>
+							<div className="auth__input-wrapper">
+								<Gridicon icon="user"/>
+								<FormTextInput
+									name="login"
+									ref="login"
+									onChange={ this.handleUserChange }
+									disabled={ this.props.jetpackConnectSite.isInstalling || this.props.jetpackConnectSite.hasInstalled }
+									placeholder={ translate( 'Username or email address' ) } />
+							</div>
+							<div className="auth__input-wrapper">
+								<Gridicon icon="lock" />
+								<FormPasswordInput
+									name="password"
+									ref="password"
+									onChange={ this.handlePasswordChange }
+									disabled={ this.props.jetpackConnectSite.isInstalling || this.props.jetpackConnectSite.hasInstalled }
+									placeholder={ translate( 'Password' ) }
+									hideToggle={ false }
+									submitting={ this.props.jetpackConnectSite.isInstalling || this.props.jetpackConnectSite.hasInstalled } />
+							</div>
+						</FormFieldset>
+					</div>
+					{ footer }
+				</div>
+				<LoggedOutFormLinks>
+					<HelpButton />
+				</LoggedOutFormLinks>
+			</MainWrapper>
+		);
+	}
+
 	renderInstructions( instructionsData ) {
 		const jetpackVersion = this.checkProperty( 'jetpackVersion' ),
 			isInstall = this.isInstall(),
@@ -471,6 +594,9 @@ class JetpackConnectMain extends Component {
 			includes( [ 'notJetpack', 'notActiveJetpack' ], status ) &&
 			! this.props.jetpackConnectSite.isDismissed
 		) {
+			if ( ! this.props.jetpackConnectSite.remoteInstallDismissed ) {
+				return this.renderRemoteInstall();
+			}
 			return this.renderInstructions( this.getInstructionsData( status ) );
 		}
 		return this.renderSiteEntry();
@@ -492,6 +618,8 @@ const connectComponent = connect(
 		goToRemoteAuth,
 		goToPlans,
 		goToPluginInstall,
+		remoteInstall,
+		dismissRemoteInstall,
 		goToPluginActivation
 	}
 );

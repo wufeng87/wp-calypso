@@ -143,6 +143,20 @@ class JetpackConnectNotices extends Component {
 				noticeValues.status = 'is-warning';
 				noticeValues.icon = 'notice';
 				return noticeValues;
+			case 'errorInstalling':
+				noticeValues.text = translate(
+					'There has been an error automatically installing Jetpack in your site. Please, try again or do it manually.'
+				);
+				noticeValues.status = 'is-error'
+				noticeValues.icon = 'notice';
+				return noticeValues;
+			case 'errorLogin':
+				noticeValues.text = translate(
+					'We couldn\'t log in your site for install Jetpack. Please, try again or do it manually.'
+				);
+				noticeValues.status = 'is-error'
+				noticeValues.icon = 'notice';
+				return noticeValues;
 		}
 	}
 
