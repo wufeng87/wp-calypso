@@ -12,7 +12,6 @@ import {
 	WOOCOMMERCE_PRODUCT_UPDATE,
 	WOOCOMMERCE_PRODUCT_REQUEST,
 	WOOCOMMERCE_PRODUCTS_REQUEST,
-	WOOCOMMERCE_PRODUCTS_RECEIVE,
 } from 'woocommerce/state/action-types';
 
 export default {
@@ -22,7 +21,7 @@ export default {
 	[ WOOCOMMERCE_PRODUCTS_REQUEST ]: [ dispatchRequest(
 		handleProductsRequest,
 		handleProductsRequestSuccess,
-		handleProductsRequestError
+		( store, action, next ) => next( action ),
 	) ],
 };
 
@@ -86,37 +85,13 @@ export function handleProductRequest( { dispatch }, action ) {
 }
 
 export function handleProductsRequestSuccess( store, action, next, response ) {
-	const { siteId, page } = action;
-	const { headers, body, status } = response.data;
+	const { body, status } = response.data;
 
 	// We needed to envelope the reponse to get the number of products and pages. see handleProductsRequest
 	if ( status !== 200 ) {
-		return handleProductsRequestError( store, action, next, ( body.code || status ) );
+		action.meta.dataLayer.error = { code: ( body.code || status ), message: body.message };
 	}
 
-	const totalPages = headers[ 'X-WP-TotalPages' ];
-	const totalProducts = headers[ 'X-WP-Total' ];
-
-	store.dispatch( {
-		type: WOOCOMMERCE_PRODUCTS_RECEIVE,
-		siteId,
-		page,
-		totalPages,
-		totalProducts,
-		products: body,
-	} );
-
-	return next( action );
-}
-
-export function handleProductsRequestError( { dispatch }, action, next, error ) {
-	const { siteId, page } = action;
-	dispatch( {
-		type: WOOCOMMERCE_PRODUCTS_RECEIVE,
-		siteId,
-		page,
-		error,
-	} );
 	return next( action );
 }
 

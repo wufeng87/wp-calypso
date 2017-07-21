@@ -9,7 +9,6 @@ import { reject } from 'lodash';
 import { createReducer } from 'state/utils';
 import {
 	WOOCOMMERCE_PRODUCT_DELETE_SUCCESS,
-	WOOCOMMERCE_PRODUCTS_RECEIVE,
 	WOOCOMMERCE_PRODUCTS_REQUEST,
 	WOOCOMMERCE_PRODUCT_UPDATED,
 	WOOCOMMERCE_PRODUCTS_SEARCH_CLEAR,
@@ -22,7 +21,6 @@ export default createReducer( {}, {
 	[ WOOCOMMERCE_PRODUCT_DELETE_SUCCESS ]: productsDeleteSuccess,
 	[ WOOCOMMERCE_PRODUCT_UPDATED ]: productUpdated,
 	[ WOOCOMMERCE_PRODUCTS_REQUEST ]: productsRequest,
-	[ WOOCOMMERCE_PRODUCTS_RECEIVE ]: productsReceive,
 	[ WOOCOMMERCE_PRODUCTS_SEARCH_CLEAR ]: productsSearchClear,
 	[ WOOCOMMERCE_PRODUCTS_SEARCH_REQUEST ]: productsSearchRequest,
 	[ WOOCOMMERCE_PRODUCTS_SEARCH_REQUEST_SUCCESS ]: productsSearchRequestSuccess,
@@ -54,31 +52,6 @@ function updateCachedProduct( products, product ) {
 	return newProducts;
 }
 
-export function productsReceive( state, action ) {
-	const prevState = state || {};
-	const isLoading = setLoading( prevState, action.page, false );
-
-	if ( action.error ) {
-		const isError = setError( prevState, action.page, true );
-		return { ...prevState, isLoading, isError };
-	}
-
-	let products = prevState.products && [ ...prevState.products ] || [];
-	action.products.forEach( function( product ) {
-		products = updateCachedProduct( products, product );
-	} );
-
-	const isError = setError( prevState, action.page, false );
-
-	return { ...prevState,
-		products,
-		isLoading,
-		isError,
-		totalPages: action.totalPages,
-		totalProducts: action.totalProducts,
-	};
-}
-
 export function productsDeleteSuccess( state, action ) {
 	const prevState = state || {};
 	const prevProducts = prevState.products || [];
@@ -88,12 +61,37 @@ export function productsDeleteSuccess( state, action ) {
 	};
 }
 
-export function productsRequest( state, { page, meta: { dataLayer: { error, data } } } ) {
-	if ( data || error ) {
-		return state;
-	}
+export function productsRequest( state, action ) {
 	const prevState = state || {};
-	const isLoading = setLoading( prevState, page, true );
+	const { data, error } = action.meta.dataLayer;
+	if ( error ) {
+		const isLoading = setLoading( prevState, action.page, false );
+		const isError = setError( prevState, action.page, true );
+		return { ...prevState, isLoading, isError };
+	}
+
+	if ( data ) {
+		const response = data.data;
+		let products = prevState.products && [ ...prevState.products ] || [];
+		response.body.forEach( function( product ) {
+			products = updateCachedProduct( products, product );
+		} );
+
+		const isLoading = setLoading( prevState, action.page, false );
+		const isError = setError( prevState, action.page, false );
+		const totalPages = response.headers[ 'X-WP-TotalPages' ];
+		const totalProducts = response.headers[ 'X-WP-Total' ];
+
+		return { ...prevState,
+			products,
+			isLoading,
+			isError,
+			totalPages,
+			totalProducts,
+		};
+	}
+
+	const isLoading = setLoading( prevState, action.page, true );
 	return { ...prevState, isLoading };
 }
 

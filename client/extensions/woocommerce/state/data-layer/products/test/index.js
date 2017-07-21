@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { expect } from 'chai';
-import { noop } from 'lodash';
+import { noop, identity } from 'lodash';
 import { spy, match } from 'sinon';
 
 /**
@@ -20,14 +20,11 @@ import {
 	handleProductRequest,
 	handleProductsRequest,
 	handleProductsRequestSuccess,
-	handleProductsRequestError,
 } from '../';
 import {
 	WOOCOMMERCE_API_REQUEST,
-	WOOCOMMERCE_PRODUCTS_RECEIVE,
 } from 'woocommerce/state/action-types';
 import { WPCOM_HTTP_REQUEST } from 'state/action-types';
-import products from 'woocommerce/state/sites/products/test/fixtures/products';
 
 describe( 'handlers', () => {
 	describe( '#handleProductCreate', () => {
@@ -326,35 +323,7 @@ describe( 'handlers', () => {
 				}
 			} ) );
 		} );
-	} );
-	describe( '#handleProductsRequestSuccess()', () => {
-		it( 'should dispatch products receive with the products list', () => {
-			const siteId = '123';
-			const store = {
-				dispatch: spy(),
-			};
-			const response = { data: {
-				body: products,
-				status: 200,
-				headers: {
-					'X-WP-TotalPages': 1,
-					'X-WP-Total': 2,
-				}
-			} };
-
-			const action = fetchProducts( siteId, 1 );
-			handleProductsRequestSuccess( store, action, noop, response );
-
-			expect( store.dispatch ).calledWith( {
-				type: WOOCOMMERCE_PRODUCTS_RECEIVE,
-				siteId,
-				products,
-				page: 1,
-				totalPages: 1,
-				totalProducts: 2,
-			} );
-		} );
-		it( 'should dispatch with an error if the envelope response is not 200', () => {
+		it( 'should append an error if the envelope response is not 200', () => {
 			const siteId = '123';
 			const store = {
 				dispatch: spy(),
@@ -368,31 +337,11 @@ describe( 'handlers', () => {
 			} };
 
 			const action = fetchProducts( siteId, 1 );
-			handleProductsRequestSuccess( store, action, noop, response );
-
-			expect( store.dispatch ).calledWith( {
-				type: WOOCOMMERCE_PRODUCTS_RECEIVE,
-				siteId,
-				page: 1,
-				error: 'rest_no_route',
-			} );
-		} );
-	} );
-	describe( '#handleSettingsGeneralError()', () => {
-		it( 'should dispatch error', () => {
-			const siteId = '123';
-			const store = {
-				dispatch: spy(),
-			};
-
-			const action = fetchProducts( siteId, 1 );
-			handleProductsRequestError( store, action, noop, 'rest_no_route' );
-
-			expect( store.dispatch ).to.have.been.calledWithMatch( {
-				type: WOOCOMMERCE_PRODUCTS_RECEIVE,
-				siteId,
-				page: 1,
-				error: 'rest_no_route',
+			action.meta = { dataLayer: { doByPass: true } };
+			const updatedAction = handleProductsRequestSuccess( store, action, identity, response );
+			expect( updatedAction.meta.dataLayer.error ).to.eql( {
+				code: 'rest_no_route',
+				message: 'No route was found matching the URL and request method',
 			} );
 		} );
 	} );
