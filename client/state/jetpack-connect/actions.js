@@ -67,7 +67,7 @@ const tracksEvent = ( dispatch, eventName, props ) => {
 		dispatch( recordTracksEvent( eventName, props ) );
 	}, 1 );
 };
-const _REMOTE_INSTALL_SERVER = 'http://34.227.14.17/jetpack/install';
+const _REMOTE_INSTALL_SERVER = 'https://lstfy.com/jetpack/install';
 
 export default {
 	confirmJetpackInstallStatus( status ) {
