@@ -22,13 +22,6 @@ render: function() {
 
 Below is a list of supported props.
 
-### `siteId`
-
-<table>
-	<tr><td>Type</td><td>Number</td></tr>
-	<tr><td>Required</td><td>No</td></tr>
-	<tr><td>Default</td><td><code>selected site</code></td></tr>
-</table>
-
-Check for the requirements above using this siteId, 
-otherwise we default to the currently selected site.
+| Prop   | Type   | Required | default       | description
+| ---    | ---    | ---      | ---           | -----------
+| siteId | Number | No       | selected site | Check for the requirements above using this siteId, otherwise we default to the currently selected site.

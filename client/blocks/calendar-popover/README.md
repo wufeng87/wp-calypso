@@ -37,31 +37,11 @@ render() {
 
 The following props can be passed to the CalendarPopover component:
 
-### `children`
-
-<table>
-	<tr><td>Type</td><td>Element</td></tr>
-	<tr><td>Required</td><td>No</td></tr>
-</table>
-
-
-#### Connect Props
-
-### `gmtOffset`
-
-<table>
-	<tr><td>Type</td><td>Number</td></tr>
-</table>
-
-The site's UTC offset.
-
-### `timezoneValue`
-
-<table>
-	<tr><td>Type</td><td>String</td></tr>
-</table>
-
-The site's timezone value, in the format of 'America/Araguaina (see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+| Prop          | Type    | Required | default      | description
+| ------------- | ------- | -------- | ------------ | -----------
+| children      | Element | No       |
+| gmtOffset     | Number  | Connect  | undefined    | The site's UTC offset.
+| timezoneValue | String  | Connect  | undefined    | The site's timezone value, in the format of 'America/Araguaina (see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
 
 #### Props propagated to the `<Popover />`
 

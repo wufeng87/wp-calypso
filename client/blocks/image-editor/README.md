@@ -11,22 +11,12 @@ It requires a `media` object to work properly. You can also pass a site ID to wh
 
 ## Props
 
-### `siteId`
+| Prop   | Type   | Required | default       | description
+| ---    | ---    | ---      | ---           | -----------
+| siteId | Number | No | selected site | Id of a site the edited image belongs to.
+| media | Object | Yes | undefined | [1]
 
-<table>
-	<tr><th>Type</th><td>Number</td></tr>
-	<tr><th>Required</th><td>No</td></tr>
-	<tr><th>Default</th><td>selected site</td></tr>
-</table>
-
-Id of a site the edited image belongs to.
-
-### `media`
-
-<table>
-	<tr><th>Type</th><td>Object</td></tr>
-	<tr><th>Required</th><td>Yes</td></tr>
-</table>
+[1]:
 
 This object needs to contain at least one of these properties:
 

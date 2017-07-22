@@ -17,44 +17,12 @@ render() {
 
 ## Props
 
-### `children`
-
-<table>
-	<tr><td>Type</td><td>Element</td></tr>
-	<tr><td>Required</td><td>No</td></tr>
-</table>
-
-### `icon`
-
-<table>
-	<tr><td>Type</td><td>String</td></tr>
-	<tr><td>Required</td><td>No</td></tr>
-	<tr><td>Default</td><td>calendar</td></tr>
-</table>
-
-If the component doesn't have children elements then an icon (Gridicon) will be rendered inside of this one.
-
-### `popoverPosition`
-
-<table>
-	<tr><td>Type</td><td>String</td></tr>
-	<tr><td>Required</td><td>No</td></tr>
-	<tr><td>Default</td><td>bottom</td></tr>
-</table>
-
-It defines the position of the Popover once it shows. This value is propagated to the `<Popover />` instance through of the `position` property.
-
-
-### `type`
-
-
-<table>
-	<tr><td>Type</td><td>String</td></tr>
-	<tr><td>Required</td><td>Yes</td></tr>
-	<tr><td>Default</td><td>button</td></tr>
-</table>
-
-This property defines to this component as a `button`. You shouldn't change this it.
+| Prop            | Type    | Required | default      | description
+| --------------- | ------- | -------- | ------------ | -----------
+| children        | Element | No       | `undefined`  |
+| icon            | String  | No       | `'calendar'` | If the component doesn't have children elements then an icon (Gridicon) will be rendered inside of this one.
+| popoverPosition | String  | No       | `'bottom'`   | It defines the position of the Popover once it shows. This value is propagated to the `<Popover />` instance through of the `position` property.
+| type            | String  | Yes      | `'button'`   | This property defines to this component as a `button`. You shouldn't change this it.
 
 ### Props propagated to the `<Popover />`
 

@@ -23,43 +23,9 @@ render: function() {
 
 Below is a list of supported props.
 
-### `className`
-
-<table>
-	<tr><td>Type</td><td>String</td></tr>
-	<tr><td>Required</td><td>No</td></tr>
-	<tr><td>Default</td><td><code>undefined</code></td></tr>
-</table>
-
-Any addition classes to pass to the card component.
-
-### `onClick`
-
-<table>
-	<tr><td>Type</td><td>Function</td></tr>
-	<tr><td>Required</td><td>No</td></tr>
-	<tr><td>Default</td><td><code>lodash/noop</code></td></tr>
-</table>
-
-This function will fire when a user clicks on the cross icon
-
-### `preferenceName`
-
-<table>
-	<tr><td>Type</td><td>String</td></tr>
-	<tr><td>Required</td><td>Yes</td></tr>
-	<tr><td>Default</td><td><code>n/a</code></td></tr>
-</table>
-
-The user preference name that we store a boolean against. 
-Note that we prefix this value with 'dismissible-card-' to avoid namespace collisions.
-
-### `temporary`
-
-<table>
-	<tr><td>Type</td><td>Boolean</td></tr>
-	<tr><td>Required</td><td>No</td></tr>
-	<tr><td>Default</td><td><code>undefined</code></td></tr>
-</table>
-
-When true, clicking on the cross will dismiss the card for the current page load.
+| Prop           | Type     | Required | default       | description
+| -------------- | -------- | -------- | ------------  | -----------
+| classname      | String   | No       | `undefined`   | Any addition classes to pass to the card component.
+| onClick        | Function | No       | `lodash/noop` | This function will fire when a user clicks on the cross icon
+| preferenceName | String   | Yes      | n/a           | The user preference name that we store a boolean against. Note that we prefix this value with 'dismissible-card-' to avoid namespace collisions.
+| temporary      | Boolean  | No       | `undefined`   | When true, clicking on the cross will dismiss the card for the current page load.
