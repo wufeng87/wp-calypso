@@ -33,14 +33,6 @@ module.exports = {
 		defaultVariation: 'original',
 		localeTargets: 'any',
 	},
-	newSiteWithJetpack: {
-		datestamp: '20170419',
-		variations: {
-			showNewJetpackSite: 50,
-			onlyDotComSites: 50,
-		},
-		defaultVariation: 'onlyDotComSites',
-	},
 	chatOfferOnCancel: {
 		datestamp: '20170421',
 		variations: {

@@ -14,8 +14,6 @@ import Button from 'components/button';
 import PopoverMenu from 'components/popover/menu';
 import PopoverMenuItem from 'components/popover/menu-item';
 import { recordTracksEvent } from 'state/analytics/actions';
-import config from 'config';
-import { abtest } from 'lib/abtest';
 import { hasJetpackSites } from 'state/selectors';
 
 class SiteSelectorAddSite extends Component {
@@ -36,11 +34,7 @@ class SiteSelectorAddSite extends Component {
 	}
 
 	getAddNewSiteUrl() {
-		if ( this.props.hasJetpackSites ||
-			abtest( 'newSiteWithJetpack' ) === 'showNewJetpackSite' ) {
-			return '/jetpack/new/?ref=calypso-selector';
-		}
-		return config( 'signup_url' ) + '?ref=calypso-selector';
+		return '/jetpack/new/?ref=calypso-selector';
 	}
 
 	handleShowPopover( isShowing ) {
