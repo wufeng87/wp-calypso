@@ -48,6 +48,7 @@ class PostResults extends Component {
 				shouldCombineCards={ true }
 				transformStreamItems={ transformStreamItems }
 				isMain={ false }
+				showTopbar={ false }
 			>
 				{ this.props.showBack && <HeaderBack /> }
 				<div ref={ this.handleStreamMounted } />

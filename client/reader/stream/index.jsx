@@ -41,6 +41,7 @@ import { keysAreEqual } from 'lib/feed-stream-store/post-key';
 import { resetCardExpansions } from 'state/ui/reader/card-expansions/actions';
 import { combineCards, injectRecommendations, RECS_PER_BLOCK } from './utils';
 import { keyToString, keyForPost } from 'lib/feed-stream-store/post-key';
+import Topbar from 'reader/reader-topbar';
 
 const GUESSED_POST_HEIGHT = 600;
 const HEADER_OFFSET_TOP = 46;
@@ -88,6 +89,8 @@ class ReaderStream extends React.Component {
 		shouldCombineCards: PropTypes.bool,
 		transformStreamItems: PropTypes.func,
 		isMain: PropTypes.bool,
+		showTopbar: PropTypes.bool,
+		showTopbarSearch: PropTypes.bool,
 	};
 
 	static defaultProps = {
@@ -103,6 +106,8 @@ class ReaderStream extends React.Component {
 		shouldCombineCards: true,
 		transformStreamItems: identity,
 		isMain: true,
+		showTopbar: true,
+		showTopbarSearch: true,
 	};
 
 	getStateFromStores( props = this.props ) {
@@ -468,22 +473,25 @@ class ReaderStream extends React.Component {
 		}
 		const TopLevel = this.props.isMain ? ReaderMain : 'div';
 		return (
-			<TopLevel className={ classnames( 'following', this.props.className ) }>
-				{ this.props.isMain &&
-					this.props.showMobileBackToSidebar &&
-					<MobileBackToSidebar>
-						<h1>
-							{ this.props.translate( 'Streams' ) }
-						</h1>
-					</MobileBackToSidebar> }
+			<div>
+				{ this.props.showTopbar && <Topbar showSearch={ this.props.showTopbarSearch } /> }
+				<TopLevel className={ classnames( 'following', this.props.className ) }>
+					{ this.props.isMain &&
+						this.props.showMobileBackToSidebar &&
+						<MobileBackToSidebar>
+							<h1>
+								{ this.props.translate( 'Streams' ) }
+							</h1>
+						</MobileBackToSidebar> }
 
-				<UpdateNotice count={ this.state.updateCount } onClick={ this.showUpdates } />
-				{ this.props.children }
-				{ body }
-				{ showingStream && store.isLastPage() && this.state.posts.length
-					? <div className="infinite-scroll-end" />
-					: null }
-			</TopLevel>
+					<UpdateNotice count={ this.state.updateCount } onClick={ this.showUpdates } />
+					{ this.props.children }
+					{ body }
+					{ showingStream && store.isLastPage() && this.state.posts.length
+						? <div className="infinite-scroll-end" />
+						: null }
+				</TopLevel>
+			</div>
 		);
 	}
 }
