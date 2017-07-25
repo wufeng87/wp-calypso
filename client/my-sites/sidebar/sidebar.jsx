@@ -47,7 +47,6 @@ import {
 	isSitePreviewable
 } from 'state/sites/selectors';
 import { getStatsPathForTab } from 'lib/route/path';
-import { abtest } from 'lib/abtest';
 
 /**
  * Module variables
@@ -508,11 +507,7 @@ export class MySitesSidebar extends Component {
 	};
 
 	getAddNewSiteUrl() {
-		if ( this.props.hasJetpackSites ||
-			abtest( 'newSiteWithJetpack' ) === 'showNewJetpackSite' ) {
-			return '/jetpack/new/?ref=calypso-selector';
-		}
-		return config( 'signup_url' ) + '?ref=calypso-selector';
+		return '/jetpack/new/?ref=calypso-selector';
 	}
 
 	addNewSite() {
