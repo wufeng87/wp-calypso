@@ -11,6 +11,7 @@ import EditorSidebarHeader from './header';
 import SidebarFooter from 'layout/sidebar/footer';
 import EditorActionBar from 'post-editor/editor-action-bar';
 import EditorDeletePost from 'post-editor/editor-delete-post';
+import EditorShareADraft from 'post-editor/editor-share-a-draft';
 
 export default class EditorSidebar extends Component {
 	static propTypes = {
@@ -62,6 +63,7 @@ export default class EditorSidebar extends Component {
 					onSave={ onSave }
 					isPostPrivate={ isPostPrivate }
 				/>
+				<EditorShareADraft />
 				<SidebarFooter>
 					<EditorDeletePost
 						post={ post }
