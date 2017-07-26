@@ -17,6 +17,7 @@ import {
 import { isSitePreviewable } from 'state/sites/selectors';
 import addQueryArgs from 'lib/route/add-query-args';
 import { setLayoutFocus } from 'state/ui/layout-focus/actions';
+import { isWithinBreakpoint } from 'lib/viewport';
 
 import Button from 'components/button';
 import DocumentHead from 'components/data/document-head';
