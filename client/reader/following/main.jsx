@@ -11,7 +11,6 @@ import Stream from 'reader/stream';
 import FollowingIntro from './intro';
 import config from 'config';
 
-
 const FollowingStream = props => {
 	return (
 		<Stream { ...props }>

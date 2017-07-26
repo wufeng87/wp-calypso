@@ -410,7 +410,7 @@ class ReaderStream extends React.Component {
 			selectedPostKey &&
 			selectedPostKey.postId === postKey.postId &&
 			( selectedPostKey.blogId === postKey.blogId || selectedPostKey.feedId === postKey.feedId )
-		 );
+		);
 
 		const itemKey = this.getPostRef( postKey );
 		const showPost = args =>
