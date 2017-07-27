@@ -6,7 +6,6 @@ import defer from 'lodash/defer';
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
-import { capitalize } from 'lodash';
 
 /**
  * Internal dependencies
@@ -25,11 +24,13 @@ import { recordTracksEvent } from 'state/analytics/actions';
 import {
 	getRequestError,
 	isFormDisabled,
+	getCreateSocialAccountError,
 } from 'state/login/selectors';
 import SocialLoginForm from './social';
 
 export class LoginForm extends Component {
 	static propTypes = {
+		createSocialAccountError: PropTypes.object,
 		formUpdate: PropTypes.func.isRequired,
 		loginUser: PropTypes.func.isRequired,
 		onSuccess: PropTypes.func.isRequired,
@@ -44,8 +45,6 @@ export class LoginForm extends Component {
 		usernameOrEmail: '',
 		password: '',
 		rememberMe: false,
-		linkingSocialUser: false,
-		linkingSocialService: '',
 	};
 
 	componentDidMount() {
@@ -88,10 +87,12 @@ export class LoginForm extends Component {
 	onSubmitForm = ( event ) => {
 		event.preventDefault();
 
-		const { linkingSocialUser, password, usernameOrEmail } = this.state;
+		const { password } = this.state;
+		const usernameOrEmail = this.state.usernameOrEmail ||
+			( this.props.createSocialAccountError && this.props.createSocialAccountError.email );
 		const { onSuccess, redirectTo } = this.props;
 
-		const rememberMe = linkingSocialUser ? true : this.state.rememberMe;
+		const rememberMe = this.isLinkingSocialUser() ? true : this.state.rememberMe;
 
 		this.props.recordTracksEvent( 'calypso_login_block_login_form_submit' );
 
@@ -115,13 +116,11 @@ export class LoginForm extends Component {
 		this.usernameOrEmail = input;
 	};
 
-	linkSocialUser = ( service, usernameOrEmail ) => {
-		this.setState( {
-			usernameOrEmail: usernameOrEmail,
-			linkingSocialUser: true,
-			linkingSocialService: capitalize( service ),
-		} );
-	};
+	isLinkingSocialUser() {
+		return this.props.createSocialAccountError &&
+			( this.props.createSocialAccountError.code === 'user_exists' ||
+				this.props.createSocialAccountError.code === 'wpcom_user_exists' );
+	}
 
 	render() {
 		const isDisabled = {};
@@ -131,19 +130,23 @@ export class LoginForm extends Component {
 		}
 
 		const { requestError } = this.props;
+		const linkingSocialUser = this.isLinkingSocialUser();
+		const usernameOrEmail = this.state.usernameOrEmail ||
+			( this.props.createSocialAccountError && this.props.createSocialAccountError.email ) ||
+			'';
 
 		return (
 			<form onSubmit={ this.onSubmitForm } method="post">
 				<Card className="login__form">
 					<div className="login__form-userdata">
-						{ this.state.linkingSocialUser && (
+						{ linkingSocialUser && (
 							<div className="login__form-link-social-notice">
 								<p>
 									{ this.props.translate( 'We found a WordPress.com account with the email address "%(email)s". ' +
 										'Log in to this account to connect it to your %(service)s profile.', {
 											args: {
-												email: this.state.usernameOrEmail,
-												service: this.state.linkingSocialService,
+												email: this.props.createSocialAccountError.email,
+												service: this.props.createSocialAccountErrorService,
 											}
 										}
 									) }
@@ -165,7 +168,7 @@ export class LoginForm extends Component {
 							id="usernameOrEmail"
 							name="usernameOrEmail"
 							ref={ this.saveUsernameOrEmailRef }
-							value={ this.state.usernameOrEmail }
+							value={ usernameOrEmail }
 							{ ...isDisabled } />
 
 						{ requestError && requestError.field === 'usernameOrEmail' && (
@@ -196,7 +199,7 @@ export class LoginForm extends Component {
 						) }
 					</div>
 
-					{ ! this.state.linkingSocialUser && (
+					{ ! linkingSocialUser && (
 						<div className="login__form-remember-me">
 							<label>
 								<FormCheckbox
@@ -235,8 +238,7 @@ export class LoginForm extends Component {
 						<div className="login__form-social">
 							<SocialLoginForm
 								onSuccess={ this.props.onSuccess }
-								linkSocialUser={ this.linkSocialUser }
-								linkingSocialService={ this.state.linkingSocialService } />
+								linkingSocialService={ this.props.createSocialAccountErrorService } />
 						</div>
 					</Card>
 				) }
@@ -250,6 +252,8 @@ export default connect(
 		redirectTo: getCurrentQueryArguments( state ).redirect_to,
 		requestError: getRequestError( state ),
 		isFormDisabled: isFormDisabled( state ),
+		createSocialAccountError: getCreateSocialAccountError( state ),
+		createSocialAccountErrorService: 'google',
 	} ),
 	{
 		formUpdate,
