@@ -76,6 +76,14 @@ module.exports = {
 		},
 		defaultVariation: 'original',
 	},
+	jetpackConnectPlansCopyChanges: {
+		datestamp: '20170728',
+		variations: {
+			original: 50,
+			modified: 50,
+		},
+		defaultVariation: 'original',
+	},
 	showCartAbandonmentNotice: {
 		datestamp: '20170630',
 		variations: {
