@@ -4,22 +4,19 @@
 import deepFreeze from 'deep-freeze';
 import { expect } from 'chai';
 import sinon from 'sinon';
+import mockery from 'mockery';
+import { noop } from 'lodash';
 
 /**
  * Internal dependencies
  */
-import {
-	updateUploadProgress,
-	uploadComplete,
-	uploadPlugin,
-	receiveError,
-} from '../';
 import {
 	completePluginUpload,
 	pluginUploadError,
 	updatePluginUploadProgress,
 } from 'state/plugins/upload/actions';
 import { PLUGIN_INSTALL_REQUEST_SUCCESS } from 'state/action-types';
+import useMockery from 'test/helpers/use-mockery';
 
 const siteId = 77203074;
 const pluginId = 'hello-dolly';
@@ -44,9 +41,23 @@ const ERROR_RESPONSE = deepFreeze( {
 } );
 
 describe( 'uploadPlugin', () => {
-	it( 'should distpatch an http request', () => {
+
+	useMockery();
+
+	let handlers;
+
+	before( () => {
+		mockery.registerMock( 'lib/analytics', {
+			tracks: {
+				recordEvent: noop
+			}
+		} );
+		handlers = require( '../' );
+	} );
+
+	it( 'should dispatch an http request', () => {
 		const dispatch = sinon.spy();
-		uploadPlugin( { dispatch }, { siteId, file: 'xyz' } );
+		handlers.uploadPlugin( { dispatch }, { siteId, file: 'xyz' } );
 		expect( dispatch ).to.have.been.calledWithMatch( {
 			formData: [ [ 'zip[]', 'xyz' ] ],
 			method: 'POST',
@@ -56,9 +67,23 @@ describe( 'uploadPlugin', () => {
 } );
 
 describe( 'uploadComplete', () => {
+
+	useMockery();
+
+	let handlers;
+
+	before( () => {
+		mockery.registerMock( 'lib/analytics', {
+			tracks: {
+				recordEvent: noop
+			}
+		} );
+		handlers = require( '../' );
+	} );
+
 	it( 'should dispatch plugin upload complete action', () => {
 		const dispatch = sinon.spy();
-		uploadComplete( { dispatch }, { siteId }, null, SUCCESS_RESPONSE );
+		handlers.uploadComplete( { dispatch }, { siteId }, null, SUCCESS_RESPONSE );
 		expect( dispatch ).to.have.been.calledWith(
 			completePluginUpload( siteId, pluginId )
 		);
@@ -66,7 +91,7 @@ describe( 'uploadComplete', () => {
 
 	it( 'should dispatch plugin install request success', () => {
 		const dispatch = sinon.spy();
-		uploadComplete( { dispatch }, { siteId }, null, SUCCESS_RESPONSE );
+		handlers.uploadComplete( { dispatch }, { siteId }, null, SUCCESS_RESPONSE );
 		expect( dispatch ).to.have.been.calledWith( {
 			type: PLUGIN_INSTALL_REQUEST_SUCCESS,
 			siteId,
@@ -77,9 +102,23 @@ describe( 'uploadComplete', () => {
 } );
 
 describe( 'receiveError', () => {
+
+	useMockery();
+
+	let handlers;
+
+	before( function() {
+		mockery.registerMock( 'lib/analytics', {
+			tracks: {
+				recordEvent: noop
+			}
+		} );
+		handlers = require( '../' );
+	} );
+
 	it( 'should dispatch plugin upload error', () => {
 		const dispatch = sinon.spy();
-		receiveError( { dispatch }, { siteId }, null, ERROR_RESPONSE );
+		handlers.receiveError( { dispatch }, { siteId }, null, ERROR_RESPONSE );
 		expect( dispatch ).to.have.been.calledWith(
 			pluginUploadError( siteId, ERROR_RESPONSE )
 		);
@@ -87,9 +126,23 @@ describe( 'receiveError', () => {
 } );
 
 describe( 'updateUploadProgress', () => {
+
+	useMockery();
+
+	let handlers;
+
+	before( function() {
+		mockery.registerMock( 'lib/analytics', {
+			tracks: {
+				recordEvent: noop
+			}
+		} );
+		handlers = require( '../' );
+	} );
+
 	it( 'should dispatch plugin upload progress update', () => {
 		const dispatch = sinon.spy();
-		updateUploadProgress( { dispatch }, { siteId }, null, { loaded: 200, total: 400 } );
+		handlers.updateUploadProgress( { dispatch }, { siteId }, null, { loaded: 200, total: 400 } );
 		expect( dispatch ).to.have.been.calledWith(
 			updatePluginUploadProgress( siteId, 50 )
 		);
