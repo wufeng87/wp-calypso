@@ -40,8 +40,7 @@ const ERROR_RESPONSE = deepFreeze( {
 	message: 'folder_exists',
 } );
 
-describe( 'uploadPlugin', () => {
-
+describe( 'new plugin data layer', () => {
 	useMockery();
 
 	let handlers;
@@ -55,96 +54,56 @@ describe( 'uploadPlugin', () => {
 		handlers = require( '../' );
 	} );
 
-	it( 'should dispatch an http request', () => {
-		const dispatch = sinon.spy();
-		handlers.uploadPlugin( { dispatch }, { siteId, file: 'xyz' } );
-		expect( dispatch ).to.have.been.calledWithMatch( {
-			formData: [ [ 'zip[]', 'xyz' ] ],
-			method: 'POST',
-			path: `/sites/${ siteId }/plugins/new`,
+	describe( 'uploadPlugin', () => {
+		it( 'should dispatch an http request', () => {
+			const dispatch = sinon.spy();
+			handlers.uploadPlugin( { dispatch }, { siteId, file: 'xyz' } );
+			expect( dispatch ).to.have.been.calledWithMatch( {
+				formData: [ [ 'zip[]', 'xyz' ] ],
+				method: 'POST',
+				path: `/sites/${ siteId }/plugins/new`,
+			} );
 		} );
 	} );
-} );
 
-describe( 'uploadComplete', () => {
-
-	useMockery();
-
-	let handlers;
-
-	before( () => {
-		mockery.registerMock( 'lib/analytics', {
-			tracks: {
-				recordEvent: noop
-			}
+	describe( 'uploadComplete', () => {
+		it( 'should dispatch plugin upload complete action', () => {
+			const dispatch = sinon.spy();
+			handlers.uploadComplete( { dispatch }, { siteId }, null, SUCCESS_RESPONSE );
+			expect( dispatch ).to.have.been.calledWith(
+				completePluginUpload( siteId, pluginId )
+			);
 		} );
-		handlers = require( '../' );
-	} );
 
-	it( 'should dispatch plugin upload complete action', () => {
-		const dispatch = sinon.spy();
-		handlers.uploadComplete( { dispatch }, { siteId }, null, SUCCESS_RESPONSE );
-		expect( dispatch ).to.have.been.calledWith(
-			completePluginUpload( siteId, pluginId )
-		);
-	} );
-
-	it( 'should dispatch plugin install request success', () => {
-		const dispatch = sinon.spy();
-		handlers.uploadComplete( { dispatch }, { siteId }, null, SUCCESS_RESPONSE );
-		expect( dispatch ).to.have.been.calledWith( {
-			type: PLUGIN_INSTALL_REQUEST_SUCCESS,
-			siteId,
-			pluginId,
-			data: SUCCESS_RESPONSE,
+		it( 'should dispatch plugin install request success', () => {
+			const dispatch = sinon.spy();
+			handlers.uploadComplete( { dispatch }, { siteId }, null, SUCCESS_RESPONSE );
+			expect( dispatch ).to.have.been.calledWith( {
+				type: PLUGIN_INSTALL_REQUEST_SUCCESS,
+				siteId,
+				pluginId,
+				data: SUCCESS_RESPONSE,
+			} );
 		} );
 	} );
-} );
 
-describe( 'receiveError', () => {
-
-	useMockery();
-
-	let handlers;
-
-	before( function() {
-		mockery.registerMock( 'lib/analytics', {
-			tracks: {
-				recordEvent: noop
-			}
+	describe( 'receiveError', () => {
+		it( 'should dispatch plugin upload error', () => {
+			const dispatch = sinon.spy();
+			handlers.receiveError( { dispatch }, { siteId }, null, ERROR_RESPONSE );
+			expect( dispatch ).to.have.been.calledWith(
+				pluginUploadError( siteId, ERROR_RESPONSE )
+			);
 		} );
-		handlers = require( '../' );
 	} );
 
-	it( 'should dispatch plugin upload error', () => {
-		const dispatch = sinon.spy();
-		handlers.receiveError( { dispatch }, { siteId }, null, ERROR_RESPONSE );
-		expect( dispatch ).to.have.been.calledWith(
-			pluginUploadError( siteId, ERROR_RESPONSE )
-		);
-	} );
-} );
-
-describe( 'updateUploadProgress', () => {
-
-	useMockery();
-
-	let handlers;
-
-	before( function() {
-		mockery.registerMock( 'lib/analytics', {
-			tracks: {
-				recordEvent: noop
-			}
+	describe( 'updateUploadProgress', () => {
+		it( 'should dispatch plugin upload progress update', () => {
+			const dispatch = sinon.spy();
+			handlers.updateUploadProgress( { dispatch }, { siteId }, null, { loaded: 200, total: 400 } );
+			expect( dispatch ).to.have.been.calledWith(
+				updatePluginUploadProgress( siteId, 50 )
+			);
 		} );
-		handlers = require( '../' );
-	} );
-
-	it( 'should dispatch plugin upload progress update', () => {
-		const dispatch = sinon.spy();
-		handlers.updateUploadProgress( { dispatch }, { siteId }, null, { loaded: 200, total: 400 } );
-		expect( dispatch ).to.have.been.calledWith(
-			updatePluginUploadProgress( siteId, 50 )
-		);
 	} );
 } );
