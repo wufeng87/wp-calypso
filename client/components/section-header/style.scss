@@ -22,6 +22,10 @@
 		@include long-content-fade( $color : $white );
 	}
 
+	&:after {
+		content: '\00a0';
+	}
+
 	.count {
 		margin-left: 8px;
 	}
