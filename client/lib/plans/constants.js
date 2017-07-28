@@ -129,16 +129,16 @@ export const FEATURE_SEO_PREVIEW_TOOLS = 'seo-preview-tools';
 export const PLANS_LIST = {
 	[ PLAN_FREE ]: {
 		getTitle: () => i18n.translate( 'Free' ),
-		getAudience: () => 'Best for students', //PLANS A/B TEST: Translate if test passes
-		getBlogAudience: () => 'Best for students', //PLANS A/B TEST: Translate if test passes
-		getPortfolioAudience: () => 'Best for students', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for students' ),
+		getBlogAudience: () => i18n.translate( 'Best for students' ),
+		getPortfolioAudience: () => i18n.translate( 'Best for students' ),
 		getPriceTitle: () => i18n.translate( 'Free for life' ), //TODO: DO NOT USE
 		getProductId: () => 1,
 		getStoreSlug: () => PLAN_FREE,
 		getPathSlug: () => 'beginner',
 		getDescription: () => i18n.translate( 'Get a free website and be on your way to publishing your ' +
 			'first post in less than five minutes.' ),
-		getFeatures: () => [ // pay attention to ordering, it is used on /plan page
+		getFeatures: () => [ // pay attention to ordering, shared features should align on /plan page
 			FEATURE_WP_SUBDOMAIN,
 			FEATURE_JETPACK_ESSENTIAL,
 			FEATURE_COMMUNITY_SUPPORT,
@@ -146,17 +146,17 @@ export const PLANS_LIST = {
 			FEATURE_BASIC_DESIGN,
 			FEATURE_3GB_STORAGE
 		],
-		getSignupFeatures: () => [ // pay attention to ordering, it is used on /plan page
+		getSignupFeatures: () => [
 			FEATURE_COMMUNITY_SUPPORT,
 			FEATURE_WP_SUBDOMAIN_SIGNUP,
 			FEATURE_FREE_THEMES_SIGNUP,
 		],
-		getBlogSignupFeatures: () => [ // pay attention to ordering, it is used on /plan page
+		getBlogSignupFeatures: () => [
 			FEATURE_COMMUNITY_SUPPORT,
 			FEATURE_WP_SUBDOMAIN_SIGNUP,
 			FEATURE_FREE_THEMES_SIGNUP,
 		],
-		getPortfolioSignupFeatures: () => [ // pay attention to ordering, it is used on /plan page
+		getPortfolioSignupFeatures: () => [
 			FEATURE_COMMUNITY_SUPPORT,
 			FEATURE_WP_SUBDOMAIN_SIGNUP,
 			FEATURE_FREE_THEMES_SIGNUP,
@@ -166,9 +166,9 @@ export const PLANS_LIST = {
 
 	[ PLAN_PERSONAL ]: {
 		getTitle: () => i18n.translate( 'Personal' ),
-		getAudience: () => 'Best for hobbyists', //PLANS A/B TEST: Translate if test passes
-		getBlogAudience: () => 'Best for hobbyists', //PLANS A/B TEST: Translate if test passes
-		getPortfolioAudience: () => 'Best for hobbyists', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for hobbyists' ),
+		getBlogAudience: () => i18n.translate( 'Best for hobbyists' ),
+		getPortfolioAudience: () => i18n.translate( 'Best for hobbyists' ),
 		getProductId: () => 1009,
 		getStoreSlug: () => PLAN_PERSONAL,
 		availableFor: ( plan ) => includes( [ PLAN_FREE ], plan ),
@@ -180,7 +180,7 @@ export const PLANS_LIST = {
 					strong: <strong className="plans__features plan-features__targeted-description-heading" />
 				}
 			} ),
-		getFeatures: () => [
+		getFeatures: () => [ // pay attention to ordering, shared features should align on /plan page
 			FEATURE_CUSTOM_DOMAIN,
 			FEATURE_JETPACK_ESSENTIAL,
 			FEATURE_EMAIL_LIVE_CHAT_SUPPORT,
@@ -194,12 +194,12 @@ export const PLANS_LIST = {
 			FEATURE_FREE_DOMAIN,
 			FEATURE_ALL_FREE_FEATURES
 		],
-		getBlogSignupFeatures: () => [ // pay attention to ordering, it is used on /plan page
+		getBlogSignupFeatures: () => [
 			FEATURE_FREE_DOMAIN,
 			FEATURE_EMAIL_LIVE_CHAT_SUPPORT_SIGNUP,
 			FEATURE_ALL_FREE_FEATURES,
 		],
-		getPortfolioSignupFeatures: () => [ // pay attention to ordering, it is used on /plan page
+		getPortfolioSignupFeatures: () => [
 			FEATURE_FREE_DOMAIN,
 			FEATURE_EMAIL_LIVE_CHAT_SUPPORT_SIGNUP,
 			FEATURE_ALL_FREE_FEATURES,
@@ -209,9 +209,9 @@ export const PLANS_LIST = {
 
 	[ PLAN_PREMIUM ]: {
 		getTitle: () => i18n.translate( 'Premium' ),
-		getAudience: () => 'Best for entrepreneurs', //PLANS A/B TEST: Translate if test passes
-		getBlogAudience: () => 'Best for professionals', //PLANS A/B TEST: Translate if test passes
-		getPortfolioAudience: () => 'Best for freelancers', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for entrepreneurs' ),
+		getBlogAudience: () => i18n.translate( 'Best for professionals' ),
+		getPortfolioAudience: () => i18n.translate( 'Best for freelancers' ),
 		getPriceTitle: () => i18n.translate( '$99 per year' ), //TODO: DO NOT USE
 		getProductId: () => 1003,
 		getPathSlug: () => 'premium',
@@ -242,17 +242,17 @@ export const PLANS_LIST = {
 			FEATURE_ADVANCED_DESIGN,
 			FEATURE_13GB_STORAGE
 		],
-		getSignupFeatures: () => compact( [ // pay attention to ordering, shared features should align on /plan page
+		getSignupFeatures: () => compact( [
 			FEATURE_ADVANCED_CUSTOMIZATION,
 			FEATURE_PREMIUM_THEMES,
 			FEATURE_ALL_PERSONAL_FEATURES
 		] ),
-		getBlogSignupFeatures: () => [ // pay attention to ordering, it is used on /plan page
+		getBlogSignupFeatures: () => [
 			FEATURE_MONETISE,
 			FEATURE_PREMIUM_THEMES,
 			FEATURE_ALL_PERSONAL_FEATURES,
 		],
-		getPortfolioSignupFeatures: () => [ // pay attention to ordering, it is used on /plan page
+		getPortfolioSignupFeatures: () => [
 			FEATURE_ADVANCED_CUSTOMIZATION,
 			FEATURE_PREMIUM_THEMES,
 			FEATURE_ALL_PERSONAL_FEATURES,
@@ -262,9 +262,9 @@ export const PLANS_LIST = {
 
 	[ PLAN_BUSINESS ]: {
 		getTitle: () => i18n.translate( 'Business' ),
-		getAudience: () => 'Best for small businesses', //PLANS A/B TEST: Translate if test passes
-		getBlogAudience: () => 'Best for brands', //PLANS A/B TEST: Translate if test passes
-		getPortfolioAudience: () => 'Best for small businesses', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for small businesses' ),
+		getBlogAudience: () => i18n.translate( 'Best for brands' ),
+		getPortfolioAudience: () => i18n.translate( 'Best for small businesses' ),
 		getPriceTitle: () => i18n.translate( '$299 per year' ), //TODO: DO NOT USE
 		getProductId: () => 1008,
 		getStoreSlug: () => PLAN_BUSINESS,
@@ -322,12 +322,12 @@ export const PLANS_LIST = {
 			FEATURE_GOOGLE_ANALYTICS_SIGNUP,
 			FEATURE_ALL_PREMIUM_FEATURES
 		],
-		getBlogSignupFeatures: () => [ // pay attention to ordering, it is used on /plan page
+		getBlogSignupFeatures: () => [
 			FEATURE_UPLOAD_THEMES_PLUGINS,
 			FEATURE_ADVANCED_SEO_TOOLS,
 			FEATURE_ALL_PREMIUM_FEATURES,
 		],
-		getPortfolioSignupFeatures: () => [ // pay attention to ordering, it is used on /plan page
+		getPortfolioSignupFeatures: () => [
 			FEATURE_UPLOAD_THEMES_PLUGINS,
 			FEATURE_UNLIMITED_STORAGE_SIGNUP,
 			FEATURE_ALL_PREMIUM_FEATURES,
@@ -337,7 +337,7 @@ export const PLANS_LIST = {
 
 	[ PLAN_JETPACK_FREE ]: {
 		getTitle: () => i18n.translate( 'Free' ),
-		getAudience: () => 'Best for students', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for students' ),
 		getProductId: () => 2002,
 		getStoreSlug: () => PLAN_JETPACK_FREE,
 
@@ -345,7 +345,7 @@ export const PLANS_LIST = {
 			'The features most needed by WordPress sites' +
 			' — perfectly packaged and optimized for everyone.'
 		),
-		getFeatures: () => [
+		getFeatures: () => [  // pay attention to ordering, shared features should align on /plan page
 			FEATURE_STANDARD_SECURITY_TOOLS,
 			FEATURE_SITE_STATS,
 			FEATURE_TRAFFIC_TOOLS,
@@ -362,7 +362,7 @@ export const PLANS_LIST = {
 	},
 	[ PLAN_JETPACK_PREMIUM ]: {
 		getTitle: () => i18n.translate( 'Premium' ),
-		getAudience: () => 'Best for small businesses', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for small businesses' ),
 		getSubtitle: () => i18n.translate( 'Protection, speed, and revenue.' ),
 		getProductId: () => 2000,
 		getStoreSlug: () => PLAN_JETPACK_PREMIUM,
@@ -377,7 +377,7 @@ export const PLANS_LIST = {
 				'Automated backups and malware scanning, expert priority ' +
 				'support, marketing automation, and more.'
 		),
-		getFeatures: () => compact( [
+		getFeatures: () => compact( [  // pay attention to ordering, shared features should align on /plan page
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_DAILY,
 			FEATURE_BACKUP_ARCHIVE_30,
 			FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED,
@@ -402,7 +402,7 @@ export const PLANS_LIST = {
 
 	[ PLAN_JETPACK_PREMIUM_MONTHLY ]: {
 		getTitle: () => i18n.translate( 'Premium' ),
-		getAudience: () => 'Best for small businesses', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for small businesses' ),
 		getProductId: () => 2003,
 		getStoreSlug: () => PLAN_JETPACK_PREMIUM_MONTHLY,
 		getPathSlug: () => 'premium-monthly',
@@ -411,7 +411,7 @@ export const PLANS_LIST = {
 				'Automated backups and malware scanning, expert priority ' +
 				'support, marketing automation, and more.'
 		),
-		getFeatures: () => compact( [
+		getFeatures: () => compact( [  // pay attention to ordering, shared features should align on /plan page
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_DAILY,
 			FEATURE_BACKUP_ARCHIVE_30,
 			FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED,
@@ -431,12 +431,12 @@ export const PLANS_LIST = {
 			FEATURE_ALL_PERSONAL_FEATURES,
 		] ),
 		getBillingTimeFrame: () => i18n.translate( 'per month, billed monthly' ),
-		getSignupBillingTimeFrame: () => 'per month', //PLANS A/B TEST: Translate if test passes
+		getSignupBillingTimeFrame: () => i18n.translate( 'per month' ),
 	},
 
 	[ PLAN_JETPACK_PERSONAL ]: {
 		getTitle: () => i18n.translate( 'Personal' ),
-		getAudience: () => 'Best for hobbyists', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for hobbyists' ),
 		getProductId: () => 2005,
 		getStoreSlug: () => PLAN_JETPACK_PERSONAL,
 		availableFor: ( plan ) => includes( [ PLAN_JETPACK_FREE, PLAN_JETPACK_PERSONAL_MONTHLY ], plan ),
@@ -445,7 +445,7 @@ export const PLANS_LIST = {
 				'Security essentials for every WordPress site including ' +
 				'automated backups and priority support.'
 		),
-		getFeatures: () => [
+		getFeatures: () => [  // pay attention to ordering, shared features should align on /plan page
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_DAILY,
 			FEATURE_BACKUP_ARCHIVE_30,
 			FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED,
@@ -466,7 +466,7 @@ export const PLANS_LIST = {
 
 	[ PLAN_JETPACK_PERSONAL_MONTHLY ]: {
 		getTitle: () => i18n.translate( 'Personal' ),
-		getAudience: () => 'Best for hobbyists', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for hobbyists' ),
 		getStoreSlug: () => PLAN_JETPACK_PERSONAL_MONTHLY,
 		getProductId: () => 2006,
 		getPathSlug: () => 'jetpack-personal-monthly',
@@ -475,7 +475,7 @@ export const PLANS_LIST = {
 				'Security essentials for every WordPress site including ' +
 				'automated backups and priority support.'
 		),
-		getFeatures: () => [
+		getFeatures: () => [  // pay attention to ordering, shared features should align on /plan page
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_DAILY,
 			FEATURE_BACKUP_ARCHIVE_30,
 			FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED,
@@ -491,12 +491,12 @@ export const PLANS_LIST = {
 			FEATURE_ALL_FREE_FEATURES,
 		],
 		getBillingTimeFrame: () => i18n.translate( 'per month, billed monthly' ),
-		getSignupBillingTimeFrame: () => 'per month', //PLANS A/B TEST: Translate if test passes
+		getSignupBillingTimeFrame: () => i18n.translate( 'per month' ),
 	},
 
 	[ PLAN_JETPACK_BUSINESS ]: {
 		getTitle: () => i18n.translate( 'Professional' ),
-		getAudience: () => 'Best for organizations', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for organizations' ),
 		getProductId: () => 2001,
 		availableFor: ( plan ) => includes( [
 			PLAN_JETPACK_BUSINESS_MONTHLY,
@@ -507,12 +507,11 @@ export const PLANS_LIST = {
 			PLAN_JETPACK_PERSONAL_MONTHLY
 		], plan ),
 		getPathSlug: () => 'professional',
-
 		getDescription: () => i18n.translate(
 			'WordPress sites from start to finish: unlimited premium ' +
 			'themes, business class security, and marketing automation.'
 		),
-		getFeatures: () => compact( [
+		getFeatures: () => compact( [  // pay attention to ordering, shared features should align on /plan page
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_REALTIME,
 			FEATURE_BACKUP_ARCHIVE_UNLIMITED,
 			FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED,
@@ -540,7 +539,7 @@ export const PLANS_LIST = {
 	},
 	[ PLAN_JETPACK_BUSINESS_MONTHLY ]: {
 		getTitle: () => i18n.translate( 'Professional' ),
-		getAudience: () => 'Best for organizations', //PLANS A/B TEST: Translate if test passes
+		getAudience: () => i18n.translate( 'Best for organizations' ),
 		getSubtitle: () => i18n.translate( 'Ultimate security and traffic tools.' ),
 		getProductId: () => 2004,
 		getPathSlug: () => 'professional-monthly',
@@ -555,7 +554,7 @@ export const PLANS_LIST = {
 			'WordPress sites from start to finish: unlimited premium ' +
 			'themes, business class security, and marketing automation.'
 		),
-		getFeatures: () => compact( [
+		getFeatures: () => compact( [  // pay attention to ordering, shared features should align on /plan page
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_REALTIME,
 			FEATURE_BACKUP_ARCHIVE_UNLIMITED,
 			FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED,
@@ -579,104 +578,104 @@ export const PLANS_LIST = {
 			FEATURE_ALL_PREMIUM_FEATURES
 		] ),
 		getBillingTimeFrame: () => i18n.translate( 'per month, billed monthly' ),
-		getSignupBillingTimeFrame: () => 'per month', //PLANS A/B TEST: Translate if test passes
+		getSignupBillingTimeFrame: () => i18n.translate( 'per month' ),
 	}
 };
 
 export const FEATURES_LIST = {
 	[ FEATURE_ALL_FREE_FEATURES ]: {
 		getSlug: () => FEATURE_ALL_FREE_FEATURES,
-		getTitle: () => 'All free features', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'All free features' ),
 	},
 
 	[ FEATURE_ALL_PERSONAL_FEATURES ]: {
 		getSlug: () => FEATURE_ALL_PERSONAL_FEATURES,
-		getTitle: () => 'All Personal features', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'All Personal features' ),
 	},
 
 	[ FEATURE_ALL_PREMIUM_FEATURES ]: {
 		getSlug: () => FEATURE_ALL_PREMIUM_FEATURES,
-		getTitle: () => 'All Premium features', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'All Premium features' ),
 	},
 
 	[ FEATURE_ADVANCED_CUSTOMIZATION ]: {
 		getSlug: () => FEATURE_ADVANCED_CUSTOMIZATION,
-		getTitle: () => 'Advanced customization', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Advanced customization' ),
 	},
 
 	[ FEATURE_FREE_DOMAIN ]: {
 		getSlug: () => FEATURE_FREE_DOMAIN,
-		getTitle: () => 'Free custom domain', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Free custom domain' ),
 	},
 
 	[ FEATURE_PREMIUM_THEMES ]: {
 		getSlug: () => FEATURE_PREMIUM_THEMES,
-		getTitle: () => 'Unlimited premium themes', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Unlimited premium themes' ),
 	},
 
 	[ FEATURE_MONETISE ]: {
 		getSlug: () => FEATURE_MONETISE,
-		getTitle: () => 'Monetize your site with ads', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Monetize your site with ads' ),
 	},
 
 	[ FEATURE_UPLOAD_THEMES_PLUGINS ]: {
 		getSlug: () => FEATURE_UPLOAD_THEMES_PLUGINS,
-		getTitle: () => 'Upload themes and plugins', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Upload themes and plugins' ),
 	},
 
 	[ FEATURE_GOOGLE_ANALYTICS_SIGNUP ]: {
 		getSlug: () => FEATURE_GOOGLE_ANALYTICS_SIGNUP,
-		getTitle: () => 'Google Analytics', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Google Analytics' ),
 	},
 
 	[ FEATURE_EMAIL_LIVE_CHAT_SUPPORT_SIGNUP ]: {
 		getSlug: () => FEATURE_EMAIL_LIVE_CHAT_SUPPORT_SIGNUP,
-		getTitle: () => 'Email and live chat support', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Email and live chat support' ),
 	},
 
 	[ FEATURE_FREE_THEMES_SIGNUP ]: {
 		getSlug: () => FEATURE_FREE_THEMES_SIGNUP,
-		getTitle: () => 'Hundreds of free themes', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Hundreds of free themes' ),
 	},
 
 	[ FEATURE_WP_SUBDOMAIN_SIGNUP ]: {
 		getSlug: () => FEATURE_WP_SUBDOMAIN_SIGNUP,
-		getTitle: () => 'WordPress.com subdomain', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'WordPress.com subdomain' ),
 	},
 
 	[ FEATURE_UNLIMITED_STORAGE_SIGNUP ]: {
 		getSlug: () => FEATURE_UNLIMITED_STORAGE_SIGNUP,
-		getTitle: () => 'Unlimited storage', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Unlimited storage' ),
 	},
 
 	[ FEATURE_ADVANCED_SEO_TOOLS ]: {
 		getSlug: () => FEATURE_ADVANCED_SEO_TOOLS,
-		getTitle: () => 'Advanced SEO tools', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Advanced SEO tools' ),
 	},
 
 	[ FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED_SIGNUP ]: {
 		getSlug: () => FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED_SIGNUP,
-		getTitle: () => 'Unlimited Backup Space', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Unlimited Backup Space' ),
 	},
 
 	[ FEATURE_FREE_WORDPRESS_THEMES ]: {
 		getSlug: () => FEATURE_FREE_WORDPRESS_THEMES,
-		getTitle: () => 'Free WordPress Themes', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Free WordPress Themes' ),
 	},
 
 	[ FEATURE_VIDEO_CDN_LIMITED ]: {
 		getSlug: () => FEATURE_VIDEO_CDN_LIMITED,
-		getTitle: () => '13GB Video Storage', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( '13GB Video Storage' ),
 	},
 
 	[ FEATURE_VIDEO_CDN_UNLIMITED ]: {
 		getSlug: () => FEATURE_VIDEO_CDN_UNLIMITED,
-		getTitle: () => 'Unlimited Video Storage', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'Unlimited Video Storage' ),
 	},
 
 	[ FEATURE_SEO_PREVIEW_TOOLS ]: {
 		getSlug: () => FEATURE_SEO_PREVIEW_TOOLS,
-		getTitle: () => 'SEO Preview Tools', //PLANS A/B TEST: Translate if test passes
+		getTitle: () => i18n.translate( 'SEO Preview Tools' ),
 	},
 
 	[ FEATURE_GOOGLE_ANALYTICS ]: {
