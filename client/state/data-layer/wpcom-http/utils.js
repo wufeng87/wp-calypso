@@ -3,6 +3,12 @@
  */
 import { get, noop } from 'lodash';
 
+import {
+	cleanActionExecutionIfNecessary,
+	isFresh,
+	registerSuccessfulExecution
+} from './freshness-verifier';
+
 /**
  * Returns response data from an HTTP request success action if available
  *
@@ -66,14 +72,20 @@ export const getProgress = action => get( action, 'meta.dataLayer.progress', nul
  *   onError    :: ReduxStore -> Action -> Dispatcher -> ErrorData
  *   onProgress :: ReduxStore -> Action -> Dispatcher -> ProgressData
  *
- * @param {Function} initiator called if action lacks response meta; should create HTTP request
- * @param {Function} onSuccess called if the action meta includes response data
- * @param {Function} onError called if the action meta includes error data
+ * @param {Function} initiator    called if action lacks response meta; should create HTTP request
+ * @param {Function} onSuccess    called if the action meta includes response data
+ * @param {Function} onError      called if the action meta includes error data
  * @param {Function} [onProgress] called on progress events when uploading. The default
  *                                behavior of this optional handler is to do nothing.
+ * @param {Object} options        Options object
+
  * @returns {?*} please ignore return values, they are undefined
  */
-export const dispatchRequest = ( initiator, onSuccess, onError, onProgress = noop ) => ( store, action, next ) => {
+
+export const dispatchRequest = ( initiator, onSuccess, onError, onProgress = noop, options = {} ) =>
+( store, action, next, ignoreAction ) => {
+	const { freshness } = options;
+
 	const error = getError( action );
 	if ( error ) {
 		return onError( store, action, next, error );
@@ -81,12 +93,22 @@ export const dispatchRequest = ( initiator, onSuccess, onError, onProgress = noo
 
 	const data = getData( action );
 	if ( data ) {
+		if ( freshness ) {
+			registerSuccessfulExecution( action );
+			cleanActionExecutionIfNecessary();
+		}
 		return onSuccess( store, action, next, data );
 	}
 
 	const progress = getProgress( action );
 	if ( progress ) {
 		return onProgress( store, action, next, progress );
+	}
+
+	if ( freshness && isFresh( action, freshness ) ) {
+		//make the action not arrive to the reducers to avoid them go to a isRequesting state
+		ignoreAction();
+		return;
 	}
 
 	return initiator( store, action, next );
