@@ -89,6 +89,7 @@ export const FEATURE_FREE_THEMES_SIGNUP = 'free-themes-signup';
 export const FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED_SIGNUP = 'unlimited-backup';
 
 // jetpack features constants
+export const FEATURE_BLANK = 'blank-feature';
 export const FEATURE_STANDARD_SECURITY_TOOLS = 'standard-security-tools';
 export const FEATURE_SITE_STATS = 'site-stats';
 export const FEATURE_TRAFFIC_TOOLS = 'traffic-tools';
@@ -124,6 +125,8 @@ export const FEATURE_FREE_WORDPRESS_THEMES = 'free-wordpress-themes';
 export const FEATURE_VIDEO_CDN_LIMITED = 'video-cdn-limited';
 export const FEATURE_VIDEO_CDN_UNLIMITED = 'video-cdn-unlimited';
 export const FEATURE_SEO_PREVIEW_TOOLS = 'seo-preview-tools';
+export const FEATURE_CONCIERGE_SETUP = 'concierge-setup-jetpack';
+export const FEATURE_MARKETING_AUTOMATION = 'marketing-automation';
 
 // DO NOT import. Use `getPlan` from `lib/plans` instead.
 export const PLANS_LIST = {
@@ -358,14 +361,16 @@ export const PLANS_LIST = {
 			FEATURE_TRAFFIC_TOOLS
 		],
 		getNewSignupFeatures: () => [
-			FEATURE_TRAFFIC_TOOLS,
-			FEATURE_STANDARD_SECURITY_TOOLS,
 			FEATURE_FREE_WORDPRESS_THEMES,
 			FEATURE_SITE_STATS,
+			FEATURE_STANDARD_SECURITY_TOOLS,
+			FEATURE_TRAFFIC_TOOLS,
+			FEATURE_BLANK,
 		],
 		getBillingTimeFrame: () => i18n.translate( 'for life' ),
 		getSignupBillingTimeFrame: () => i18n.translate( 'for life' ),
 	},
+	
 	[ PLAN_JETPACK_PREMIUM ]: {
 		getTitle: () => i18n.translate( 'Premium' ),
 		getAudience: () => 'Best for small businesses', //PLANS A/B TEST: Translate if test passes
@@ -403,10 +408,11 @@ export const PLANS_LIST = {
 			FEATURE_ALL_PERSONAL_FEATURES,
 		] ),
 		getNewSignupFeatures: () => [
-			FEATURE_TRAFFIC_TOOLS,
-			FEATURE_STANDARD_SECURITY_TOOLS,
-			FEATURE_FREE_WORDPRESS_THEMES,
-			FEATURE_SITE_STATS,
+			FEATURE_MALWARE_SCANNING_DAILY,
+			FEATURE_MARKETING_AUTOMATION,
+			FEATURE_WORDADS_INSTANT,
+			FEATURE_VIDEO_CDN_LIMITED,
+			FEATURE_ALL_PERSONAL_FEATURES,
 		],
 		getBillingTimeFrame: () => i18n.translate( 'per year' ),
 		getSignupBillingTimeFrame: () => i18n.translate( 'per year' ),
@@ -443,10 +449,11 @@ export const PLANS_LIST = {
 			FEATURE_ALL_PERSONAL_FEATURES,
 		] ),
 		getNewSignupFeatures: () => [
-			FEATURE_WORDADS_INSTANT,
-			FEATURE_ALL_PERSONAL_FEATURES,
 			FEATURE_MALWARE_SCANNING_DAILY,
+			FEATURE_MARKETING_AUTOMATION,
+			FEATURE_WORDADS_INSTANT,
 			FEATURE_VIDEO_CDN_LIMITED,
+			FEATURE_ALL_PERSONAL_FEATURES,
 		],
 		getBillingTimeFrame: () => i18n.translate( 'per month, billed monthly' ),
 		getSignupBillingTimeFrame: () => 'per month', //PLANS A/B TEST: Translate if test passes
@@ -479,10 +486,11 @@ export const PLANS_LIST = {
 			FEATURE_ALL_FREE_FEATURES,
 		],
 		getNewSignupFeatures: () => [
-			FEATURE_WORDADS_INSTANT,
-			FEATURE_ALL_PERSONAL_FEATURES,
-			FEATURE_MALWARE_SCANNING_DAILY,
-			FEATURE_VIDEO_CDN_LIMITED,
+			FEATURE_OFFSITE_BACKUP_VAULTPRESS_DAILY,
+			FEATURE_UNLIMITED_STORAGE,
+			FEATURE_SPAM_AKISMET_PLUS,
+			FEATURE_PREMIUM_SUPPORT,
+			FEATURE_ALL_FREE_FEATURES,
 		],
 		getBillingTimeFrame: () => i18n.translate( 'per year' ),
 		getSignupBillingTimeFrame: () => i18n.translate( 'per year' ),
@@ -515,10 +523,11 @@ export const PLANS_LIST = {
 			FEATURE_ALL_FREE_FEATURES,
 		],
 		getNewSignupFeatures: () => [
-			FEATURE_SPAM_AKISMET_PLUS,
-			FEATURE_ALL_FREE_FEATURES,
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_DAILY,
+			FEATURE_UNLIMITED_STORAGE,
+			FEATURE_SPAM_AKISMET_PLUS,
 			FEATURE_PREMIUM_SUPPORT,
+			FEATURE_ALL_FREE_FEATURES,
 		],
 		getBillingTimeFrame: () => i18n.translate( 'per month, billed monthly' ),
 		getSignupBillingTimeFrame: () => 'per month', //PLANS A/B TEST: Translate if test passes
@@ -566,14 +575,16 @@ export const PLANS_LIST = {
 			FEATURE_ALL_PREMIUM_FEATURES
 		] ),
 		getNewSignupFeatures: () => [
-			FEATURE_SEO_PREVIEW_TOOLS,
-			FEATURE_ALL_PREMIUM_FEATURES,
 			FEATURE_UNLIMITED_PREMIUM_THEMES,
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_REALTIME,
+			FEATURE_SEO_PREVIEW_TOOLS,
+			FEATURE_CONCIERGE_SETUP,
+			FEATURE_ALL_PREMIUM_FEATURES,
 		],
 		getBillingTimeFrame: () => i18n.translate( 'per year' ),
 		getSignupBillingTimeFrame: () => i18n.translate( 'per year' ),
 	},
+
 	[ PLAN_JETPACK_BUSINESS_MONTHLY ]: {
 		getTitle: () => i18n.translate( 'Professional' ),
 		getAudience: () => 'Best for organizations', //PLANS A/B TEST: Translate if test passes
@@ -615,10 +626,11 @@ export const PLANS_LIST = {
 			FEATURE_ALL_PREMIUM_FEATURES
 		] ),
 		getNewSignupFeatures: () => [
-			FEATURE_SEO_PREVIEW_TOOLS,
-			FEATURE_ALL_PREMIUM_FEATURES,
 			FEATURE_UNLIMITED_PREMIUM_THEMES,
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_REALTIME,
+			FEATURE_SEO_PREVIEW_TOOLS,
+			FEATURE_CONCIERGE_SETUP,
+			FEATURE_ALL_PREMIUM_FEATURES,
 		],
 		getBillingTimeFrame: () => i18n.translate( 'per month, billed monthly' ),
 		getSignupBillingTimeFrame: () => 'per month', //PLANS A/B TEST: Translate if test passes
@@ -626,6 +638,11 @@ export const PLANS_LIST = {
 };
 
 export const FEATURES_LIST = {
+	[ FEATURE_BLANK ]: {
+		getSlug: () => FEATURE_BLANK,
+		getTitle: () => '', //PLANS A/B TEST: Translate if test passes
+	},
+
 	[ FEATURE_ALL_FREE_FEATURES ]: {
 		getSlug: () => FEATURE_ALL_FREE_FEATURES,
 		getTitle: () => 'All free features', //PLANS A/B TEST: Translate if test passes
@@ -1025,7 +1042,7 @@ export const FEATURES_LIST = {
 	},
 	[ FEATURE_OFFSITE_BACKUP_VAULTPRESS_DAILY ]: {
 		getSlug: () => FEATURE_OFFSITE_BACKUP_VAULTPRESS_DAILY,
-		getTitle: () => i18n.translate( 'Daily Offsite Backups' ),
+		getTitle: () => i18n.translate( 'Daily Off-site Backups' ),
 		getDescription: () => i18n.translate(
 			'Automatic daily backups of every single aspect of your site. ' +
 			'Stored safely and optimized for WordPress.'
@@ -1033,7 +1050,11 @@ export const FEATURES_LIST = {
 	},
 	[ FEATURE_OFFSITE_BACKUP_VAULTPRESS_REALTIME ]: {
 		getSlug: () => FEATURE_OFFSITE_BACKUP_VAULTPRESS_REALTIME,
-		getTitle: () => i18n.translate( 'Real-time Offsite Backups' ),
+		getTitle: () => i18n.translate( '{{strong}}Real-time{{/strong}} Off-site Backups', {
+			components: {
+				strong: <strong />
+			}
+		} ),
 		getDescription: () => i18n.translate(
 			'Automatic realtime backups of every single aspect of your site. ' +
 			'Stored safely and optimized for WordPress.'
@@ -1220,6 +1241,24 @@ export const FEATURES_LIST = {
 		getTitle: () => i18n.translate( 'Advanced Traffic Tools' ),
 		getDescription: () => i18n.translate(
 			'Also includes SEO previews and Google Analytics.'
+		),
+		hideInfoPopover: true
+	},
+
+	[ FEATURE_CONCIERGE_SETUP ]: {
+		getSlug: () => FEATURE_CONCIERGE_SETUP,
+		getTitle: () => i18n.translate( 'Concierge Setup' ),
+		getDescription: () => i18n.translate(
+			'Schedule time with one of our Happiness Engineers.'
+		),
+		hideInfoPopover: true
+	},
+
+	[ FEATURE_MARKETING_AUTOMATION ]: {
+		getSlug: () => FEATURE_MARKETING_AUTOMATION,
+		getTitle: () => i18n.translate( 'Marketing Automation' ),
+		getDescription: () => i18n.translate(
+			'Schedule all your social media posts in advance.'
 		),
 		hideInfoPopover: true
 	}
