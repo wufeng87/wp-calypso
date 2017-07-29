@@ -5,14 +5,10 @@
 /**
  * External dependencies
  */
-var expect = require( 'chai' ).expect,
-	getContainer = require( 'test/helpers/use-fake-dom' ).getContainer,
-	useMockery = require( 'test/helpers/use-mockery' );
+import { expect } from 'chai';
 
-describe.skip( 'FormPhoneInput', function() {
+describe( 'FormPhoneInput', function() {
 	var React, ReactDom, ReactClass, TestUtils, i18n, mockCountriesList, mockCountriesListEmpty, FormPhoneInput, countries, container;
-
-	useMockery();
 
 	before( function() {
 		ReactDom = require( 'react-dom' );
@@ -28,7 +24,7 @@ describe.skip( 'FormPhoneInput', function() {
 
 		ReactClass.injection.injectMixin( i18n.mixin );
 		FormPhoneInput = require( 'components/forms/form-phone-input' );
-		container = getContainer();
+		container = document.createElement( 'div' );
 	} );
 
 	afterEach( function() {
