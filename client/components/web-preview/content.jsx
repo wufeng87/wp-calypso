@@ -18,7 +18,6 @@ import Toolbar from './toolbar';
 import touchDetect from 'lib/touch-detect';
 import { isMobile } from 'lib/viewport';
 import { localize } from 'i18n-calypso';
-import Spinner from 'components/spinner';
 import SpinnerLine from 'components/spinner-line';
 import SeoPreviewPane from 'components/seo-preview-pane';
 import { recordTracksEvent } from 'state/analytics/actions';
@@ -235,6 +234,13 @@ export class WebPreviewContent extends Component {
 			'is-loaded': this.state.loaded,
 		} );
 
+		const showLoadingMessage = (
+			! this.state.loaded &&
+			this.props.loadingMessage &&
+			( this.props.showPreview || ! this.props.isModalWindow ) &&
+			this.state.device !== 'seo'
+		);
+
 		return (
 			<div className={ className }>
 				<Toolbar setDeviceViewport={ this.setDeviceViewport }
@@ -249,14 +255,11 @@ export class WebPreviewContent extends Component {
 					<SpinnerLine />
 				}
 				<div className="web-preview__placeholder">
-					{ ( this.props.showPreview || ! this.props.isModalWindow ) && ! this.state.loaded && 'seo' !== this.state.device &&
+					{ showLoadingMessage &&
 						<div className="web-preview__loading-message-wrapper">
-							<Spinner />
-							{ this.props.loadingMessage &&
-								<span className="web-preview__loading-message">
-									{ this.props.loadingMessage }
-								</span>
-							}
+							<span className="web-preview__loading-message">
+								{ this.props.loadingMessage }
+							</span>
 						</div>
 					}
 					<div
